@@ -1,0 +1,1522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Archaic Cross-Traditional Reference</title>
+    <style>
+        :root {
+            /* Base Typography */
+            --font-serif: "Times New Roman", Times, serif;
+            --font-sans: system-ui, -apple-system, sans-serif;
+            
+            /* Layout */
+            --spacing: 8px;
+            
+            /* Dynamic Theme Variables (Defaults) */
+            --bg-color: #0f172a;
+            --surface-color: #1e293b;
+            --border-color: #334155;
+            --text-main: #e2e8f0;
+            --text-muted: #94a3b8;
+            --accent-color: #cbd5e1;
+            
+            /* Symbolic Colors - High Contrast */
+            --color-fire: #ef4444;
+            --color-earth: #d97706;
+            --color-air: #f59e0b;
+            --color-water: #3b82f6;
+            --color-ether: #8b5cf6;
+            
+            --color-plant: #22c55e;
+            --color-harvest: #eab308;
+            --color-bad: #ef4444;
+            
+            --color-celtic: #10b981;
+            --color-tcm: #f43f5e;
+            --color-shaman: #a855f7;
+            --color-quero: #f97316;
+            --color-redpath: #ef4444;
+            --color-alchemy: #6366f1;
+            
+            --color-herb-leaf: #4ade80;
+            --color-herb-flower: #f472b6;
+            --color-herb-fruit: #ef4444;
+            --color-herb-root: #d97706;
+        }
+
+        * { box-sizing: border-box; }
+        
+        body {
+            margin: 0;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: var(--font-sans);
+            transition: background-color 0.3s, color 0.3s;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            position: relative;
+        }
+
+        h1, h2, h3, h4, .serif { font-family: var(--font-serif); }
+        button { cursor: pointer; font-family: inherit; }
+        input, select { font-family: inherit; }
+
+        /* Icons */
+        .icon { display: inline-block; vertical-align: middle; fill: currentColor; }
+        .icon-xl { width: 80px; height: 80px; }
+        .icon-lg { width: 48px; height: 48px; }
+        .icon-md { width: 32px; height: 32px; }
+        .icon-sm { width: 20px; height: 20px; }
+        .icon-xs { width: 14px; height: 14px; }
+        
+        /* Icon Styling */
+        .icon-shadow { filter: drop-shadow(0px 2px 3px rgba(0,0,0,0.5)); }
+        
+        /* --- ANIMATIONS --- */
+        
+        /* 1. Pulse (Heartbeat) - for Life/Planting */
+        @keyframes pulse-soft {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+            100% { transform: scale(1); }
+        }
+        .anim-pulse:hover { animation: pulse-soft 1.5s ease-in-out infinite; transform-origin: center; }
+
+        /* 2. Rock/Tilt - for Tools/Harvest */
+        @keyframes rock-gentle {
+            0% { transform: rotate(0deg); }
+            25% { transform: rotate(-12deg); }
+            75% { transform: rotate(12deg); }
+            100% { transform: rotate(0deg); }
+        }
+        .anim-rock:hover { animation: rock-gentle 0.8s ease-in-out; transform-origin: center bottom; }
+
+        /* 3. Float - for Spirits/Ceremony */
+        @keyframes float-up {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-3px); }
+            100% { transform: translateY(0); }
+        }
+        .anim-float:hover { animation: float-up 2s ease-in-out infinite; }
+
+        /* 4. Glow/Spin - for Alchemy/Magic */
+        @keyframes spin-glow {
+            0% { filter: drop-shadow(0 0 2px currentColor); transform: rotate(0deg); }
+            50% { filter: drop-shadow(0 0 6px currentColor); }
+            100% { filter: drop-shadow(0 0 2px currentColor); transform: rotate(360deg); }
+        }
+        .anim-spin-glow:hover { animation: spin-glow 3s linear infinite; transform-origin: center; }
+
+        /* Moon Main Animation */
+        .moon-anim { transition: transform 0.5s ease, filter 0.5s ease; }
+        .day-cell:hover .moon-anim { 
+            transform: scale(1.08) rotate(2deg); 
+            filter: drop-shadow(0 0 8px var(--accent-color));
+        }
+        
+        /* Layout */
+        #app { display: flex; flex-direction: column; height: 100%; z-index: 1; position: relative; }
+
+        /* Custom Logo */
+        #user-logo {
+            position: absolute;
+            z-index: 50; /* Above calendar, below detail panel */
+            max-width: 150px;
+            max-height: 80px;
+            pointer-events: none;
+            opacity: 0.8;
+            transition: all 0.3s ease;
+        }
+        .logo-top-center {
+            top: 12px; left: 50%; transform: translateX(-50%);
+        }
+        .logo-bottom-right {
+            bottom: 20px; right: 20px;
+        }
+
+        /* Header */
+        header {
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border-color);
+            background: var(--surface-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-shrink: 0;
+            gap: 16px;
+            flex-wrap: wrap;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            z-index: 10;
+        }
+
+        .header-info { display: flex; align-items: center; gap: 20px; }
+        .header-text { display: flex; flex-direction: column; }
+        .header-main-text { font-family: var(--font-serif); font-size: 1.5rem; font-weight: bold; line-height: 1.2; letter-spacing: 0.02em; }
+        .header-sub-text { font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-top: 4px; }
+        .header-trad { font-size: 0.8rem; color: var(--accent-color); opacity: 0.9; font-style: italic; }
+
+        .controls { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; justify-content: flex-end; }
+        
+        button.nav-btn {
+            background: var(--bg-color);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: bold;
+            transition: all 0.2s;
+        }
+        button.nav-btn:hover { background: var(--surface-color); border-color: var(--accent-color); transform: translateY(-1px); }
+        
+        button.text-btn {
+            background: none; border: none; color: var(--text-muted); text-decoration: underline; font-size: 0.85rem;
+            transition: color 0.2s;
+        }
+        button.text-btn:hover { color: var(--accent-color); }
+
+        input[type="date"] {
+            background: var(--bg-color);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 7px;
+            border-radius: 6px;
+        }
+
+        select.theme-selector {
+            background: var(--bg-color);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 7px;
+            max-width: 160px;
+            border-radius: 6px;
+        }
+
+        /* Calendar Grid */
+        .calendar-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            padding: 12px;
+            background: var(--bg-color);
+        }
+
+        .weekdays {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            text-align: center;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            padding-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            border-bottom: 1px solid var(--border-color);
+            font-weight: 600;
+        }
+
+        .days-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            grid-auto-rows: 1fr;
+            gap: 2px;
+            background: var(--border-color);
+            flex: 1;
+            overflow-y: auto;
+            border-radius: 0 0 4px 4px;
+        }
+
+        .day-cell {
+            background: var(--bg-color);
+            padding: 6px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            min-height: 110px;
+            transition: background 0.2s;
+            cursor: pointer;
+            overflow: hidden;
+        }
+
+        .day-cell:hover { background: var(--surface-color); }
+        .day-cell.today { background: color-mix(in srgb, var(--surface-color), transparent 60%); border: 2px solid var(--accent-color); }
+        .day-cell.selected { background: var(--surface-color); box-shadow: inset 0 0 0 2px var(--accent-color); }
+
+        .day-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 4px;
+            padding-bottom: 4px;
+            border-bottom: 1px solid transparent;
+        }
+        .day-cell:hover .day-header { border-bottom-color: var(--border-color); }
+        
+        .day-number { font-size: 0.95rem; font-weight: 700; opacity: 0.8; }
+        
+        .note-dot {
+            width: 8px; height: 8px;
+            background: var(--accent-color);
+            border-radius: 50%;
+            display: none;
+            box-shadow: 0 0 4px var(--accent-color);
+        }
+        .has-note .note-dot { display: block; }
+
+        .weekday-indicator {
+            opacity: 0.8;
+            transition: opacity 0.2s;
+        }
+        .day-cell:hover .weekday-indicator { opacity: 1; }
+
+        .day-center {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            padding: 4px 0;
+        }
+
+        .day-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            padding-top: 4px;
+        }
+
+        .icon-row { display: flex; gap: 4px; align-items: center; flex-wrap: wrap; justify-content: flex-end; }
+
+        /* Detail Panel */
+        .detail-panel {
+            position: fixed;
+            top: 0; right: 0; bottom: 0;
+            width: 480px;
+            max-width: 90vw;
+            background: var(--surface-color);
+            border-left: 1px solid var(--border-color);
+            padding: 32px;
+            overflow-y: auto;
+            transform: translateX(100%);
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: -10px 0 30px rgba(0,0,0,0.6);
+            z-index: 100;
+        }
+        .detail-panel.open { transform: translateX(0); }
+
+        .detail-header {
+            display: flex; justify-content: space-between; align-items: flex-start;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 20px; margin-bottom: 24px;
+        }
+        .close-btn { background: none; border: none; font-size: 2rem; color: var(--text-muted); line-height: 0.8; padding: 4px; }
+        .close-btn:hover { color: var(--text-main); }
+
+        .panel-section { margin-bottom: 32px; }
+        .section-title {
+            font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.15em;
+            color: var(--accent-color); border-bottom: 1px solid var(--border-color);
+            padding-bottom: 8px; margin-bottom: 16px;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+
+        .data-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        .data-item { display: flex; flex-direction: column; gap: 4px; }
+        .data-label { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; }
+        .data-value { font-family: var(--font-serif); font-size: 1.1rem; }
+
+        .context-box {
+            background: color-mix(in srgb, var(--bg-color), transparent 30%);
+            padding: 16px; border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 0.95rem; line-height: 1.6; margin-bottom: 12px;
+        }
+        
+        .work-list { display: flex; flex-direction: column; gap: 10px; }
+        .work-item { 
+            display: flex; align-items: center; gap: 12px; padding: 12px;
+            background: var(--bg-color); border: 1px solid var(--border-color);
+            border-radius: 4px; transition: border-color 0.2s;
+        }
+        .work-item:hover { border-color: var(--accent-color); }
+        
+        .work-tag { font-size: 0.7rem; text-transform: uppercase; padding: 4px 8px; border-radius: 4px; font-weight: bold; min-width: 80px; text-align: center; }
+        .tag-suitable { color: var(--color-plant); border: 1px solid var(--color-plant); background: color-mix(in srgb, var(--color-plant), transparent 90%); }
+        .tag-avoid { color: var(--color-bad); border: 1px solid var(--color-bad); background: color-mix(in srgb, var(--color-bad), transparent 90%); }
+        .tag-mixed { color: var(--text-muted); border: 1px solid var(--text-muted); background: color-mix(in srgb, var(--text-muted), transparent 90%); }
+        .tag-celtic { color: var(--color-celtic); border: 1px solid var(--color-celtic); background: color-mix(in srgb, var(--color-celtic), transparent 90%); }
+        .tag-tcm { color: var(--color-tcm); border: 1px solid var(--color-tcm); background: color-mix(in srgb, var(--color-tcm), transparent 90%); }
+        .tag-shaman { color: var(--color-shaman); border: 1px solid var(--color-shaman); background: color-mix(in srgb, var(--color-shaman), transparent 90%); }
+        .tag-quero { color: var(--color-quero); border: 1px solid var(--color-quero); background: color-mix(in srgb, var(--color-quero), transparent 90%); }
+        .tag-redpath { color: var(--color-redpath); border: 1px solid var(--color-redpath); background: color-mix(in srgb, var(--color-redpath), transparent 90%); }
+
+        textarea.notes-area {
+            width: 100%; background: var(--bg-color); border: 1px solid var(--border-color);
+            color: var(--text-main); padding: 12px; min-height: 140px;
+            font-family: var(--font-sans); margin-top: 8px; border-radius: 4px;
+            line-height: 1.5;
+        }
+        textarea.notes-area:focus { outline: none; border-color: var(--accent-color); }
+
+        /* Bibliography Panel */
+        .bib-panel {
+            position: fixed; inset: 0; background: var(--bg-color); z-index: 200;
+            padding: 40px; overflow-y: auto; transform: translateY(100%);
+            transition: transform 0.3s ease-in-out;
+        }
+        .bib-panel.open { transform: translateY(0); }
+        .bib-container { max-width: 800px; margin: 0 auto; }
+        .bib-item { margin-bottom: 24px; border-bottom: 1px solid var(--border-color); padding-bottom: 16px; }
+        .bib-title { font-weight: bold; color: var(--text-main); font-size: 1.1rem; margin-bottom: 4px; }
+        .bib-meta { font-size: 0.9rem; color: var(--text-muted); line-height: 1.5; }
+
+        /* Custom Smart Tooltip */
+        #global-tooltip {
+            position: fixed;
+            background: var(--surface-color);
+            border: 1px solid var(--accent-color);
+            color: var(--text-main);
+            padding: 12px;
+            font-size: 0.85rem;
+            z-index: 9999;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.2s;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.6);
+            border-radius: 6px;
+            max-width: 320px;
+            line-height: 1.5;
+            text-align: left;
+            left: 0; top: 0;
+        }
+
+        @media (max-width: 600px) {
+            .detail-panel { width: 100%; padding: 20px; }
+            .header-info { gap: 12px; }
+            .icon-lg { width: 40px; height: 40px; }
+            .header-main-text { font-size: 1.2rem; }
+            .day-number { font-size: 0.8rem; }
+            /* Hide logo on mobile if it blocks view, or scale down */
+            #user-logo { max-width: 100px; }
+        }
+    </style>
+<script type="importmap">
+{
+  "imports": {
+    "react": "https://esm.sh/react@^19.2.3",
+    "react/": "https://esm.sh/react@^19.2.3/",
+    "lucide-react": "https://esm.sh/lucide-react@^0.561.0"
+  }
+}
+</script>
+</head>
+<body>
+
+<!-- Global Tooltip Element -->
+<div id="global-tooltip"></div>
+<img id="user-logo" style="display:none;" alt="User Logo" />
+
+<div id="app">
+    <header>
+        <div class="header-info">
+            <div id="header-moon-icon" class="icon-xl icon-shadow"></div>
+            <div class="header-text">
+                <span id="header-date" class="header-main-text"></span>
+                <span id="header-doy" class="header-sub-text"></span>
+                <span id="header-trad-name" class="header-trad"></span>
+            </div>
+        </div>
+        <div class="controls">
+            <button id="btn-prev" class="nav-btn">&larr;</button>
+            <input type="date" id="date-picker">
+            <button id="btn-next" class="nav-btn">&rarr;</button>
+            <select id="theme-selector" class="theme-selector"></select>
+            <button id="btn-logo" class="text-btn">Logo</button>
+            <input type="file" id="logo-upload" accept="image/*" style="display:none;">
+            <button id="btn-bib" class="text-btn">Sources</button>
+        </div>
+    </header>
+
+    <div class="calendar-container">
+        <div class="weekdays">
+            <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
+        </div>
+        <div id="calendar-grid" class="days-grid"></div>
+    </div>
+
+    <!-- DETAIL PANEL -->
+    <aside id="detail-panel" class="detail-panel">
+        <div class="detail-header">
+            <div>
+                <h2 id="detail-date" class="serif" style="margin:0; font-size: 1.8rem; color: var(--text-main);"></h2>
+                <div style="display:flex; align-items:center; gap:8px; margin-top:8px;">
+                    <div id="detail-weekday-icon"></div>
+                    <div id="detail-weekday" style="color: var(--accent-color); font-size: 0.95rem;"></div>
+                </div>
+            </div>
+            <button id="btn-close" class="close-btn">&times;</button>
+        </div>
+
+        <div class="panel-section">
+            <div class="section-title">Astronomical Data</div>
+            <div class="data-grid">
+                <div class="data-item"><span class="data-label">Phase & Zodiac</span><span id="detail-phase" class="data-value"></span></div>
+                <div class="data-item"><span class="data-label">Age</span><span id="detail-age" class="data-value"></span></div>
+                <div class="data-item"><span class="data-label">Illumination</span><span id="detail-illum" class="data-value"></span></div>
+                <div class="data-item"><span class="data-label">Zodiac (Sidereal)</span><span id="detail-sign" class="data-value"></span></div>
+            </div>
+        </div>
+
+        <div class="panel-section">
+            <div class="section-title">Traditional References</div>
+            <div class="context-box">
+                <div class="data-label">Western Folk</div>
+                <div id="detail-western" class="serif"></div>
+            </div>
+            <div class="context-box">
+                <div class="data-label">Mesoamerican (Solar Reconstruction)</div>
+                <div id="detail-meso" class="serif"></div>
+            </div>
+            <div class="context-box">
+                <div class="data-label">Ancient Egyptian (Coptic Approx)</div>
+                <div id="detail-egypt" class="serif"></div>
+            </div>
+        </div>
+
+        <div class="panel-section">
+            <div class="section-title">Indigenous Wisdom (Americas)</div>
+            <div class="context-box">
+                <div class="data-label">Quero / Andean Traditions</div>
+                <div id="detail-quero" class="serif"></div>
+            </div>
+            <div class="context-box">
+                <div class="data-label">Red Path (Plains/Woodland) Traditions</div>
+                <div id="detail-redpath" class="serif"></div>
+            </div>
+        </div>
+
+        <div class="panel-section">
+            <div class="section-title">Cyclic Systems</div>
+            <div class="context-box">
+                <div class="data-label">Chinese Lunisolar</div>
+                <div id="detail-chinese" class="serif"></div>
+            </div>
+            <div class="context-box">
+                <div class="data-label">Tibetan Lunisolar</div>
+                <div id="detail-tibetan" class="serif"></div>
+            </div>
+        </div>
+
+        <div class="panel-section">
+            <div class="section-title">Celtic & Nature Cycles</div>
+            <div class="context-box">
+                <div class="data-label">Seasonal Context (Wheel of the Year)</div>
+                <div id="detail-celtic" class="serif"></div>
+            </div>
+             <div class="context-box">
+                <div class="data-label">Celtic Herbal Harvesting</div>
+                <div id="detail-celtic-herbal" style="font-style:italic;"></div>
+            </div>
+        </div>
+        
+        <div class="panel-section">
+            <div class="section-title">UK Seasonal Foraging</div>
+            <div class="context-box">
+                <div class="data-label">Available Herbs (UK Context)</div>
+                <div id="detail-uk-herbs" style="font-style:italic;"></div>
+            </div>
+        </div>
+
+        <div class="panel-section">
+            <div class="section-title">Alchemical & Medical</div>
+            <div class="data-grid" style="margin-bottom: 12px;">
+                <div class="data-item">
+                    <span class="data-label">Element (Biodynamic)</span>
+                    <div style="display:flex; align-items:center; gap:8px;">
+                        <span id="detail-elem-icon"></span>
+                        <span id="detail-elem-name" class="data-value"></span>
+                    </div>
+                </div>
+                <div class="data-item">
+                    <span class="data-label">Tarot (Golden Dawn)</span>
+                    <span id="detail-tarot" class="data-value"></span>
+                </div>
+            </div>
+            <div class="context-box">
+                <div class="data-label">Chinese Herbalism (TCM Almanac)</div>
+                <div id="detail-tcm" style="font-style:italic;"></div>
+            </div>
+        </div>
+        
+        <div class="panel-section">
+            <div class="section-title">Ceremonial Context</div>
+            <div class="context-box">
+                <div class="data-label">Shamanic Traditions (Eurasian/Folk)</div>
+                <div id="detail-shamanic" style="font-style:italic;"></div>
+            </div>
+        </div>
+
+        <div class="panel-section">
+            <div class="section-title">Work Suitability & Agriculture</div>
+            <div id="work-list" class="work-list"></div>
+        </div>
+
+        <div class="panel-section">
+            <div class="section-title">Practitioner Notes</div>
+            <textarea id="day-note" class="notes-area" placeholder="Record observations..."></textarea>
+        </div>
+    </aside>
+
+    <!-- BIBLIOGRAPHY PANEL -->
+    <div id="bib-panel" class="bib-panel">
+        <div class="bib-container">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:30px;">
+                <h2 class="serif" style="margin:0; font-size: 2rem;">Sources & Traditions Referenced</h2>
+                <button id="btn-close-bib" class="close-btn">&times;</button>
+            </div>
+            <div id="bib-list"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+/**
+ * ARCHAIC CROSS-TRADITIONAL REFERENCE
+ * A unified engine for astronomical and traditional timekeeping.
+ * Adapted for embedded contexts (Wix/Iframes).
+ */
+
+// --- UTILS FOR IFRAME COMPATIBILITY ---
+const Storage = {
+    get: (key) => {
+        try { return localStorage.getItem(key); } catch(e) { console.warn("Storage restricted"); return null; }
+    },
+    set: (key, val) => {
+        try { localStorage.setItem(key, val); } catch(e) { console.warn("Storage restricted"); }
+    }
+};
+
+// --- CONSTANTS & DATA ---
+
+const MOON_PHASES = [
+    "New Moon", "Waxing Crescent", "First Quarter", "Waxing Gibbous", 
+    "Full Moon", "Waning Gibbous", "Last Quarter", "Waning Crescent"
+];
+const ZODIAC = [
+    "Aries", "Taurus", "Gemini", "Cancer", "Leo", "Virgo", 
+    "Libra", "Scorpio", "Sagittarius", "Capricorn", "Aquarius", "Pisces"
+];
+const WESTERN_NAMES = [
+    "Wolf Moon", "Snow Moon", "Worm Moon", "Pink Moon", "Flower Moon", 
+    "Strawberry Moon", "Buck Moon", "Sturgeon Moon", "Corn Moon", 
+    "Hunter's Moon", "Beaver Moon", "Cold Moon"
+];
+const TAROT_GD = [
+    "IV The Emperor", "V The Hierophant", "VI The Lovers", "VII The Chariot",
+    "VIII Strength", "IX The Hermit", "XI Justice", "XIII Death",
+    "XIV Temperance", "XV The Devil", "XVII The Star", "XVIII The Moon"
+];
+const VEINTENAS = [
+    "Tititl (Stretching)", "Izcalli (Resurgence)", "Atlacacauallo (Ceasing Water)", 
+    "Tlacaxipehualiztli (Flaying)", "Tozoztontli (Little Vigil)", "Huey Tozoztli (Great Vigil)", 
+    "Toxcatl (Dryness)", "Etzalcualiztli (Eating Maize)", "Tecuilhuitontli (Small Feast)", 
+    "Huey Tecuilhuitl (Great Feast)", "Tlaxochimaco (Flowers)", "Xocotlhuetzi (Fruit Falls)", 
+    "Ochpaniztli (Sweeping)", "Teotleco (Arrival)", "Tepeilhuitl (Hill Feast)", 
+    "Quecholli (Feather)", "Panquetzaliztli (Banner)", "Atemoztli (Water Descent)", "Nemontemi (Empty)"
+];
+const BIBLIOGRAPHY = [
+    { title: "Biodynamic Agriculture", meta: "Maria Thun, 'The Biodynamic Sowing and Planting Calendar'. 20th C. Anthroposophic tradition associating sidereal zodiac with plant parts." },
+    { title: "Western Alchemical/Herbal", meta: "Paracelsus, Culpeper. Renaissance traditions associating lunar phases with fluid dynamics (Coagula/Solve). Weekday elements based on planetary correspondence (Sun/Fire, Moon/Water, etc.)." },
+    { title: "Tibetan Calendrics (Phugpa)", meta: "Phugpa Lhundrup Gyatso (15th C). 'White Lapis Lazuli'. 60-year Element-Animal cycle starting 1027 AD." },
+    { title: "Chinese Calendrics & TCM", meta: "Traditional Sexagenary Cycle (Gan-Zhi) & TCM Almanacs. Base year 1984. Yin/Yang harvesting principles." },
+    { title: "Celtic Wheel of the Year", meta: "Reconstructed insular Celtic seasonal festivals (Samhain, Imbolc, Beltane, Lughnasadh) and solar quarters." },
+    { title: "Celtic Herbal Harvesting", meta: "Historical Pliny the Elder (Naturalis Historia) accounts of Druidic gathering (e.g., Mistletoe on 6th day). Insular folklore for festivals (e.g., St John's Wort on Midsummer, Bilberry on Lughnasadh)." },
+    { title: "UK Herbal Foraging", meta: "Seasonality based on UK climate. Sources: RHS, wildfoodie.co.uk, betonica.co.uk, rvs.umn.edu." },
+    { title: "Egyptian Calendar", meta: "Reconstructed Civil Calendar. 365 days. Thoth 1 ≈ Sep 11 (Julian/Gregorian approx). Solar/Agricultural basis." },
+    { title: "Tarot Correspondences", meta: "Hermetic Order of the Golden Dawn (Late 19th C). 'Book T'. Attribution of Zodiac signs to Major Arcana." },
+    { title: "Mesoamerican Veintenas", meta: "Bernardino de Sahagún, 'Florentine Codex'. 16th C. Solar agricultural periods (18 x 20 days + 5)." },
+    { title: "Shamanic Traditions (Eurasian)", meta: "General Eurasian and Folk traditions regarding lunar ceremonial timing (Initiation, Banishing, Healing)." },
+    { title: "Quero / Andean Tradition", meta: "Don Manuel Q'espi, Andean Cosmology. K'intu practice and lunar energy cycles (Junta Quilla/Musuq Quilla)." },
+    { title: "Red Path Traditions", meta: "General Lakota/Plains/Woodland customs. Inipi and Pipe ceremony timing relative to lunar cycles." }
+];
+
+// UK HERBAL DATA - Source Aggregation
+const UK_HERBS = [
+    { name: "Stinging Nettle", latin: "Urtica dioica", part: "Leaf", months: [1,2,3,4], note: "Harvest young tops before flowering.", source: "wildfoodie.co.uk" },
+    { name: "Cleavers", latin: "Galium aparine", part: "Leaf", months: [2,3,4], note: "Harvest young stems for tonics.", source: "betonica.co.uk" },
+    { name: "Dandelion", latin: "Taraxacum officinale", part: "Leaf", months: [2,3,4], note: "Young leaves before flower stalks appear.", source: "RHS" },
+    { name: "Dandelion", latin: "Taraxacum officinale", part: "Root", months: [8,9,10], note: "Harvest in autumn when inulin is high.", source: "RHS" },
+    { name: "Hawthorn", latin: "Crataegus monogyna", part: "Leaf/Flower", months: [3,4], note: "Young leaves and flowering tops.", source: "wildfoodie.co.uk" },
+    { name: "Hawthorn", latin: "Crataegus monogyna", part: "Fruit", months: [8,9,10], note: "Berries (Haws) fully red.", source: "wildfoodie.co.uk" },
+    { name: "Elder", latin: "Sambucus nigra", part: "Flower", months: [4,5,6], note: "Fully open creamy heads on sunny days.", source: "wildfoodie.co.uk" },
+    { name: "Elder", latin: "Sambucus nigra", part: "Fruit", months: [7,8,9], note: "Fully black berries, cook before use.", source: "wildfoodie.co.uk" },
+    { name: "St John's Wort", latin: "Hypericum perforatum", part: "Flower", months: [5,6,7], note: "Harvest flowering tops around Midsummer.", source: "betonica.co.uk" },
+    { name: "Meadowsweet", latin: "Filipendula ulmaria", part: "Flower", months: [5,6,7], note: "Flowering tops.", source: "RHS" },
+    { name: "Yarrow", latin: "Achillea millefolium", part: "Leaf/Flower", months: [5,6,7,8,9], note: "Flowering tops and leaves.", source: "RHS" },
+    { name: "Rose", latin: "Rosa canina", part: "Flower", months: [5,6,7], note: "Petals.", source: "wildfoodie.co.uk" },
+    { name: "Rose", latin: "Rosa canina", part: "Fruit", months: [8,9,10], note: "Hips, after first frost implies sweetness.", source: "wildfoodie.co.uk" },
+    { name: "Burdock", latin: "Arctium lappa", part: "Root", months: [8,9,10,11,0,1,2], note: "First year roots in autumn/winter.", source: "betonica.co.uk" },
+    { name: "Sloe (Blackthorn)", latin: "Prunus spinosa", part: "Fruit", months: [9,10,11], note: "Harvest after first frost.", source: "wildfoodie.co.uk" },
+    { name: "Chickweed", latin: "Stellaria media", part: "Leaf", months: [0,1,2,3,4,5,6,7,8,9,10,11], note: "Available year round, best in cool seasons.", source: "rvs.umn.edu" }
+];
+
+const WEEKDAY_CORRESPONDENCE = [
+    { day: "Sunday", planet: "Sun", element: "fire" },
+    { day: "Monday", planet: "Moon", element: "water" },
+    { day: "Tuesday", planet: "Mars", element: "fire" },
+    { day: "Wednesday", planet: "Mercury", element: "air" },
+    { day: "Thursday", planet: "Jupiter", element: "air" },
+    { day: "Friday", planet: "Venus", element: "earth" },
+    { day: "Saturday", planet: "Saturn", element: "earth" }
+];
+
+const CELTIC_FESTIVALS = {
+    "2-1": "Imbolc (Brigid's Day)",
+    "5-1": "Beltane (First Summer)",
+    "8-1": "Lughnasadh (First Harvest)",
+    "10-31": "Samhain (New Year / Ancestors)",
+    "3-20": "Spring Equinox (Ostara)",
+    "6-21": "Summer Solstice (Litha)",
+    "9-22": "Autumn Equinox (Mabon)",
+    "12-21": "Winter Solstice (Yule)"
+};
+
+// --- ASTRONOMY ENGINE ---
+
+function getJulianDate(date) {
+    return (date.getTime() / 86400000) + 2440587.5;
+}
+
+function normalize(d) {
+    let a = d % 360;
+    if (a < 0) a += 360;
+    return a;
+}
+
+function getMoonData(date) {
+    const jd = getJulianDate(date);
+    const T = (jd - 2451545.0) / 36525;
+    
+    // Low-precision lunar position
+    const L0 = 218.316 + 481267.8813 * T;
+    const M = 134.963 + 477198.8676 * T;
+    const D = 297.850 + 445267.1115 * T;
+    const M_sun = 357.528 + 35999.0503 * T;
+    
+    // Ecliptic Longitude
+    let Long = L0 + 6.289 * Math.sin(M * Math.PI/180) - 1.274 * Math.sin((M - 2*D) * Math.PI/180) 
+             + 0.658 * Math.sin(2*D * Math.PI/180) - 0.186 * Math.sin(M_sun * Math.PI/180);
+    Long = normalize(Long);
+
+    // Age & Phase
+    const knownNew = 2451550.1; // Jan 6 2000
+    const synodic = 29.53058867;
+    const ageRaw = (jd - knownNew) % synodic;
+    const age = ageRaw < 0 ? ageRaw + synodic : ageRaw;
+    
+    let phaseIdx = 0;
+    if (age < 1 || age > 28.5) phaseIdx = 0; // New
+    else if (age < 6.4) phaseIdx = 1; // Wax Cres
+    else if (age < 8.4) phaseIdx = 2; // 1st Q
+    else if (age < 13.8) phaseIdx = 3; // Wax Gib
+    else if (age < 15.8) phaseIdx = 4; // Full
+    else if (age < 21.1) phaseIdx = 5; // Wan Gib
+    else if (age < 23.1) phaseIdx = 6; // Last Q
+    else phaseIdx = 7; // Wan Cres
+
+    // Illumination
+    const illum = 50 * (1 - Math.cos((age / synodic) * 2 * Math.PI));
+
+    // Sidereal Zodiac (Lahiri ~24 deg offset)
+    const siderealLong = normalize(Long - 24);
+    const signIdx = Math.floor(siderealLong / 30);
+
+    return {
+        age, phaseIdx, phaseName: MOON_PHASES[phaseIdx],
+        illum: Math.round(illum), sign: ZODIAC[signIdx], signIdx
+    };
+}
+
+function getDayOfYear(date) {
+    const start = new Date(date.getFullYear(), 0, 0);
+    const diff = date - start;
+    return Math.floor(diff / (1000 * 60 * 60 * 24));
+}
+
+// --- TRADITION ENGINE ---
+
+function getBiodynamic(signIdx) {
+    const types = ["Fruit", "Root", "Flower", "Leaf"];
+    const elems = ["fire", "earth", "air", "water"];
+    const idx = signIdx % 4;
+    return { type: types[idx], element: elems[idx] };
+}
+
+function getWeekdayData(date) {
+    return WEEKDAY_CORRESPONDENCE[date.getDay()];
+}
+
+function getCelticData(date, doy) {
+    const key = `${date.getMonth()+1}-${date.getDate()}`;
+    const festival = CELTIC_FESTIVALS[key];
+    const seasons = ["Winter", "Spring", "Summer", "Autumn"];
+    // Rough quarters
+    const q = Math.floor((doy + 10) / 91) % 4; // Offset to start winter around Dec 21
+    const season = seasons[q];
+    
+    return {
+        name: festival || `Solar Day ${doy}`,
+        festival: festival,
+        season: season,
+        isFestival: !!festival
+    };
+}
+
+// Celtic Herbal Harvesting Logic
+function getCelticHerbalData(date, moon) {
+    const doy = getDayOfYear(date);
+    const key = `${date.getMonth()+1}-${date.getDate()}`;
+    
+    let plant = "";
+    let action = "";
+    let source = "";
+
+    if (Math.floor(moon.age) === 6) {
+        plant = "Mistletoe (Uil-ice)";
+        action = "Sacred Cutting (Golden Sickle)";
+        source = "Pliny the Elder, Naturalis Historia XVI";
+    }
+    else if (key === "6-21" || key === "6-23" || key === "6-24") {
+        plant = "St. John's Wort / Vervain";
+        action = "Gathering for Protection";
+        source = "Insular Folklore / Carmina Gadelica";
+    }
+    else if (key === "8-1" || key === "8-2") {
+        plant = "Bilberries (Fraoch)";
+        action = "First Fruit Gathering";
+        source = "Lughnasadh Folk Tradition";
+    }
+    else if (key === "5-1") {
+        plant = "Nettle / Hawthorn";
+        action = "Gathering Green";
+        source = "Beltane Tradition";
+    }
+    else if (key === "10-31") {
+        plant = "Mugwort / Roots";
+        action = "Divination Harvest";
+        source = "Samhain Folk Tradition";
+    }
+    else if (moon.phaseIdx === 1 || moon.phaseIdx === 3) {
+        plant = "Aerial Parts";
+        action = "General Leaf Harvest (Waxing)";
+        source = "General Folk Practice";
+    }
+    else if (moon.phaseIdx === 5 || moon.phaseIdx === 7) {
+        plant = "Roots";
+        action = "General Root Harvest (Waning)";
+        source = "General Folk Practice";
+    }
+
+    return { plant, action, source };
+}
+
+function getUKForaging(date) {
+    const m = date.getMonth();
+    const available = UK_HERBS.filter(h => h.months.includes(m));
+    const types = [...new Set(available.map(h => {
+        if (h.part.includes("Leaf")) return "Leaf";
+        if (h.part.includes("Flower")) return "Flower";
+        if (h.part.includes("Fruit")) return "Fruit";
+        if (h.part.includes("Root")) return "Root";
+        return "Plant";
+    }))];
+    return { available, types };
+}
+
+function getChineseGuidance(moon) {
+    // TCM simplified logic based on Almanac principles
+    let action = "";
+    let type = "";
+    // New Moon: Yin Peak
+    if (moon.phaseIdx === 0 || moon.age > 28) {
+        action = "Yin Peak: Harvest Roots. Avoid active preparation.";
+        type = "Harvesting (Yin)";
+    } 
+    // Waxing: Growing Yang
+    else if (moon.phaseIdx >= 1 && moon.phaseIdx <= 3) {
+        action = "Growing Yang: Prepare Tonics. Harvest Leaves & Stems.";
+        type = "Preparation/Harvest (Yang)";
+    }
+    // Full Moon: Yang Peak
+    else if (moon.phaseIdx === 4) {
+        action = "Yang Peak: Most Potent Harvest (Flowers/Fruits).";
+        type = "Harvesting (Yang Peak)";
+    }
+    // Waning: Growing Yin
+    else {
+        action = "Growing Yin: Prepare Cleansers. Harvest Bark/Roots.";
+        type = "Preparation/Harvest (Yin)";
+    }
+    
+    return {
+        guidance: action,
+        source: "Traditional Chinese Medicine Almanac",
+        type: type
+    };
+}
+
+function getShamanicData(moon) {
+    let ceremony = "";
+    let desc = "";
+    
+    if (moon.phaseIdx === 0) {
+        ceremony = "Divination / Ancestral";
+        desc = "Dark Moon: Scrying, interacting with the Lower World, stillness.";
+    } else if (moon.phaseIdx === 1) {
+        ceremony = "Invocation";
+        desc = "New Crescent: Calling in spirits, seeding intention.";
+    } else if (moon.phaseIdx === 2) {
+        ceremony = "Initiation";
+        desc = "First Quarter: Crossing thresholds, action ceremonies.";
+    } else if (moon.phaseIdx === 4) {
+        ceremony = "Healing / Gratitude";
+        desc = "Full Moon: Community healing, Upper World connection, milk offerings.";
+    } else if (moon.phaseIdx === 6) {
+        ceremony = "Banishing / Cord Cutting";
+        desc = "Last Quarter: Releasing attachments, cleansing.";
+    } else {
+        desc = "General Practice Day";
+    }
+    
+    return { ceremony, desc, source: "Eurasian Shamanic Traditions" };
+}
+
+function getQueroData(moon, date) {
+    const key = `${date.getMonth()+1}-${date.getDate()}`;
+    let name = "";
+    let type = "";
+    
+    if (key === "8-1") {
+        name = "Pachamama Raymi (Earth Mother Feast)";
+        type = "Offering / Despacho";
+    } else if (moon.phaseIdx === 4) {
+        name = "Junta Quilla (Full Moon)";
+        type = "Karpay (Transmission) / Ayni (Reciprocity)";
+    } else if (moon.phaseIdx === 0) {
+        name = "Musuq Quilla (New Moon)";
+        type = "Saminchakuy (Refining/Cleansing)";
+    } else {
+        name = "General Cycle";
+        type = "K'intu / Prayer";
+    }
+    return { name, type, source: "Andean / Quero Tradition" };
+}
+
+function getRedPathData(moon, date, doy) {
+    // Equinox/Solstice checks
+    // Rough approx dates
+    const isEquinox = (doy >= 79 && doy <= 81) || (doy >= 265 && doy <= 267);
+    const isSolstice = (doy >= 171 && doy <= 173) || (doy >= 354 && doy <= 356);
+
+    let name = "";
+    let type = "";
+
+    if (isSolstice || isEquinox) {
+        name = "Seasonal Change";
+        type = "Pipe Ceremony / Sweatlodge";
+    } else if (moon.phaseIdx === 4) {
+        name = "Full Moon";
+        type = "Winyan (Women's Circle) / Pipe Ceremony";
+    } else if (moon.phaseIdx === 0) {
+        name = "New Moon";
+        type = "Inipi (Purification) / Stone People's Lodge";
+    } else {
+        name = "Daily Walk";
+        type = "Prayer / Smudging";
+    }
+    
+    return { name, type, source: "Red Path / Plains Traditions" };
+}
+
+
+function getWorkSuitability(moon) {
+    const works = [];
+    const isWaxing = moon.age > 1 && moon.age < 14;
+    const isWaning = moon.age > 15 && moon.age < 28;
+    const isFull = moon.phaseIdx === 4;
+    const isNew = moon.phaseIdx === 0;
+
+    // Tinctures
+    let tinc = { name: "Tinctures", status: "Mixed", note: "Neutral timing" };
+    if (isNew) {
+        tinc = { name: "Tinctures", status: "Avoid", note: "Avoid starting. Period of stillness. (Western Alchemy)" };
+    } else if (isFull || (isWaxing && moon.age > 7)) {
+        tinc = { name: "Tinctures", status: "Suitable", note: "Favorable for Harvesting aerial parts & Alcohol Tinctures (Drawing out). (Western Herbalism)" };
+    } else if (isWaning) {
+        tinc = { name: "Tinctures", status: "Mixed", note: "Favorable for Root harvest & Root tinctures. (Western Herbalism)" };
+    }
+    works.push(tinc);
+
+    // Release
+    let rel = { name: "Release/Shedding", status: "Mixed", note: "" };
+    if (isWaning) rel = { name: "Release/Shedding", status: "Suitable", note: "Diminishing light aids banishing (Shamanic/Folk)" };
+    else rel = { name: "Release/Shedding", status: "Avoid", note: "Growth phase favors accumulation" };
+    works.push(rel);
+
+    // Planting
+    let plant = { name: "Planting", status: "Mixed", note: "" };
+    const bio = getBiodynamic(moon.signIdx);
+    if (bio.type === "Fruit" || bio.type === "Flower") {
+        if (isWaxing) plant = { name: "Sowing", status: "Suitable", note: `Waxing + ${bio.element.toUpperCase()} (Biodynamic)` };
+    }
+    if (bio.type === "Root" && isWaning) plant = { name: "Root Work", status: "Suitable", note: "Waning + Earth (Biodynamic)" };
+    works.push(plant);
+
+    return works;
+}
+
+function getMultiYear(year) {
+    // Chinese (Base 1984 Wood Rat)
+    const stems = ["Wood", "Wood", "Fire", "Fire", "Earth", "Earth", "Metal", "Metal", "Water", "Water"];
+    const branches = ["Rat", "Ox", "Tiger", "Rabbit", "Dragon", "Snake", "Horse", "Goat", "Monkey", "Rooster", "Dog", "Pig"];
+    const cDiff = (year - 1984) % 60;
+    const cOffset = cDiff < 0 ? cDiff + 60 : cDiff;
+    const cStem = stems[cOffset % 10];
+    const cBranch = branches[cOffset % 12];
+    const cPol = cOffset % 2 === 0 ? "Yang" : "Yin";
+
+    // Tibetan (Base 1027 Fire Rabbit)
+    const tElems = ["Fire", "Earth", "Iron", "Water", "Wood"];
+    const tAnimals = ["Rabbit", "Dragon", "Snake", "Horse", "Sheep", "Monkey", "Bird", "Dog", "Pig", "Mouse", "Ox", "Tiger"];
+    const tDiff = (year - 1027) % 60;
+    const tOffset = tDiff < 0 ? tDiff + 60 : tDiff;
+    const tElem = tElems[Math.floor(tOffset/2) % 5];
+    const tAni = tAnimals[tOffset % 12];
+    const tGen = tOffset % 2 === 0 ? "Male" : "Female";
+
+    return {
+        chinese: `${cPol} ${cStem} ${cBranch}`,
+        tibetan: `${tGen} ${tElem} ${tAni}`
+    };
+}
+
+function getEgyptian(doy) {
+    let d = doy - 253;
+    if (d <= 0) d += 365;
+    const m = Math.ceil(d / 30);
+    let s = "";
+    if (d <= 120) s = "Akhet (Inundation)";
+    else if (d <= 240) s = "Peret (Emergence)";
+    else s = "Shemu (Harvest)";
+    return `${s}, Month ${m}`;
+}
+
+function getVeintena(doy) {
+    if (doy <= 19) return VEINTENAS[0];
+    const idx = Math.floor((doy - 20) / 20) + 1;
+    if (idx < VEINTENAS.length) return VEINTENAS[idx];
+    return VEINTENAS[VEINTENAS.length-1];
+}
+
+function getShamanic(moon) {
+    if (moon.phaseIdx === 0) return "Dark Moon: Historically associated with stillness, ancestors, and the Lower World in Eurasian traditions.";
+    if (moon.phaseIdx === 4) return "Full Moon: Documented across Siberian traditions as peak interaction with Upper World spirits; milk libations.";
+    if (moon.age < 14) return "Waxing: General association with increasing 'Wind Horse' (Vitality) and invocations.";
+    return "Waning: General association with banishing, cleansing, and reversal rituals.";
+}
+
+// --- VISUALIZATION (SVG) ---
+
+const SVGS = {
+    moon: (idx, size="icon-md") => {
+        let d = "";
+        const r = 42; 
+        if (idx===4) d=`<circle cx="50" cy="50" r="${r}" fill="currentColor"/>`;
+        else if (idx===2) d=`<path d="M50,8 A${r},${r} 0 0,1 50,92 Z" fill="currentColor"/>`;
+        else if (idx===6) d=`<path d="M50,8 A${r},${r} 0 0,0 50,92 Z" fill="currentColor"/>`;
+        else if (idx===1) d=`<path d="M50,8 A${r},${r} 0 0,1 50,92 A32,${r} 0 0,0 50,8 Z" fill="currentColor"/>`;
+        else if (idx===7) d=`<path d="M50,8 A${r},${r} 0 0,0 50,92 A32,${r} 0 0,1 50,8 Z" fill="currentColor"/>`;
+        else if (idx===3) d=`<path d="M50,8 A${r},${r} 0 0,1 50,92 A32,${r} 0 0,1 50,8 Z" fill="currentColor"/>`;
+        else if (idx===5) d=`<path d="M50,8 A${r},${r} 0 0,0 50,92 A32,${r} 0 0,0 50,8 Z" fill="currentColor"/>`;
+        
+        return `<svg viewBox="0 0 100 100" class="${size} icon-shadow moon-anim"><circle cx="50" cy="50" r="46" fill="none" stroke="currentColor" stroke-width="4"/>${d}</svg>`;
+    },
+    
+    element: (el, size="icon-sm") => {
+        let d, c;
+        switch(el) {
+            case 'fire': d="M12,3 L22,21 L2,21 Z"; c="var(--color-fire)"; break;
+            case 'earth': d="M2,4 L22,4 L12,22 Z M4,14 L20,14"; c="var(--color-earth)"; break;
+            case 'air': d="M12,3 L22,21 L2,21 Z M4,11 L20,11"; c="var(--color-air)"; break;
+            case 'water': d="M2,4 L22,4 L12,22 Z"; c="var(--color-water)"; break;
+        }
+        // Element: Spin glow animation
+        return `<svg viewBox="0 0 24 24" class="${size} icon-shadow anim-spin-glow"><path d="${d}" fill="${c}" fill-opacity="0.3" stroke="${c}" stroke-width="2.5" stroke-linejoin="round"/></svg>`;
+    },
+
+    plant: (size="icon-sm") => `<svg viewBox="0 0 24 24" class="${size} icon-shadow anim-pulse"><path d="M12 22v-8m0 0a5 5 0 0 1 5-5 5 5 0 0 0 5 5m-10 0a5 5 0 0 0-5-5 5 5 0 0 1-5 5" fill="none" stroke="var(--color-plant)" stroke-width="2.5" stroke-linecap="round"/></svg>`,
+    
+    leaf: (size="icon-sm") => `<svg viewBox="0 0 24 24" class="${size} icon-shadow anim-pulse"><path d="M12 2C8 2 4 8 4 14C4 18 8 22 12 22C16 22 20 18 20 14C20 8 16 2 12 2Z M12 22 L12 6" fill="none" stroke="var(--color-herb-leaf)" stroke-width="2.5" stroke-linecap="round"/></svg>`,
+
+    flower: (size="icon-sm") => `<svg viewBox="0 0 24 24" class="${size} icon-shadow anim-float"><circle cx="12" cy="12" r="3" fill="none" stroke="var(--color-herb-flower)" stroke-width="2"/><path d="M12 9V5 M12 15V19 M9 12H5 M15 12H19 M14 10L17 7 M10 14L7 17 M10 10L7 7 M14 14L17 17" stroke="var(--color-herb-flower)" stroke-width="2" stroke-linecap="round"/></svg>`,
+
+    fruit: (size="icon-sm") => `<svg viewBox="0 0 24 24" class="${size} icon-shadow anim-rock"><circle cx="12" cy="14" r="6" fill="none" stroke="var(--color-herb-fruit)" stroke-width="2.5"/><path d="M12 8V4 M10 6L14 6" stroke="var(--color-herb-fruit)" stroke-width="2" stroke-linecap="round"/></svg>`,
+
+    root: (size="icon-sm") => `<svg viewBox="0 0 24 24" class="${size} icon-shadow anim-rock"><path d="M12 2V10 M12 10L8 16 M12 10L16 16 M12 10V22" stroke="var(--color-herb-root)" stroke-width="2.5" stroke-linecap="round"/><path d="M8 2L16 2" stroke="var(--color-herb-root)" stroke-width="2"/></svg>`,
+    
+    harvest: (size="icon-sm") => `<svg viewBox="0 0 24 24" class="${size} icon-shadow anim-rock"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9" fill="none" stroke="var(--color-harvest)" stroke-width="2.5"/></svg>`,
+
+    sickle: (size="icon-sm") => `<svg viewBox="0 0 24 24" class="${size} icon-shadow anim-rock"><path d="M19 19C19 12 14 6 9 6C7 6 6 7 6 8C6 9 7 9 9 9C12 9 15 13 15 19" stroke="var(--color-celtic)" stroke-width="2.5" stroke-linecap="round" fill="none"/><path d="M19 19L21 21" stroke="var(--color-celtic)" stroke-width="2.5" stroke-linecap="round"/></svg>`,
+
+    bottle: (size="icon-sm") => `<svg viewBox="0 0 24 24" class="${size} icon-shadow anim-pulse"><path d="M9,2 L15,2 L15,6 L20,10 L20,22 L4,22 L4,10 L9,6 Z" fill="none" stroke="var(--color-alchemy)" stroke-width="2.5" stroke-linejoin="round"/><path d="M9,2 L9,6 M15,2 L15,6" stroke="var(--color-alchemy)" stroke-width="2.5"/></svg>`,
+    
+    knot: (size="icon-sm") => `<svg viewBox="0 0 24 24" class="${size} icon-shadow anim-spin-glow"><path d="M12,2 L14,7 L20,7 L16,11 L18,17 L12,14 L6,17 L8,11 L4,7 L10,7 Z" fill="none" stroke="var(--color-celtic)" stroke-width="2.5" stroke-linejoin="round"/></svg>`,
+
+    bowl: (size="icon-sm") => `<svg viewBox="0 0 24 24" class="${size} icon-shadow anim-float"><path d="M2 12h20M2 12c0 5.5 4.5 10 10 10s10-4.5 10-10" fill="none" stroke="var(--color-tcm)" stroke-width="2.5"/><path d="M12 7V3m-4 4V4m8 3V4" stroke="var(--color-tcm)" stroke-width="2.5" stroke-linecap="round"/></svg>`,
+
+    drum: (size="icon-sm") => `<svg viewBox="0 0 24 24" class="${size} icon-shadow anim-pulse"><circle cx="12" cy="12" r="10" fill="none" stroke="var(--color-shaman)" stroke-width="2.5"/><path d="M12 12l5-5M12 12l-5-5M12 12l5 5M12 12l-5 5" stroke="var(--color-shaman)" stroke-width="2"/></svg>`,
+    
+    kintu: (size="icon-sm") => `<svg viewBox="0 0 24 24" class="${size} icon-shadow anim-float"><path d="M12 21 C12 21 20 16 20 10 C20 6 16 3 12 3 C8 3 4 6 4 10 C4 16 12 21 12 21 Z" fill="none" stroke="var(--color-quero)" stroke-width="2.5"/><path d="M12 3 L12 21" stroke="var(--color-quero)" stroke-width="1.5"/></svg>`,
+    
+    feather: (size="icon-sm") => `<svg viewBox="0 0 24 24" class="${size} icon-shadow anim-float"><path d="M20.2 3.8 C20.2 3.8 21 6 18 10 C15 14 6 22 2 22 C3 18 6 12 10 8 C14 4 18 3 20.2 3.8 Z M10 8 L13 11" fill="none" stroke="var(--color-redpath)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`
+};
+
+// --- APP LOGIC ---
+
+const App = {
+    date: new Date(),
+    selectedDate: new Date(),
+    
+    init() {
+        this.generateThemes();
+        this.loadState();
+        this.render();
+        this.setupListeners();
+        this.initTooltips();
+    },
+
+    initTooltips() {
+        const tooltip = document.getElementById('global-tooltip');
+        
+        const updatePos = (e) => {
+            const pad = 12;
+            let x = e.clientX + pad;
+            let y = e.clientY + pad;
+            
+            const rect = tooltip.getBoundingClientRect();
+            if (x + rect.width > window.innerWidth) x = window.innerWidth - rect.width - pad;
+            if (y + rect.height > window.innerHeight) y = window.innerHeight - rect.height - pad;
+            
+            tooltip.style.left = x + 'px';
+            tooltip.style.top = y + 'px';
+        };
+
+        document.body.addEventListener('mouseover', (e) => {
+            const target = e.target.closest('[data-tooltip]');
+            if (target) {
+                tooltip.textContent = target.getAttribute('data-tooltip');
+                tooltip.style.opacity = '1';
+                updatePos(e); 
+            }
+        });
+
+        document.body.addEventListener('mouseout', (e) => {
+            const target = e.target.closest('[data-tooltip]');
+            if (target) {
+                tooltip.style.opacity = '0';
+            }
+        });
+
+        document.body.addEventListener('mousemove', (e) => {
+            if (tooltip.style.opacity === '1') {
+                updatePos(e);
+            }
+        });
+    },
+
+    generateThemes() {
+        const sel = document.getElementById('theme-selector');
+        for(let i=0; i<50; i++) {
+            const opt = document.createElement('option');
+            opt.value = i; opt.textContent = `Theme ${i+1}`;
+            sel.appendChild(opt);
+        }
+    },
+
+    loadState() {
+        const t = Storage.get('arc_theme') || 0;
+        document.getElementById('theme-selector').value = t;
+        this.applyTheme(t);
+        
+        const logoData = Storage.get('arc_logo');
+        const logoPos = Storage.get('arc_logo_pos') || 'logo-top-center';
+        if (logoData) {
+            const img = document.getElementById('user-logo');
+            img.src = logoData;
+            img.className = logoPos;
+            img.style.display = 'block';
+        }
+    },
+
+    applyTheme(idx) {
+        const hue = (idx * 137.5) % 360; 
+        const root = document.documentElement.style;
+        const isDark = idx % 2 === 0;
+        const sat = 10;
+        root.setProperty('--bg-color', `hsl(${hue}, ${sat}%, ${isDark?8:96}%)`);
+        root.setProperty('--surface-color', `hsl(${hue}, ${sat+5}%, ${isDark?15:90}%)`);
+        root.setProperty('--text-main', `hsl(${hue}, 10%, ${isDark?90:15}%)`);
+        root.setProperty('--border-color', `hsl(${hue}, 10%, ${isDark?25:80}%)`);
+        root.setProperty('--accent-color', `hsl(${hue}, 40%, ${isDark?60:40}%)`);
+        Storage.set('arc_theme', idx);
+    },
+
+    render() {
+        const doy = getDayOfYear(this.date);
+        const moon = getMoonData(this.date);
+        const tradName = WESTERN_NAMES[this.date.getMonth()];
+        const weekday = getWeekdayData(this.date);
+        
+        document.getElementById('header-moon-icon').innerHTML = SVGS.moon(moon.phaseIdx, 'icon-xl');
+        document.getElementById('header-date').textContent = this.date.toLocaleString('default', { month: 'long', year: 'numeric' });
+        document.getElementById('header-doy').textContent = `Day ${doy} • ${moon.phaseName}`;
+        document.getElementById('header-trad-name').textContent = tradName;
+        document.getElementById('date-picker').value = this.date.toISOString().substr(0,10);
+
+        const grid = document.getElementById('calendar-grid');
+        grid.innerHTML = '';
+        const y = this.date.getFullYear(), m = this.date.getMonth();
+        const first = new Date(y, m, 1).getDay();
+        const days = new Date(y, m+1, 0).getDate();
+        const notes = JSON.parse(Storage.get('arc_notes') || '{}');
+        const todayKey = new Date().toISOString().split('T')[0];
+
+        for(let i=0; i<first; i++) grid.appendChild(this.createCell(null));
+        for(let d=1; d<=days; d++) {
+            const dt = new Date(y, m, d);
+            const key = dt.toISOString().split('T')[0];
+            const cell = this.createCell(dt, key, notes[key], key === todayKey);
+            grid.appendChild(cell);
+        }
+    },
+
+    createCell(date, key, hasNote, isToday) {
+        const el = document.createElement('div');
+        el.className = 'day-cell';
+        if (!date) { el.style.opacity = '0.3'; return el; }
+        
+        if (isToday) el.classList.add('today');
+        
+        const doy = getDayOfYear(date);
+        const moon = getMoonData(date);
+        const bio = getBiodynamic(moon.signIdx);
+        const works = getWorkSuitability(moon);
+        const wd = getWeekdayData(date);
+        const celtic = getCelticData(date, doy);
+        const tcm = getChineseGuidance(moon);
+        const shaman = getShamanicData(moon);
+        const quero = getQueroData(moon, date);
+        const redpath = getRedPathData(moon, date, doy);
+        const celticHerbal = getCelticHerbalData(date, moon);
+        const ukHerbs = getUKForaging(date);
+        
+        // Header
+        const h = document.createElement('div');
+        h.className = 'day-header';
+        
+        const wdIcon = `<div class="weekday-indicator" data-tooltip="${wd.day} (${wd.planet}): ${wd.element.toUpperCase()}. Element assigned by weekday-planet correspondence (Western alchemical tradition).">${SVGS.element(wd.element, 'icon-sm')}</div>`;
+        
+        h.innerHTML = `<div style="display:flex; gap:6px; align-items:center;"><span class="day-number">${date.getDate()}</span>${wdIcon}</div><div class="note-dot ${hasNote?'has-note':''}"></div>`;
+        
+        // Center
+        const c = document.createElement('div');
+        c.className = 'day-center';
+        // Detailed Lunar Info with Zodiac
+        const moonTooltip = `${moon.phaseName} in ${moon.sign}. Illumination: ${moon.illum}%. Source: Western Astronomy / Sidereal Zodiac.`;
+        const moonHtml = `<div data-tooltip="${moonTooltip}">${SVGS.moon(moon.phaseIdx, 'icon-lg')}</div>`;
+        c.innerHTML = moonHtml;
+
+        // Footer
+        const f = document.createElement('div');
+        f.className = 'day-footer';
+        
+        const eIcon = document.createElement('div');
+        eIcon.innerHTML = SVGS.element(bio.element, 'icon-md');
+        eIcon.setAttribute('data-tooltip', `Moon in ${moon.sign}: ${bio.element.toUpperCase()} (${bio.type}) - Biodynamic Association`);
+        
+        const dots = document.createElement('div');
+        dots.className = 'icon-row';
+        
+        // UK Herb Icons (Seasonal)
+        if (ukHerbs.types.includes("Leaf")) {
+            const list = ukHerbs.available.filter(h=>h.part.includes("Leaf")).map(h=>h.name).join(", ");
+            dots.innerHTML += `<div data-tooltip="UK Leaf Harvest: ${list}. See details for guidance.">${SVGS.leaf('icon-sm')}</div>`;
+        }
+        if (ukHerbs.types.includes("Flower")) {
+             const list = ukHerbs.available.filter(h=>h.part.includes("Flower")).map(h=>h.name).join(", ");
+             dots.innerHTML += `<div data-tooltip="UK Flower Harvest: ${list}. See details for guidance.">${SVGS.flower('icon-sm')}</div>`;
+        }
+        if (ukHerbs.types.includes("Fruit")) {
+             const list = ukHerbs.available.filter(h=>h.part.includes("Fruit")).map(h=>h.name).join(", ");
+             dots.innerHTML += `<div data-tooltip="UK Berry/Fruit Harvest: ${list}. See details for guidance.">${SVGS.fruit('icon-sm')}</div>`;
+        }
+         if (ukHerbs.types.includes("Root")) {
+             const list = ukHerbs.available.filter(h=>h.part.includes("Root")).map(h=>h.name).join(", ");
+             dots.innerHTML += `<div data-tooltip="UK Root Harvest: ${list}. See details for guidance.">${SVGS.root('icon-sm')}</div>`;
+        }
+
+        // Planting
+        const plant = works.find(w => w.name.includes("Planting"));
+        if(plant && plant.status === "Suitable") {
+            dots.innerHTML += `<div data-tooltip="Planting Suitable: ${plant.note}">${SVGS.plant('icon-sm')}</div>`;
+        }
+        
+        // Tincture - Use Bottle Icon for Tinctures explicitly
+        const tinc = works.find(w => w.name.includes("Tinctures"));
+        if (tinc && (tinc.status === "Suitable" || tinc.status === "Mixed")) {
+            dots.innerHTML += `<div data-tooltip="${tinc.note}">${SVGS.bottle('icon-sm')}</div>`;
+        }
+        
+        // General Harvest Icon 
+        if (moon.phaseIdx === 4) { 
+             dots.innerHTML += `<div data-tooltip="Harvesting: Above Ground Parts (Full Moon). Western Herbalism.">${SVGS.harvest('icon-sm')}</div>`;
+        }
+        
+        // Celtic Herbal Harvesting (New Icon)
+        if (celticHerbal.plant) {
+             dots.innerHTML += `<div data-tooltip="Celtic Herbal: ${celticHerbal.plant} (${celticHerbal.action}). Source: ${celticHerbal.source}">${SVGS.sickle('icon-sm')}</div>`;
+        }
+        
+        // Celtic Festival Icon
+        if (celtic.isFestival) {
+            dots.innerHTML += `<div data-tooltip="Celtic Festival: ${celtic.festival} (Wheel of the Year)">${SVGS.knot('icon-sm')}</div>`;
+        }
+        
+        // TCM Icon (Bowl)
+        if (moon.phaseIdx === 0 || moon.phaseIdx === 4) {
+            dots.innerHTML += `<div data-tooltip="TCM Guidance: ${tcm.guidance}">${SVGS.bowl('icon-sm')}</div>`;
+        }
+
+        // Shamanic Icon (Drum)
+        if (moon.phaseIdx === 0 || moon.phaseIdx === 2 || moon.phaseIdx === 4 || moon.phaseIdx === 6) {
+             dots.innerHTML += `<div data-tooltip="Ceremonial Day (Eurasian): ${shaman.ceremony}. ${shaman.desc}">${SVGS.drum('icon-sm')}</div>`;
+        }
+        
+        // Quero Icon (Kintu)
+        if (quero.name !== "General Cycle" || quero.type.includes("Karpay")) {
+             dots.innerHTML += `<div data-tooltip="Quero Tradition: ${quero.name} - ${quero.type}. Source: Andean Cosmology.">${SVGS.kintu('icon-sm')}</div>`;
+        }
+        
+        // Red Path Icon (Feather)
+        if (redpath.name !== "Daily Walk" || redpath.type.includes("Inipi")) {
+            dots.innerHTML += `<div data-tooltip="Red Path Tradition: ${redpath.name} - ${redpath.type}. Source: Plains/Lakota Customs.">${SVGS.feather('icon-sm')}</div>`;
+        }
+        
+        f.appendChild(eIcon);
+        f.appendChild(dots);
+        
+        el.append(h, c, f);
+        el.onclick = () => this.openDetail(date);
+        return el;
+    },
+
+    openDetail(date) {
+        this.selectedDate = date;
+        const key = date.toISOString().split('T')[0];
+        const doy = getDayOfYear(date);
+        const moon = getMoonData(date);
+        const bio = getBiodynamic(moon.signIdx);
+        const multi = getMultiYear(date.getFullYear());
+        const works = getWorkSuitability(moon);
+        const wd = getWeekdayData(date);
+        const notes = JSON.parse(Storage.get('arc_notes') || '{}');
+        const celtic = getCelticData(date, doy);
+        const celticHerbal = getCelticHerbalData(date, moon);
+        const tcm = getChineseGuidance(moon);
+        const shaman = getShamanicData(moon);
+        const quero = getQueroData(moon, date);
+        const redpath = getRedPathData(moon, date, doy);
+        const ukHerbs = getUKForaging(date);
+        
+        // Header
+        document.getElementById('detail-date').textContent = date.toDateString();
+        document.getElementById('detail-weekday-icon').innerHTML = SVGS.element(wd.element, 'icon-sm');
+        document.getElementById('detail-weekday').textContent = `${wd.day} • ${wd.planet} Rule • ${wd.element.toUpperCase()} Element`;
+        document.getElementById('detail-weekday').parentElement.setAttribute('data-tooltip', 'Element assigned by weekday-planet correspondence (Western alchemical tradition).');
+        
+        document.getElementById('detail-phase').textContent = `${moon.phaseName} in ${moon.sign}`;
+        document.getElementById('detail-phase').parentElement.setAttribute('data-tooltip', 'Combined Western Astronomical Phase and Sidereal Zodiac Sign.');
+
+        document.getElementById('detail-age').textContent = moon.age.toFixed(1) + 'd';
+        document.getElementById('detail-illum').textContent = moon.illum + '%';
+        document.getElementById('detail-sign').textContent = moon.sign;
+        
+        document.getElementById('detail-western').textContent = WESTERN_NAMES[date.getMonth()];
+        document.getElementById('detail-meso').textContent = getVeintena(doy);
+        document.getElementById('detail-egypt').textContent = getEgyptian(doy);
+        
+        document.getElementById('detail-chinese').textContent = multi.chinese;
+        document.getElementById('detail-tibetan').textContent = multi.tibetan;
+        
+        // Celtic
+        document.getElementById('detail-celtic').innerHTML = `
+            <strong>${celtic.festival ? celtic.festival + " (High Holy Day)" : celtic.name}</strong><br>
+            <span style="color:var(--text-muted); font-size:0.9rem;">${celtic.season} Season • Reconstructed Insular Celtic Calendar</span>
+        `;
+
+        document.getElementById('detail-celtic-herbal').innerHTML = celticHerbal.plant ? `
+            <strong>${celticHerbal.plant}</strong><br>
+            Action: ${celticHerbal.action}<br>
+            <span style="color:var(--text-muted); font-size:0.8rem;">Source: ${celticHerbal.source}</span>
+        ` : `General Seasonal Gathering<br><span style="color:var(--text-muted); font-size:0.8rem;">Source: General Folk Practice</span>`;
+        
+        // UK Herbs
+        let herbHtml = "";
+        if (ukHerbs.available.length > 0) {
+            herbHtml = `<div style="display:flex; flex-direction:column; gap:10px;">`;
+            ukHerbs.available.forEach(h => {
+                let col = "var(--text-main)";
+                if (h.part.includes("Leaf")) col = "var(--color-herb-leaf)";
+                if (h.part.includes("Flower")) col = "var(--color-herb-flower)";
+                if (h.part.includes("Fruit")) col = "var(--color-herb-fruit)";
+                if (h.part.includes("Root")) col = "var(--color-herb-root)";
+                
+                herbHtml += `
+                    <div style="border-left: 2px solid ${col}; padding-left:8px;">
+                        <span style="font-weight:bold;">${h.name}</span> <span style="font-style:italic; font-size:0.85rem; color:var(--text-muted)">(${h.latin})</span><br>
+                        <span style="font-size:0.9rem;">Harvest: <strong>${h.part}</strong>. ${h.note}</span><br>
+                        <span style="font-size:0.75rem; color:var(--text-muted);">Source: ${h.source}</span>
+                    </div>
+                `;
+            });
+            herbHtml += `</div>`;
+        } else {
+            herbHtml = "No specific key herbs listed for this month in the database.";
+        }
+        document.getElementById('detail-uk-herbs').innerHTML = herbHtml;
+
+
+        document.getElementById('detail-elem-icon').innerHTML = SVGS.element(bio.element, 'icon-lg');
+        document.getElementById('detail-elem-name').textContent = `${bio.type} (${bio.element.toUpperCase()})`;
+        document.getElementById('detail-elem-icon').parentElement.parentElement.setAttribute('data-tooltip', 'Derived from Biodynamic Agriculture (Moon Sign)');
+
+        document.getElementById('detail-tarot').textContent = TAROT_GD[moon.signIdx];
+        
+        // TCM
+        document.getElementById('detail-tcm').innerHTML = `
+            <span style="color:var(--color-tcm); font-weight:bold;">${tcm.type}</span><br>
+            ${tcm.guidance}<br>
+            <span style="font-size:0.8rem; color:var(--text-muted);">Source: ${tcm.source}</span>
+        `;
+
+        // Shamanic
+        document.getElementById('detail-shamanic').innerHTML = `
+            <strong>${shaman.ceremony || "General Practice"}</strong><br>
+            ${shaman.desc}<br>
+            <span style="font-size:0.8rem; color:var(--text-muted);">Source: ${shaman.source}</span>
+        `;
+        
+        // Quero
+        document.getElementById('detail-quero').innerHTML = `
+            <span style="color:var(--color-quero); font-weight:bold;">${quero.name}</span><br>
+            ${quero.type}<br>
+            <span style="font-size:0.8rem; color:var(--text-muted);">Source: ${quero.source}</span>
+        `;
+
+        // Red Path
+        document.getElementById('detail-redpath').innerHTML = `
+            <span style="color:var(--color-redpath); font-weight:bold;">${redpath.name}</span><br>
+            ${redpath.type}<br>
+            <span style="font-size:0.8rem; color:var(--text-muted);">Source: ${redpath.source}</span>
+        `;
+        
+        // Work List
+        const wl = document.getElementById('work-list');
+        wl.innerHTML = '';
+        works.forEach(w => {
+            const div = document.createElement('div');
+            div.className = 'work-item';
+            const cls = w.status === 'Suitable' ? 'tag-suitable' : w.status === 'Avoid' ? 'tag-avoid' : 'tag-mixed';
+            div.innerHTML = `<span class="work-tag ${cls}">${w.status}</span><div style="font-size:0.9rem"><strong>${w.name}</strong><br><span style="color:var(--text-muted);font-size:0.8rem">${w.note}</span></div>`;
+            wl.appendChild(div);
+        });
+
+        document.getElementById('day-note').value = notes[key] || '';
+        document.getElementById('detail-panel').classList.add('open');
+    },
+
+    setupListeners() {
+        document.getElementById('btn-prev').onclick = () => { this.date.setMonth(this.date.getMonth()-1); this.render(); };
+        document.getElementById('btn-next').onclick = () => { this.date.setMonth(this.date.getMonth()+1); this.render(); };
+        document.getElementById('date-picker').onchange = (e) => { 
+            const p = e.target.value.split('-'); 
+            this.date = new Date(p[0], p[1]-1, p[2]); 
+            this.render(); 
+        };
+        document.getElementById('theme-selector').onchange = (e) => this.applyTheme(e.target.value);
+        
+        document.getElementById('btn-close').onclick = () => document.getElementById('detail-panel').classList.remove('open');
+        document.getElementById('day-note').oninput = (e) => {
+            const k = this.selectedDate.toISOString().split('T')[0];
+            const n = JSON.parse(Storage.get('arc_notes') || '{}');
+            n[k] = e.target.value;
+            Storage.set('arc_notes', JSON.stringify(n));
+            this.render();
+        };
+
+        // Logo Logic
+        document.getElementById('btn-logo').onclick = () => {
+             const logoData = Storage.get('arc_logo');
+             if (logoData) {
+                 const currentPos = Storage.get('arc_logo_pos') || 'logo-top-center';
+                 const newPos = currentPos === 'logo-top-center' ? 'logo-bottom-right' : 'logo-top-center';
+                 Storage.set('arc_logo_pos', newPos);
+                 document.getElementById('user-logo').className = newPos;
+             } else {
+                 document.getElementById('logo-upload').click();
+             }
+        };
+        
+        document.getElementById('btn-logo').oncontextmenu = (e) => {
+            e.preventDefault();
+            document.getElementById('logo-upload').click();
+        };
+
+        document.getElementById('logo-upload').onchange = (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (evt) => {
+                    const res = evt.target.result;
+                    Storage.set('arc_logo', res);
+                    Storage.set('arc_logo_pos', 'logo-top-center');
+                    const img = document.getElementById('user-logo');
+                    img.src = res;
+                    img.className = 'logo-top-center';
+                    img.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            }
+        };
+
+        // Bib
+        const bibList = document.getElementById('bib-list');
+        BIBLIOGRAPHY.forEach(b => {
+            const div = document.createElement('div');
+            div.className = 'bib-item';
+            div.innerHTML = `<div class="bib-title">${b.title}</div><div class="bib-meta">${b.meta}</div>`;
+            bibList.appendChild(div);
+        });
+        document.getElementById('btn-bib').onclick = () => document.getElementById('bib-panel').classList.add('open');
+        document.getElementById('btn-close-bib').onclick = () => document.getElementById('bib-panel').classList.remove('open');
+    }
+};
+
+App.init();
+
+</script>
+</body>
+</html>
