@@ -43,6 +43,11 @@
             --color-herb-flower: #f472b6;
             --color-herb-fruit: #ef4444;
             --color-herb-root: #d97706;
+            
+            /* New Deity Colors */
+            --color-egypt: #f59e0b; /* Gold */
+            --color-marian: #38bdf8; /* Light Blue */
+            --color-buddhist: #a3e635; /* Lime/Green */
         }
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -124,18 +129,25 @@
         /* Custom Logo */
         #user-logo {
             position: absolute;
-            z-index: 50; /* Above calendar, below detail panel */
+            z-index: 50; /* Above calendar grid, below interactive modals if needed */
             max-width: 150px;
             max-height: 80px;
-            pointer-events: none;
-            opacity: 0.8;
+            pointer-events: none; /* Allows clicking through to header elements */
+            opacity: 0.9;
             transition: all 0.3s ease;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
         }
+        
         .logo-top-center {
-            top: 12px; left: 50%; transform: translateX(-50%);
+            top: 8px; 
+            left: 50%; 
+            transform: translateX(-50%);
         }
+        
         .logo-bottom-right {
-            bottom: 20px; right: 20px;
+            bottom: 20px; 
+            right: 20px;
+            transform: none;
         }
 
         /* Header */
@@ -151,6 +163,7 @@
             flex-wrap: wrap;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
             z-index: 10;
+            position: relative; /* Context for absolute positioning if needed */
         }
 
         .header-info { display: flex; align-items: center; gap: 20px; }
@@ -354,6 +367,11 @@
         .tag-shaman { color: var(--color-shaman); border: 1px solid var(--color-shaman); background: color-mix(in srgb, var(--color-shaman), transparent 90%); }
         .tag-quero { color: var(--color-quero); border: 1px solid var(--color-quero); background: color-mix(in srgb, var(--color-quero), transparent 90%); }
         .tag-redpath { color: var(--color-redpath); border: 1px solid var(--color-redpath); background: color-mix(in srgb, var(--color-redpath), transparent 90%); }
+        
+        /* New Deity Tags */
+        .tag-egypt { color: var(--color-egypt); border: 1px solid var(--color-egypt); background: color-mix(in srgb, var(--color-egypt), transparent 90%); }
+        .tag-marian { color: var(--color-marian); border: 1px solid var(--color-marian); background: color-mix(in srgb, var(--color-marian), transparent 90%); }
+        .tag-buddhist { color: var(--color-buddhist); border: 1px solid var(--color-buddhist); background: color-mix(in srgb, var(--color-buddhist), transparent 90%); }
 
         textarea.notes-area {
             width: 100%; background: var(--bg-color); border: 1px solid var(--border-color);
@@ -427,8 +445,9 @@
             .bib-panel { padding: 20px; }
             .close-btn { padding: 10px; font-size: 2.5rem; }
             
-            #user-logo { max-width: 80px; top: 6px !important; right: 6px !important; left: auto !important; transform: none !important; }
-            .logo-top-center { top: 6px; right: 6px; left: auto; transform: none; }
+            /* Mobile Logo - Scaled down, still centered */
+            #user-logo { max-width: 80px; max-height: 50px; }
+            .logo-top-center { top: 2px; } /* Tight spacing on mobile */
             .logo-bottom-right { bottom: 70px; right: 10px; }
         }
 
@@ -518,6 +537,12 @@
                 <div class="data-label">Ancient Egyptian (Coptic Approx)</div>
                 <div id="detail-egypt" class="serif"></div>
             </div>
+        </div>
+        
+        <!-- NEW DEITY SECTION -->
+        <div id="detail-deity-section" class="panel-section" style="display:none;">
+            <div class="section-title">Deity & Festival Observances</div>
+            <div id="detail-deity-list" class="work-list"></div>
         </div>
 
         <div class="panel-section">
@@ -635,6 +660,10 @@ const Storage = {
 
 // --- CONSTANTS & DATA ---
 
+// Default Logo - High quality SVG data URI for "Archaic Reference"
+// Stylized Crescent Moon and Herb Leaf
+const DEFAULT_LOGO = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 100'%3E%3Cpath d='M90,10 A40,40 0 1,0 90,90 A32,32 0 1,1 90,10 Z' fill='%23cbd5e1' opacity='0.9'/%3E%3Cpath d='M120,30 Q140,20 150,50 Q140,80 120,70 Q130,50 120,30 Z M120,70 L120,90' fill='none' stroke='%23cbd5e1' stroke-width='3' stroke-linecap='round'/%3E%3Ctext x='100' y='95' font-family='serif' font-size='10' fill='%2394a3b8' text-anchor='middle' letter-spacing='2'%3EARCHAIC REFERENCE%3C/text%3E%3C/svg%3E";
+
 const MOON_PHASES = [
     "New Moon", "Waxing Crescent", "First Quarter", "Waxing Gibbous", 
     "Full Moon", "Waning Gibbous", "Last Quarter", "Waning Crescent"
@@ -674,7 +703,8 @@ const BIBLIOGRAPHY = [
     { title: "Mesoamerican Veintenas", meta: "Bernardino de Sahagún, 'Florentine Codex'. 16th C. Solar agricultural periods (18 x 20 days + 5)." },
     { title: "Shamanic Traditions (Eurasian)", meta: "General Eurasian and Folk traditions regarding lunar ceremonial timing (Initiation, Banishing, Healing)." },
     { title: "Quero / Andean Tradition", meta: "Don Manuel Q'espi, Andean Cosmology. K'intu practice and lunar energy cycles (Junta Quilla/Musuq Quilla)." },
-    { title: "Red Path Traditions", meta: "General Lakota/Plains/Woodland customs. Inipi and Pipe ceremony timing relative to lunar cycles." }
+    { title: "Red Path Traditions", meta: "General Lakota/Plains/Woodland customs. Inipi and Pipe ceremony timing relative to lunar cycles." },
+    { title: "Deity/Festival Sources", meta: "WFT Academy of Pagan Studies, Wikipedia, Massachusetts State Archives, Buddha Weekly, Facebook (Tsurphu), Wing Hop Fung." }
 ];
 
 // UK HERBAL DATA - Source Aggregation
@@ -717,6 +747,26 @@ const CELTIC_FESTIVALS = {
     "9-22": "Autumn Equinox (Mabon)",
     "12-21": "Winter Solstice (Yule)"
 };
+
+// DEITY & FESTIVAL DATA
+const DEITY_FESTIVALS = [
+    // Egyptian / Isis
+    { start: "8-12", end: "8-12", name: "The Lights of Isis", deity: "Isis", source: "WFT Academy of Pagan Studies", type: "Egyptian", icon: "ankh" },
+    { start: "8-29", end: "9-11", name: "Return of Isis & Osiris", deity: "Isis & Osiris", source: "WFT Academy of Pagan Studies", type: "Egyptian", icon: "ankh" },
+    { start: "11-10", end: "12-9", name: "Month of Hathor", deity: "Hathor", source: "Wikipedia", type: "Egyptian", icon: "ankh" },
+    { start: "11-2", end: "11-2", name: "Festival of Hathor", deity: "Hathor", source: "WFT Academy of Pagan Studies", type: "Egyptian", icon: "ankh" },
+    { start: "11-29", end: "11-29", name: "Feast of Hathor / Bast-Hathor-Sekhmet", deity: "Hathor", source: "WFT Academy of Pagan Studies", type: "Egyptian", icon: "ankh" },
+    
+    // Marian / Christian
+    { start: "3-25", end: "3-25", name: "Feast of the Annunciation", deity: "Maria", source: "Holidays and Observances", type: "Christian", icon: "star" },
+    { start: "8-15", end: "8-15", name: "Assumption of Mary", deity: "Mary", source: "Massachusetts State Archives", type: "Christian", icon: "star" },
+    { start: "12-12", end: "12-12", name: "Fiesta of Our Lady of Guadalupe", deity: "Mary", source: "WFT Academy of Pagan Studies", type: "Christian", icon: "star" },
+    { start: "7-22", end: "7-22", name: "Feast of Saint Mary Magdalene", deity: "Mary Magdalene", source: "Wikipedia", type: "Christian", icon: "star" },
+    
+    // Buddhist Specific Dates
+    { start: "7-3-2025", end: "7-3-2025", name: "Green Tara & Medicine Buddha Day", deity: "Green Tara", source: "Facebook (Tsurphu)", type: "Buddhist", icon: "lotus" },
+    { start: "8-1-2025", end: "8-1-2025", name: "Green Tara & Medicine Buddha Day", deity: "Green Tara", source: "Facebook (Tsurphu)", type: "Buddhist", icon: "lotus" }
+];
 
 // --- ASTRONOMY ENGINE ---
 
@@ -807,6 +857,72 @@ function getCelticData(date, doy) {
         season: season,
         isFestival: !!festival
     };
+}
+
+function getDeityEvents(date, moon) {
+    const events = [];
+    const m = date.getMonth() + 1;
+    const d = date.getDate();
+    const y = date.getFullYear();
+    const tibetanDay = Math.floor(moon.age) + 1;
+    
+    // 1. Check Fixed and Range Events
+    DEITY_FESTIVALS.forEach(f => {
+        // Parse Start
+        const pStart = f.start.split('-').map(Number);
+        const pEnd = f.end.split('-').map(Number);
+        
+        let isMatch = false;
+        
+        // Handle year-specific dates
+        if (pStart.length === 3) {
+            if (pStart[2] === y && pStart[0] === m && pStart[1] === d) isMatch = true;
+        } else {
+            // Handle ranges or single days (ignoring year)
+            // Convert to comparable value (Month * 100 + Day)
+            const curVal = m * 100 + d;
+            const startVal = pStart[0] * 100 + pStart[1];
+            const endVal = pEnd[0] * 100 + pEnd[1];
+            
+            // Check cross-year range (e.g. Dec to Jan) - though none in list currently
+            if (startVal <= endVal) {
+                if (curVal >= startVal && curVal <= endVal) isMatch = true;
+            } else {
+                // Wrap around year
+                if (curVal >= startVal || curVal <= endVal) isMatch = true;
+            }
+        }
+        
+        if (isMatch) events.push(f);
+    });
+
+    // 2. Check Tibetan 8th Day
+    if (tibetanDay === 8) {
+        events.push({
+            name: "Green Tara Day",
+            deity: "Green Tara",
+            source: "Buddha Weekly",
+            type: "Buddhist",
+            icon: "lotus",
+            note: "Exalted in Vajrayana Tibetan tradition (8th lunar day)."
+        });
+    }
+
+    // 3. Check Chinese 19th (Approximation: 19th day of Moon Age)
+    // "19th day of 2nd / 6th / 9th Chinese lunar months"
+    // We approximate lunar day 19 matches moon.age 18-19.
+    if (tibetanDay === 19) {
+        events.push({
+            name: "Quan Yin Day (Check Month)",
+            deity: "Quan Yin",
+            source: "Wing Hop Fung 永合豐",
+            type: "Buddhist",
+            icon: "lotus",
+            note: "Traditional celebration days on 19th lunar days of 2nd, 6th, and 9th months."
+        });
+    }
+
+    return events;
 }
 
 // Celtic Herbal Harvesting Logic
@@ -1115,7 +1231,14 @@ const SVGS = {
     
     kintu: (size="icon-sm") => `<svg viewBox="0 0 24 24" class="${size} icon-shadow anim-float"><path d="M12 21 C12 21 20 16 20 10 C20 6 16 3 12 3 C8 3 4 6 4 10 C4 16 12 21 12 21 Z" fill="none" stroke="var(--color-quero)" stroke-width="2.5"/><path d="M12 3 L12 21" stroke="var(--color-quero)" stroke-width="1.5"/></svg>`,
     
-    feather: (size="icon-sm") => `<svg viewBox="0 0 24 24" class="${size} icon-shadow anim-float"><path d="M20.2 3.8 C20.2 3.8 21 6 18 10 C15 14 6 22 2 22 C3 18 6 12 10 8 C14 4 18 3 20.2 3.8 Z M10 8 L13 11" fill="none" stroke="var(--color-redpath)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`
+    feather: (size="icon-sm") => `<svg viewBox="0 0 24 24" class="${size} icon-shadow anim-float"><path d="M20.2 3.8 C20.2 3.8 21 6 18 10 C15 14 6 22 2 22 C3 18 6 12 10 8 C14 4 18 3 20.2 3.8 Z M10 8 L13 11" fill="none" stroke="var(--color-redpath)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+    
+    // NEW DEITY ICONS
+    ankh: (size="icon-sm") => `<svg viewBox="0 0 24 24" class="${size} icon-shadow anim-spin-glow"><path d="M12 2C9.5 2 7.5 4 7.5 6.5C7.5 9 12 13 12 13C12 13 16.5 9 16.5 6.5C16.5 4 14.5 2 12 2Z M12 4.5A2 2 0 1 1 12 8.5A2 2 0 0 1 12 4.5Z M6 15L18 15 M12 13L12 22" fill="none" stroke="var(--color-egypt)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+    
+    star: (size="icon-sm") => `<svg viewBox="0 0 24 24" class="${size} icon-shadow anim-float"><path d="M12 2L14.5 9L22 9L16 14L18.5 21L12 17L5.5 21L8 14L2 9L9.5 9L12 2Z" fill="none" stroke="var(--color-marian)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+    
+    lotus: (size="icon-sm") => `<svg viewBox="0 0 24 24" class="${size} icon-shadow anim-pulse"><path d="M12 21C12 21 6 16 6 10C6 6 9 3 12 3C15 3 18 6 18 10C18 16 12 21 12 21Z M12 21L12 15 M9 15C9 15 5 12 5 8 M15 15C15 15 19 12 19 8" fill="none" stroke="var(--color-buddhist)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`
 };
 
 // --- APP LOGIC ---
@@ -1185,14 +1308,19 @@ const App = {
         document.getElementById('theme-selector').value = t;
         this.applyTheme(t);
         
+        // Load custom or default logo
         const logoData = Storage.get('arc_logo');
         const logoPos = Storage.get('arc_logo_pos') || 'logo-top-center';
+        
+        const img = document.getElementById('user-logo');
         if (logoData) {
-            const img = document.getElementById('user-logo');
             img.src = logoData;
-            img.className = logoPos;
-            img.style.display = 'block';
+        } else {
+            // Use the "attached" default logo if no custom one exists
+            img.src = DEFAULT_LOGO;
         }
+        img.className = logoPos;
+        img.style.display = 'block';
     },
 
     applyTheme(idx) {
@@ -1256,6 +1384,7 @@ const App = {
         const redpath = getRedPathData(moon, date, doy);
         const celticHerbal = getCelticHerbalData(date, moon);
         const ukHerbs = getUKForaging(date);
+        const deities = getDeityEvents(date, moon);
         
         // Header
         const h = document.createElement('div');
@@ -1283,6 +1412,14 @@ const App = {
         
         const dots = document.createElement('div');
         dots.className = 'icon-row';
+        
+        // DEITY ICONS
+        if (deities.length > 0) {
+            deities.forEach(d => {
+                const tooltip = `${d.name} — associated with ${d.deity} (source: ${d.source}).`;
+                dots.innerHTML += `<div data-tooltip="${tooltip}">${SVGS[d.icon]('icon-sm')}</div>`;
+            });
+        }
         
         // UK Herb Icons (Seasonal)
         if (ukHerbs.types.includes("Leaf")) {
@@ -1374,6 +1511,7 @@ const App = {
         const quero = getQueroData(moon, date);
         const redpath = getRedPathData(moon, date, doy);
         const ukHerbs = getUKForaging(date);
+        const deities = getDeityEvents(date, moon);
         
         // Header
         document.getElementById('detail-date').textContent = date.toDateString();
@@ -1406,6 +1544,27 @@ const App = {
             Action: ${celticHerbal.action}<br>
             <span style="color:var(--text-muted); font-size:0.8rem;">Source: ${celticHerbal.source}</span>
         ` : `General Seasonal Gathering<br><span style="color:var(--text-muted); font-size:0.8rem;">Source: General Folk Practice</span>`;
+        
+        // Deity Section
+        const dDiv = document.getElementById('detail-deity-section');
+        const dList = document.getElementById('detail-deity-list');
+        dList.innerHTML = '';
+        if (deities.length > 0) {
+            dDiv.style.display = 'block';
+            deities.forEach(d => {
+                const item = document.createElement('div');
+                item.className = 'work-item';
+                let tagClass = 'tag-mixed';
+                if (d.type === 'Egyptian') tagClass = 'tag-egypt';
+                if (d.type === 'Christian') tagClass = 'tag-marian';
+                if (d.type === 'Buddhist') tagClass = 'tag-buddhist';
+                
+                item.innerHTML = `<span class="work-tag ${tagClass}">${d.type}</span><div style="font-size:0.9rem"><strong>${d.name}</strong><br><span style="color:var(--text-muted);font-size:0.8rem">Associated with ${d.deity}. Source: ${d.source}. ${d.note || ''}</span></div>`;
+                dList.appendChild(item);
+            });
+        } else {
+            dDiv.style.display = 'none';
+        }
         
         // UK Herbs
         let herbHtml = "";
@@ -1501,39 +1660,12 @@ const App = {
             this.render();
         };
 
-        // Logo Logic
+        // Logo Logic - Toggle only
         document.getElementById('btn-logo').onclick = () => {
-             const logoData = Storage.get('arc_logo');
-             if (logoData) {
-                 const currentPos = Storage.get('arc_logo_pos') || 'logo-top-center';
-                 const newPos = currentPos === 'logo-top-center' ? 'logo-bottom-right' : 'logo-top-center';
-                 Storage.set('arc_logo_pos', newPos);
-                 document.getElementById('user-logo').className = newPos;
-             } else {
-                 document.getElementById('logo-upload').click();
-             }
-        };
-        
-        document.getElementById('btn-logo').oncontextmenu = (e) => {
-            e.preventDefault();
-            document.getElementById('logo-upload').click();
-        };
-
-        document.getElementById('logo-upload').onchange = (e) => {
-            const file = e.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = (evt) => {
-                    const res = evt.target.result;
-                    Storage.set('arc_logo', res);
-                    Storage.set('arc_logo_pos', 'logo-top-center');
-                    const img = document.getElementById('user-logo');
-                    img.src = res;
-                    img.className = 'logo-top-center';
-                    img.style.display = 'block';
-                };
-                reader.readAsDataURL(file);
-            }
+             const currentPos = Storage.get('arc_logo_pos') || 'logo-top-center';
+             const newPos = currentPos === 'logo-top-center' ? 'logo-bottom-right' : 'logo-top-center';
+             Storage.set('arc_logo_pos', newPos);
+             document.getElementById('user-logo').className = newPos;
         };
 
         // Bib
