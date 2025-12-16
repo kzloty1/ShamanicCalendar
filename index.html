@@ -41,6 +41,24 @@
             --color-redpath: #ef4444;
             --color-alchemy: #6366f1;
             --color-tibetan: #eab308;
+            --color-pagan: #d946ef;
+            --color-slavic: #ef4444;
+            --color-scottish: #0ea5e9;
+            
+            /* New Tradition Colors */
+            --color-hebrew: #3b82f6; /* Blue */
+            --color-islamic: #10b981; /* Green */
+            --color-roman: #b91c1c; /* Imperial Red */
+            --color-anglo: #854d0e; /* Ancient Gold */
+            --color-vedic: #f97316; /* Orange/Saffron */
+            --color-meso: #14b8a6; /* Teal/Jade */
+            --color-african: #8b5cf6; /* Violet */
+            --color-balkan: #dc2626; /* Deep Red */
+            
+            /* Shamanic & Entheogen Colors */
+            --color-andean: #b45309; /* Earthy Terracotta */
+            --color-amazon: #15803d; /* Deep Jungle Green */
+            --color-mushroom: #9333ea; /* Mystic Purple */
             
             --color-herb-leaf: #4ade80;
             --color-herb-flower: #f472b6;
@@ -126,6 +144,11 @@
         button.nav-btn:hover { background: var(--surface-color); border-color: var(--accent-color); }
         button.text-btn { background: none; border: none; color: var(--text-muted); text-decoration: underline; font-size: 0.85rem; white-space: nowrap; }
         button.text-btn:hover { color: var(--accent-color); }
+        
+        /* Prominent Filter Button */
+        #btn-filters { background: var(--accent-color); color: var(--bg-color); border: none; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
+        #btn-filters:hover { filter: brightness(1.1); transform: translateY(-1px); }
+
         input[type="date"], select { background: var(--bg-color); border: 1px solid var(--border-color); color: var(--text-main); padding: 7px; border-radius: 6px; }
 
         /* Calendar Grid */
@@ -138,6 +161,12 @@
         .day-cell.today { background: color-mix(in srgb, var(--surface-color), transparent 60%); border: 2px solid var(--accent-color); }
         .day-cell.selected { background: var(--surface-color); box-shadow: inset 0 0 0 2px var(--accent-color); }
         
+        /* PLANT MEDICINE EMPHASIS (Advisory Tone) */
+        .day-cell.plant-medicine { 
+            border: 1px solid var(--color-mushroom); 
+            background: linear-gradient(135deg, transparent 90%, color-mix(in srgb, var(--color-mushroom), transparent 85%) 100%);
+        }
+        
         .day-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 4px; padding-bottom: 4px; border-bottom: 1px solid transparent; }
         .day-cell:hover .day-header { border-bottom-color: var(--border-color); }
         .day-number { font-size: 0.95rem; font-weight: 700; opacity: 0.8; }
@@ -148,10 +177,15 @@
         .day-center { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; padding: 4px 0; }
         .day-footer { display: flex; justify-content: space-between; align-items: flex-end; padding-top: 4px; }
         .icon-row { display: flex; gap: 4px; align-items: center; flex-wrap: wrap; justify-content: flex-end; }
+        
+        /* Corner Icons for Plant Medicine & Ceremonial */
+        .corner-icons { position: absolute; top: 4px; right: 4px; display: flex; flex-direction: column; gap: 4px; align-items: flex-end; pointer-events: none; z-index: 5; }
+        .corner-icon { pointer-events: auto; transition: transform 0.2s; filter: drop-shadow(0 1px 2px rgba(0,0,0,0.5)); }
+        .corner-icon:hover { transform: scale(1.2); }
 
-        /* Detail Panel */
-        .detail-panel { position: fixed; top: 0; right: 0; bottom: 0; width: 480px; max-width: 90vw; background: var(--surface-color); border-left: 1px solid var(--border-color); padding: 32px; overflow-y: auto; transform: translateX(100%); transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); box-shadow: -10px 0 30px rgba(0,0,0,0.6); z-index: 100; }
-        .detail-panel.open { transform: translateX(0); }
+        /* Panels */
+        .detail-panel, .settings-panel { position: fixed; top: 0; right: 0; bottom: 0; width: 480px; max-width: 90vw; background: var(--surface-color); border-left: 1px solid var(--border-color); padding: 32px; overflow-y: auto; transform: translateX(100%); transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); box-shadow: -10px 0 30px rgba(0,0,0,0.6); z-index: 100; }
+        .detail-panel.open, .settings-panel.open { transform: translateX(0); }
         .detail-header { display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 1px solid var(--border-color); padding-bottom: 20px; margin-bottom: 24px; }
         .close-btn { background: none; border: none; font-size: 2rem; color: var(--text-muted); line-height: 0.8; padding: 4px; }
         
@@ -162,6 +196,19 @@
         .data-label { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; }
         .data-value { font-family: var(--font-serif); font-size: 1.1rem; }
         .context-box { background: color-mix(in srgb, var(--bg-color), transparent 30%); padding: 16px; border: 1px solid var(--border-color); border-radius: 4px; font-size: 0.95rem; line-height: 1.6; margin-bottom: 12px; }
+        
+        /* Toggle Switch */
+        .toggle-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--border-color); }
+        .toggle-label { font-size: 0.95rem; }
+        .toggle-wrapper { display: flex; align-items: center; gap: 12px; }
+        .toggle-input { display: none; }
+        .toggle-switch { width: 40px; height: 20px; background: var(--bg-color); border: 1px solid var(--border-color); border-radius: 20px; position: relative; cursor: pointer; transition: background 0.2s; }
+        .toggle-switch::after { content: ''; position: absolute; width: 14px; height: 14px; background: var(--text-muted); border-radius: 50%; top: 2px; left: 2px; transition: transform 0.2s, background 0.2s; }
+        .toggle-input:checked + .toggle-switch { background: var(--accent-color); border-color: var(--accent-color); }
+        .toggle-input:checked + .toggle-switch::after { transform: translateX(20px); background: var(--bg-color); }
+        
+        .btn-solo { background: transparent; border: 1px solid var(--text-muted); color: var(--text-muted); font-size: 0.65rem; text-transform: uppercase; padding: 2px 6px; border-radius: 4px; cursor: pointer; transition: all 0.2s; }
+        .btn-solo:hover { border-color: var(--accent-color); color: var(--accent-color); }
         
         /* Suitability Layout */
         .suitability-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
@@ -187,6 +234,24 @@
         .tag-egypt { color: var(--color-egypt); border: 1px solid var(--color-egypt); background: color-mix(in srgb, var(--color-egypt), transparent 90%); }
         .tag-marian { color: var(--color-marian); border: 1px solid var(--color-marian); background: color-mix(in srgb, var(--color-marian), transparent 90%); }
         .tag-buddhist { color: var(--color-buddhist); border: 1px solid var(--color-buddhist); background: color-mix(in srgb, var(--color-buddhist), transparent 90%); }
+        .tag-pagan { color: var(--color-pagan); border: 1px solid var(--color-pagan); background: color-mix(in srgb, var(--color-pagan), transparent 90%); }
+        .tag-slavic { color: var(--color-slavic); border: 1px solid var(--color-slavic); background: color-mix(in srgb, var(--color-slavic), transparent 90%); }
+        .tag-scottish { color: var(--color-scottish); border: 1px solid var(--color-scottish); background: color-mix(in srgb, var(--color-scottish), transparent 90%); }
+        
+        .tag-hebrew { color: var(--color-hebrew); border: 1px solid var(--color-hebrew); background: color-mix(in srgb, var(--color-hebrew), transparent 90%); }
+        .tag-islamic { color: var(--color-islamic); border: 1px solid var(--color-islamic); background: color-mix(in srgb, var(--color-islamic), transparent 90%); }
+        .tag-roman { color: var(--color-roman); border: 1px solid var(--color-roman); background: color-mix(in srgb, var(--color-roman), transparent 90%); }
+        .tag-anglo { color: var(--color-anglo); border: 1px solid var(--color-anglo); background: color-mix(in srgb, var(--color-anglo), transparent 90%); }
+        
+        .tag-vedic { color: var(--color-vedic); border: 1px solid var(--color-vedic); background: color-mix(in srgb, var(--color-vedic), transparent 90%); }
+        .tag-meso { color: var(--color-meso); border: 1px solid var(--color-meso); background: color-mix(in srgb, var(--color-meso), transparent 90%); }
+        .tag-african { color: var(--color-african); border: 1px solid var(--color-african); background: color-mix(in srgb, var(--color-african), transparent 90%); }
+        .tag-balkan { color: var(--color-balkan); border: 1px solid var(--color-balkan); background: color-mix(in srgb, var(--color-balkan), transparent 90%); }
+        
+        .tag-andean { color: var(--color-andean); border: 1px solid var(--color-andean); background: color-mix(in srgb, var(--color-andean), transparent 90%); }
+        .tag-amazon { color: var(--color-amazon); border: 1px solid var(--color-amazon); background: color-mix(in srgb, var(--color-amazon), transparent 90%); }
+        .tag-mushroom { color: var(--color-mushroom); border: 1px solid var(--color-mushroom); background: color-mix(in srgb, var(--color-mushroom), transparent 90%); }
+        .tag-redpath { color: var(--color-redpath); border: 1px solid var(--color-redpath); background: color-mix(in srgb, var(--color-redpath), transparent 90%); }
 
         textarea.notes-area { width: 100%; background: var(--bg-color); border: 1px solid var(--border-color); color: var(--text-main); padding: 12px; min-height: 140px; font-family: var(--font-sans); margin-top: 8px; border-radius: 4px; line-height: 1.5; }
         textarea.notes-area:focus { outline: none; border-color: var(--accent-color); }
@@ -209,7 +274,7 @@
             .header-sub-text, .header-trad { text-align: center; }
             .controls { width: 100%; justify-content: space-between; gap: 4px; overflow-x: auto; padding-bottom: 4px; }
             .day-cell { min-height: 70px; padding: 2px; }
-            .detail-panel { width: 100%; max-width: 100%; border-left: none; padding: 20px 16px; }
+            .detail-panel, .settings-panel { width: 100%; max-width: 100%; border-left: none; padding: 20px 16px; }
             .suitability-grid { grid-template-columns: 1fr; }
             #user-logo { max-width: 80px; max-height: 50px; }
             .logo-top-center { top: 2px; }
@@ -246,6 +311,7 @@
             <button id="btn-prev" class="nav-btn">&larr;</button>
             <input type="date" id="date-picker">
             <button id="btn-next" class="nav-btn">&rarr;</button>
+            <button id="btn-filters" class="nav-btn">Filters</button>
             <select id="theme-selector" class="theme-selector"></select>
             <button id="btn-logo" class="text-btn">Logo</button>
             <button id="btn-bib" class="text-btn">Sources</button>
@@ -256,6 +322,22 @@
         <div class="weekdays"><div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div></div>
         <div id="calendar-grid" class="days-grid"></div>
     </div>
+
+    <!-- SETTINGS PANEL -->
+    <aside id="settings-panel" class="settings-panel">
+        <div class="detail-header">
+            <h2 class="serif" style="margin:0; font-size: 1.8rem; color: var(--text-main);">Filters & Visibility</h2>
+            <button id="btn-close-settings" class="close-btn">&times;</button>
+        </div>
+        <div class="panel-section">
+            <div class="section-title">Traditions & Lineages</div>
+            <div id="settings-traditions"></div>
+        </div>
+        <div class="panel-section">
+            <div class="section-title">Day Types</div>
+            <div id="settings-types"></div>
+        </div>
+    </aside>
 
     <aside id="detail-panel" class="detail-panel">
         <div class="detail-header">
@@ -301,6 +383,24 @@
                 <div class="data-item"><span class="data-label">Zodiac (Sidereal)</span><span id="detail-sign" class="data-value"></span></div>
             </div>
         </div>
+        
+        <!-- NEW: Shamanic & Entheogenic Layers -->
+        <div class="panel-section">
+            <div class="section-title">Shamanic & Entheogenic Traditions</div>
+            <div id="detail-entheo" style="display:flex; flex-direction:column; gap:10px;"></div>
+        </div>
+        
+        <!-- Global Calendrical Layers -->
+        <div class="panel-section">
+            <div class="section-title">World Calendrical Traditions</div>
+            <div id="detail-world-cals" style="display:flex; flex-direction:column; gap:10px;"></div>
+        </div>
+        
+        <!-- Hebridean & Highland Lore -->
+        <div class="panel-section">
+            <div class="section-title">Hebridean & Highland Lore</div>
+            <div id="detail-hebridean" style="font-style:italic;" class="context-box"></div>
+        </div>
 
         <div class="panel-section">
             <div class="section-title">Traditional References</div>
@@ -312,6 +412,11 @@
         <div id="detail-deity-section" class="panel-section" style="display:none;">
             <div class="section-title">Deity & Festival Observances</div>
             <div id="detail-deity-list" class="work-list"></div>
+        </div>
+        
+        <div class="panel-section">
+            <div class="section-title">Scottish & UK Herbal Harvest</div>
+            <div id="detail-scottish-herbs" class="work-list"></div>
         </div>
 
         <div class="panel-section">
@@ -333,7 +438,7 @@
         </div>
         
         <div class="panel-section">
-            <div class="section-title">UK Seasonal Foraging</div>
+            <div class="section-title">UK Seasonal Foraging (General)</div>
             <div class="context-box"><div class="data-label">Available Herbs (UK Context)</div><div id="detail-uk-herbs" style="font-style:italic;"></div></div>
         </div>
 
@@ -346,7 +451,6 @@
             <div class="context-box"><div class="data-label">Chinese Herbalism (TCM Almanac)</div><div id="detail-tcm" style="font-style:italic;"></div></div>
         </div>
         
-        <!-- RESTORED MISSING SECTION -->
         <div class="panel-section">
             <div class="section-title">Ceremonial Context</div>
             <div class="context-box">
@@ -390,7 +494,7 @@ const WESTERN_NAMES = ["Wolf Moon", "Snow Moon", "Worm Moon", "Pink Moon", "Flow
 const TAROT_GD = ["IV The Emperor", "V The Hierophant", "VI The Lovers", "VII The Chariot", "VIII Strength", "IX The Hermit", "XI Justice", "XIII Death", "XIV Temperance", "XV The Devil", "XVII The Star", "XVIII The Moon"];
 const VEINTENAS = ["Tititl (Stretching)", "Izcalli (Resurgence)", "Atlacacauallo (Ceasing Water)", "Tlacaxipehualiztli (Flaying)", "Tozoztontli (Little Vigil)", "Huey Tozoztli (Great Vigil)", "Toxcatl (Dryness)", "Etzalcualiztli (Eating Maize)", "Tecuilhuitontli (Small Feast)", "Huey Tecuilhuitl (Great Feast)", "Tlaxochimaco (Flowers)", "Xocotlhuetzi (Fruit Falls)", "Ochpaniztli (Sweeping)", "Teotleco (Arrival)", "Tepeilhuitl (Hill Feast)", "Quecholli (Feather)", "Panquetzaliztli (Banner)", "Atemoztli (Water Descent)", "Nemontemi (Empty)"];
 
-// NEW: Tibetan Hair Cutting Data (Lunar Day 1-30)
+// TIBETAN HAIR CUTTING DATA (Lunar Day 1-30)
 const TIBETAN_HAIR = {
     1: { s: "Unfavorable", d: "Shortens life span" },
     2: { s: "Unfavorable", d: "Attracts gossip/slander" },
@@ -424,7 +528,50 @@ const TIBETAN_HAIR = {
     30: { s: "Unfavorable", d: "Life threatening/speechless" }
 };
 
-// NEW: Mercury Retrograde Ranges (Approx 2024-2025)
+// Pagan, Witchcraft & Slavic Events (Fixed Dates & Seasonal)
+const PAGAN_SLAVIC_DATA = [
+    { dates: ["10-31"], name: "Samhain", trad: "Celtic / Pagan", type: "Ancestral / Fire", good: ["Divination", "Ancestor communication", "Ending cycles"], bad: ["Mundane contracts", "Ignoring intuition"], ceremony: "Dumb Supper, Bonfire lighting", icon: "skull", src: "Valiente, ABC of Witchcraft", tag: "celtic" },
+    { dates: ["11-2"], name: "Dziady (Ancestors' Eve)", trad: "Old Slavic", type: "Ancestral", good: ["Feeding ancestors", "Cemetery visits", "Remembrance"], bad: ["Housework (sweeping souls away)", "Sewing"], ceremony: "Food offerings, Lighting candles", icon: "skull", src: "Gieysztor, Mythology of the Slavs", tag: "slavic" },
+    { dates: ["2-1", "2-2"], name: "Imbolc", trad: "Celtic / Pagan", type: "Purification / Fire", good: ["Cleansing", "Planning", "Candle magic", "Hearth work"], bad: ["Excessive harvesting (Earth sleeping)"], ceremony: "Brigid's Cross, Lighting candles", icon: "spiral", src: "Insular Folklore / Neo-Pagan", tag: "celtic" },
+    { dates: ["5-1"], name: "Beltane", trad: "Celtic / Pagan", type: "Fire / Fertility", good: ["Handfasting", "Fire jumping", "Fertility rites", "Protecting livestock"], bad: ["Extinguishing hearth fires without relighting"], ceremony: "Maypole, Bale-fires", icon: "fire", src: "Carmina Gadelica", tag: "celtic" },
+    { dates: ["6-23", "6-24"], name: "Kupala Night", trad: "Old Slavic", type: "Fire / Water / Fertility", good: ["Herbal gathering (Fern Flower)", "Love spells", "Purification by fire/water"], bad: ["Sleep (Vigil required)", "Solitude"], ceremony: "Jumping over fire, Floating wreaths", icon: "fire", src: "Gieysztor / Rybakov", tag: "slavic" },
+    { dates: ["8-1"], name: "Lughnasadh / Lammas", trad: "Celtic / Pagan", type: "First Harvest", good: ["Bread baking", "Games/Contests", "Gratitude"], bad: ["Hoarding grain"], ceremony: "First loaf offering", icon: "sheaf", src: "Insular Folklore", tag: "celtic" },
+    { dates: ["6-21", "6-22"], name: "Litha / Summer Solstice", trad: "Pagan", type: "Solar Peak", good: ["Harvesting magical herbs", "Solar energizing"], bad: ["Darkness/Hiding"], ceremony: "Greeting the Sunrise", icon: "fire", src: "Wheel of the Year", tag: "celtic" },
+    { dates: ["12-21", "12-22"], name: "Yule / Szczodre Gody", trad: "Pagan / Slavic", type: "Solar Rebirth", good: ["Feasting", "Evergreen decoration", "Hope"], bad: ["Extinguishing light"], ceremony: "Yule Log, Koliada singing", icon: "fire", src: "Wheel of the Year / Slavic Custom", tag: "slavic" }
+];
+
+// BALKAN FOLK CALENDAR (Fixed)
+const BALKAN_DATA = [
+    { dates: ["3-1"], name: "Baba Marta", trad: "Balkan Folk", type: "Seasonal Threshold", good: ["Wearing red/white martnitsa for health"], bad: [], ceremony: "Giving Martenitsa", icon: "wheat", src: "Bulgarian Folklore", tag: "balkan" },
+    { dates: ["5-6"], name: "St. George (Gergyovden)", trad: "Balkan/Slavic", type: "Agricultural", good: ["Lamb sacrifice", "Measuring flocks"], bad: [], ceremony: "Ritual bread, Green boughs", icon: "sheaf", src: "South Slavic Tradition", tag: "balkan" },
+    { dates: ["6-24"], name: "Enyovden", trad: "Balkan Folk", type: "Solar/Herbal", good: ["Herbal harvest at sunrise"], bad: ["Working in fields"], ceremony: "Walking on dew", icon: "fire", src: "Bulgarian/Thracian Tradition", tag: "balkan" }
+];
+
+// ANDEAN / QUECHUA FIXED EVENTS
+const ANDEAN_FIXED_DATA = [
+    { dates: ["5-3"], name: "Chakana Day (Cruz Velacuy)", trad: "Andean/Quechua", type: "Cosmological", good: ["Aligning with the Southern Cross", "Community offerings"], bad: [], ceremony: "Adorning the cross", icon: "chakana", src: "Ethnographic Record / Sharon" },
+    { dates: ["6-24"], name: "Inti Raymi", trad: "Andean/Quechua", type: "Solar Festival", good: ["Honoring the Sun", "New agricultural year"], bad: [], ceremony: "Solar offerings", icon: "chakana", src: "Historical / Reconstructed" },
+    { dates: ["8-1"], name: "Pachamama Raymi", trad: "Andean/Quechua", type: "Earth Honoring", good: ["Making Despacho offerings", "Payment to the Earth"], bad: ["Taking from the earth without asking"], ceremony: "Despacho / Pago a la Tierra", icon: "chakana", src: "Andean Cosmology / Q'espi" }
+];
+
+// NEW: Scottish & UK Herbal Harvest Calendar
+const SCOTTISH_HERB_DATA = [
+    { name: "Stinging Nettle", part: "Leaf", months: [1,2,3,4], phase: "Waxing", note: "Gather young tops for iron-rich spring tonic." },
+    { name: "Cleavers (Sticky Willie)", part: "Leaf/Stem", months: [2,3,4], phase: "Waxing", note: "Spring tonic, lymphatic cleanser." },
+    { name: "Dandelion", part: "Leaf", months: [2,3,4], phase: "Waxing", note: "Young leaves before flowering." },
+    { name: "Dandelion", part: "Root", months: [8,9,10], phase: "Waning", note: "Dig in autumn when energy returns to root." },
+    { name: "Meadowsweet", part: "Flower", months: [5,6,7], phase: "Waxing", note: "Sacred druidic herb. Harvest open flowers." },
+    { name: "Yarrow", part: "Flower/Leaf", months: [5,6,7,8], phase: "Waxing", note: "Woundwort. Gather on sunny days." },
+    { name: "St John's Wort", part: "Flower", months: [5,6,7], phase: "Full", note: "Protection against spirits. Harvest at peak sun." },
+    { name: "Elder", part: "Flower", months: [4,5,6], phase: "Waxing", note: "Do not burn the wood. Creamy white blooms." },
+    { name: "Elder", part: "Berry", months: [7,8,9], phase: "Waning", note: "Cook before use. Rich in Vitamin C." },
+    { name: "Hawthorn", part: "Berry (Haws)", months: [8,9,10], phase: "Waning", note: "Heart tonic. Wait for deep red color." },
+    { name: "Rowan", part: "Berry", months: [8,9,10], phase: "Waning", note: "Protection charm. Jelly making." },
+    { name: "Rosehip", part: "Berry", months: [8,9,10], phase: "Waning", note: "Vitamin C source. Harvest after first frost for sweetness." },
+    { name: "Burdock", part: "Root", months: [9,10,11], phase: "Waning", note: "Deep digging required. First year roots." },
+    { name: "Scots Pine", part: "Resin/Needle", months: [11,0,1], phase: "Any", note: "Winter harvest. Rich in Vitamin C." }
+];
+
 const MERCURY_RETROGRADE = [
     { start: "11-25-2024", end: "12-15-2024" },
     { start: "3-15-2025", end: "4-7-2025" },
@@ -433,20 +580,33 @@ const MERCURY_RETROGRADE = [
 ];
 
 const BIBLIOGRAPHY = [
-    { title: "Tibetan Lunar Astrology", meta: "Tibetan Medical & Astrological Institute (Men-Tsee-Khang). Hair cutting days based on traditional lunar day correspondences. Travel/Naga prohibitions based on general almanac principles." },
-    { title: "Biodynamic Agriculture", meta: "Maria Thun, 'The Biodynamic Sowing and Planting Calendar'. 20th C. Anthroposophic tradition associating sidereal zodiac with plant parts." },
-    { title: "Western Alchemical/Herbal", meta: "Paracelsus, Culpeper. Renaissance traditions associating lunar phases with fluid dynamics (Coagula/Solve). Weekday elements based on planetary correspondence (Sun/Fire, Moon/Water, etc.)." },
-    { title: "Chinese Calendrics & TCM", meta: "Traditional Sexagenary Cycle (Gan-Zhi) & TCM Almanacs. Base year 1984. Yin/Yang harvesting principles." },
-    { title: "Celtic Wheel of the Year", meta: "Reconstructed insular Celtic seasonal festivals (Samhain, Imbolc, Beltane, Lughnasadh) and solar quarters." },
-    { title: "Celtic Herbal Harvesting", meta: "Historical Pliny the Elder (Naturalis Historia) accounts of Druidic gathering (e.g., Mistletoe on 6th day). Insular folklore for festivals (e.g., St John's Wort on Midsummer, Bilberry on Lughnasadh)." },
-    { title: "UK Herbal Foraging", meta: "Seasonality based on UK climate. Sources: RHS, wildfoodie.co.uk, betonica.co.uk, rvs.umn.edu." },
-    { title: "Egyptian Calendar", meta: "Reconstructed Civil Calendar. 365 days. Thoth 1 ≈ Sep 11 (Julian/Gregorian approx). Solar/Agricultural basis." },
-    { title: "Tarot Correspondences", meta: "Hermetic Order of the Golden Dawn (Late 19th C). 'Book T'. Attribution of Zodiac signs to Major Arcana." },
-    { title: "Mesoamerican Veintenas", meta: "Bernardino de Sahagún, 'Florentine Codex'. 16th C. Solar agricultural periods (18 x 20 days + 5)." },
-    { title: "Shamanic Traditions (Eurasian)", meta: "General Eurasian and Folk traditions regarding lunar ceremonial timing (Initiation, Banishing, Healing)." },
-    { title: "Quero / Andean Tradition", meta: "Don Manuel Q'espi, Andean Cosmology. K'intu practice and lunar energy cycles (Junta Quilla/Musuq Quilla)." },
-    { title: "Red Path Traditions", meta: "General Lakota/Plains/Woodland customs. Inipi and Pipe ceremony timing relative to lunar cycles." },
-    { title: "Deity/Festival Sources", meta: "WFT Academy of Pagan Studies, Wikipedia, Massachusetts State Archives, Buddha Weekly, Facebook (Tsurphu), Wing Hop Fung." }
+    { title: "Tibetan Lunar Astrology", meta: "Tibetan Medical & Astrological Institute (Men-Tsee-Khang). Hair cutting days based on traditional lunar day correspondences." },
+    { title: "Hebridean & Highland Lore", meta: "F. Marian McNeill, 'The Silver Bough'; Alexander Carmichael, 'Carmina Gadelica'. Fishing and crofting moon lore." },
+    { title: "Scottish Folk Herbalism", meta: "Tess Darwin, 'The Scots Herbal'; Traditional practice. Seasonality and lunar timing for harvest." },
+    { title: "Witchcraft / Pagan Traditions", meta: "Doreen Valiente, 'ABC of Witchcraft'; Gerald Gardner, 'Witchcraft Today'. Wheel of the Year observances." },
+    { title: "Hebrew Calendar Tradition", meta: "Non-devotional calendrical timing. Arthur Spier, 'The Comprehensive Hebrew Calendar'. Agricultural and reflective cycles." },
+    { title: "Vedic Panchang", meta: "Traditional Indian Astrology. B.V. Raman, 'Muhurtha'. Tithi and Nakshatra suitability logic." },
+    { title: "Mesoamerican Calendrics", meta: "The Tzolk'in Count (GMT Correlation). Barbara Tedlock, 'Time and the Highland Maya'. Day energy and divination." },
+    { title: "African Traditional Calendars", meta: "Generalized Yoruba (4-day) and Akan (42-day) cycles. John Mbiti, 'African Religions & Philosophy'. Sacred vs Mundane timing." },
+    { title: "Balkan/Slavic Folk Calendar", meta: "Éva Pócs, 'Fairies and Witches at the Boundary'. Folk calendrical survivals and agrarian taboos." },
+    { title: "Andean / Quechua Shamanism", meta: "Ethnographic records. Douglas Sharon, 'Wizard of the Four Winds'. Ceremonial timing and offerings." },
+    { title: "Amazonian / Ayahuasca Traditions", meta: "Reichel-Dolmatoff, 'The Shaman and the Jaguar'; Luna & Amaringo. Lunar purging cycles." },
+    { title: "Ceremonial Mushroom Traditions", meta: "R. Gordon Wasson; Richard Evans Schultes. Mazatec and Northwest indigenous harvest windows." },
+    { title: "Old Slavic Traditions", meta: "Aleksander Gieysztor, 'Mythology of the Slavs'. Calendar customs (Kupala, Dziady)." },
+    { title: "Celtic Traditions", meta: "Kevin Danaher, 'The Year in Ireland'. Folk customs and festivals." },
+    { title: "Biodynamic Agriculture", meta: "Maria Thun, 'The Biodynamic Sowing and Planting Calendar'. 20th C. Anthroposophic tradition." },
+    { title: "Western Alchemical/Herbal", meta: "Paracelsus, Culpeper. Renaissance traditions associating lunar phases with fluid dynamics." },
+    { title: "Chinese Calendrics & TCM", meta: "Traditional Sexagenary Cycle (Gan-Zhi) & TCM Almanacs." },
+    { title: "Egyptian Calendar", meta: "Reconstructed Civil Calendar. 365 days." },
+    { title: "Tarot Correspondences", meta: "Hermetic Order of the Golden Dawn (Late 19th C). 'Book T'." },
+    { title: "Mesoamerican Veintenas", meta: "Bernardino de Sahagún, 'Florentine Codex'. 16th C." },
+    { title: "Shamanic Traditions (Eurasian)", meta: "General Eurasian and Folk traditions regarding lunar ceremonial timing." },
+    { title: "Quero / Andean Tradition", meta: "Don Manuel Q'espi, Andean Cosmology." },
+    { title: "Red Path Traditions", meta: "General Lakota/Plains/Woodland customs." },
+    { title: "Deity/Festival Sources", meta: "WFT Academy of Pagan Studies, Wikipedia, Buddha Weekly." },
+    { title: "Islamic Lunar Calendar", meta: "Hijri Calendar (Umm al-Qura). White Days fasting traditions." },
+    { title: "Roman Calendar", meta: "Reconstructed Julian Calendar structure (Kalends, Nones, Ides)." },
+    { title: "Anglo-Saxon Calendar", meta: "Bede, 'De temporum ratione'. Historical month names." }
 ];
 
 const UK_HERBS = [
@@ -506,6 +666,7 @@ const DEITY_FESTIVALS = [
 function getJulianDate(date) { return (date.getTime() / 86400000) + 2440587.5; }
 function normalize(d) { let a = d % 360; if (a < 0) a += 360; return a; }
 
+// Updated for Vedic Calculations
 function getMoonData(date) {
     const jd = getJulianDate(date);
     const T = (jd - 2451545.0) / 36525;
@@ -515,6 +676,11 @@ function getMoonData(date) {
     const M_sun = 357.528 + 35999.0503 * T;
     let Long = L0 + 6.289 * Math.sin(M * Math.PI/180) - 1.274 * Math.sin((M - 2*D) * Math.PI/180) + 0.658 * Math.sin(2*D * Math.PI/180) - 0.186 * Math.sin(M_sun * Math.PI/180);
     Long = normalize(Long);
+
+    // Approximate Sun Longitude for Tithi
+    // Mean Longitude of Sun = L0_sun
+    const L0_sun = 280.466 + 36000.7698 * T;
+    const SunLong = normalize(L0_sun + 1.915 * Math.sin(M_sun * Math.PI/180) + 0.020 * Math.sin(2 * M_sun * Math.PI/180));
 
     const knownNew = 2451550.1;
     const synodic = 29.53058867;
@@ -535,7 +701,7 @@ function getMoonData(date) {
     const siderealLong = normalize(Long - 24);
     const signIdx = Math.floor(siderealLong / 30);
 
-    return { age, phaseIdx, phaseName: MOON_PHASES[phaseIdx], illum: Math.round(illum), sign: ZODIAC[signIdx], signIdx };
+    return { age, phaseIdx, phaseName: MOON_PHASES[phaseIdx], illum: Math.round(illum), sign: ZODIAC[signIdx], signIdx, long: Long, sunLong: SunLong, siderealLong, jd };
 }
 
 function getDayOfYear(date) { const start = new Date(date.getFullYear(), 0, 0); const diff = date - start; return Math.floor(diff / (1000 * 60 * 60 * 24)); }
@@ -573,6 +739,165 @@ function getDeityEvents(date, moon) {
     if (tibetanDay === 8) events.push({ name: "Green Tara Day", deity: "Green Tara", source: "Buddha Weekly", type: "Buddhist", icon: "lotus", note: "Exalted in Vajrayana Tibetan tradition (8th lunar day)." });
     if (tibetanDay === 19) events.push({ name: "Quan Yin Day (Check Month)", deity: "Quan Yin", source: "Wing Hop Fung 永合豐", type: "Buddhist", icon: "lotus", note: "Celebration days on 19th lunar days of 2nd, 6th, and 9th months." });
     return events;
+}
+
+function getPaganSlavicEvents(date, doy) {
+    const key = `${date.getMonth()+1}-${date.getDate()}`;
+    const events = PAGAN_SLAVIC_DATA.filter(e => e.dates.includes(key));
+    const balkan = BALKAN_DATA.filter(e => e.dates.includes(key));
+    const all = [...events, ...balkan];
+    
+    // Add Solstice/Equinox Logic based on DOY ranges if not covered by fixed dates
+    if (doy >= 79 && doy <= 81 && !all.some(e=>e.name.includes("Ostara"))) all.push({ name: "Ostara / Jare Gody (Equinox)", trad: "Pagan / Slavic", type: "Balance / Spring", good: ["New beginnings", "Planting", "Cleaning"], bad: ["Stagnation"], ceremony: "Egg painting, Marzanna drowning", icon: "spiral", src: "Seasonal", tag: "slavic" });
+    if (doy >= 171 && doy <= 173 && !all.some(e=>e.name.includes("Litha"))) all.push({ name: "Litha / Kupala (Solstice)", trad: "Pagan / Slavic", type: "Solar Peak", good: ["Herbal harvest", "Fire magic"], bad: ["Darkness"], ceremony: "Bonfires", icon: "fire", src: "Seasonal", tag: "slavic" });
+    if (doy >= 264 && doy <= 266 && !all.some(e=>e.name.includes("Mabon"))) all.push({ name: "Mabon / Dożynki (Equinox)", trad: "Pagan / Slavic", type: "Harvest Balance", good: ["Feasting", "Gratitude"], bad: ["Waste"], ceremony: "Harvest wreath", icon: "sheaf", src: "Seasonal", tag: "slavic" });
+    if (doy >= 354 && doy <= 356 && !all.some(e=>e.name.includes("Yule"))) all.push({ name: "Yule / Szczodre Gody (Solstice)", trad: "Pagan / Slavic", type: "Return of Light", good: ["Feasting", "Rest"], bad: ["Extinguishing fire"], ceremony: "Yule Log", icon: "fire", src: "Seasonal", tag: "slavic" });
+
+    return all;
+}
+
+// === NEW CALENDRICAL FUNCTIONS ===
+
+function getHebrewData(date, moon) {
+    const formatter = new Intl.DateTimeFormat('en-u-ca-hebrew', {month: 'long', day: 'numeric', year: 'numeric'});
+    const hebrewDateStr = formatter.format(date);
+    const dayMatch = hebrewDateStr.match(/(\d+),/);
+    const hDay = dayMatch ? parseInt(dayMatch[1]) : 1;
+    let good = [], bad = [], note = "";
+    if (date.getDay() === 6) { note += "Shabbat (Rest). "; good.push({txt: "Rest, Reflection, Study", src: "Hebrew Calendar"}); bad.push({txt: "Commerce, Travel, Creative Work", src: "Hebrew Calendar"}); }
+    if (hDay === 1 || hDay === 30) { note += "Rosh Chodesh (New Moon). "; good.push({txt: "Renewal, Women's Circles", src: "Hebrew Calendar"}); }
+    return { date: hebrewDateStr, note, good, bad };
+}
+
+function getIslamicData(date) {
+    const formatter = new Intl.DateTimeFormat('en-u-ca-islamic-umalqura', {month: 'long', day: 'numeric', year: 'numeric'});
+    const islStr = formatter.format(date);
+    const dayMatch = islStr.match(/(\d+),/);
+    const iDay = dayMatch ? parseInt(dayMatch[1]) : 1;
+    let note = "";
+    if ([13, 14, 15].includes(iDay)) note = "White Days (Ayyam al-Bid) - Recommended Fasting";
+    return { date: islStr, note };
+}
+
+function getRomanData(date) {
+    const d = date.getDate();
+    const m = date.getMonth(); // 0-11
+    // Mar(2), May(4), Jul(6), Oct(9): Nones 7, Ides 15
+    const isLate = [2, 4, 6, 9].includes(m);
+    const nones = isLate ? 7 : 5;
+    const ides = isLate ? 15 : 13;
+    let type = "";
+    if (d === 1) type = "Kalends";
+    else if (d === nones) type = "Nones";
+    else if (d === ides) type = "Ides";
+    return { type };
+}
+
+function getAngloSaxonData(date) {
+    const months = ["After Yule", "Solmonath (Mud Month)", "Hrethmonath", "Eostremonath", "Thrimilci (Three Milk)", "Lida (Mild)", "Lida (Mild)", "Weodmonath (Plant Month)", "Haligmonath (Holy Month)", "Winterfylleth", "Blodmonath (Blood Month)", "Before Yule"];
+    return { month: months[date.getMonth()] };
+}
+
+function getVedicData(moon) {
+    let diff = normalize(moon.long - moon.sunLong);
+    let tithiVal = diff / 12;
+    let tithiNum = Math.floor(tithiVal) + 1; // 1-30
+    let paksha = tithiNum <= 15 ? "Shukla (Waxing)" : "Krishna (Waning)";
+    let tithiName = tithiNum <= 15 ? `Shukla ${tithiNum}` : `Krishna ${tithiNum - 15}`;
+    if (tithiNum === 15) tithiName = "Purnima (Full)";
+    if (tithiNum === 30) tithiName = "Amavasya (New)";
+    let nakVal = moon.siderealLong / 13.3333;
+    let nakNum = Math.floor(nakVal) + 1; // 1-27
+    let good = [], bad = [];
+    if (tithiNum === 30) { bad.push({txt: "Material Initiation, Travel", src: "Vedic Panchang (Amavasya)"}); good.push({txt: "Ancestor Rituals (Pitru)", src: "Vedic Panchang"}); }
+    if (tithiNum === 15) { good.push({txt: "Satvic Rituals, Meditation", src: "Vedic Panchang (Purnima)"}); }
+    if ([4, 9, 14, 19, 24, 29].includes(tithiNum)) { bad.push({txt: "Important Material Beginnings", src: "Vedic Panchang (Rikta Tithi)"}); good.push({txt: "Cleansing, Surgery, Debate", src: "Vedic Panchang"}); }
+    return { tithi: tithiName, paksha, nakshatra: `Nakshatra ${nakNum}`, good, bad };
+}
+
+function getMesoamericanData(moon) {
+    const jd = Math.floor(moon.jd + 0.5);
+    const passed = jd - 584283;
+    const tzolkinDay = (passed % 260 + 260) % 260;
+    const number = (tzolkinDay % 13) + 1;
+    const nameIdx = (tzolkinDay % 20); // 0-19
+    const dayNames = ["Imix", "Ik'", "Ak'b'al", "K'an", "Chikchan", "Kimi", "Manik'", "Lamat", "Muluk", "Ok", "Chuwen", "Eb'", "B'en", "Ix", "Men", "Kib'", "Kab'an", "Etz'nab'", "Kawak", "Ajaw"];
+    const dayName = dayNames[nameIdx];
+    let note = "";
+    if (["Imix", "K'an", "Ajaw"].includes(dayName)) note = "Traditionally favorable for seeding intentions.";
+    if (["Kimi", "Etz'nab'"].includes(dayName)) note = "Traditionally associated with transformation/release.";
+    return { long: `${number} ${dayName}`, note };
+}
+
+function getAfricanData(date) {
+    const base = new Date(2024, 0, 1).getTime();
+    const diff = date.getTime() - base;
+    const days = Math.floor(diff / (1000*60*60*24));
+    const cycle = ((days % 4) + 4) % 4 + 1; // 1-4
+    let desc = "";
+    if(cycle === 1) desc = "Day 1 (Creation/Divination archetype)";
+    if(cycle === 2) desc = "Day 2 (Commerce/Market archetype)";
+    if(cycle === 3) desc = "Day 3 (Adversity/War archetype)";
+    if(cycle === 4) desc = "Day 4 (Rest/Ancestors archetype)";
+    return { cycle: `4-Day Cycle: ${cycle}`, desc };
+}
+
+// === NEW SHAMANIC FUNCTIONS ===
+
+function getAndeanLogic(date, moon, doy) {
+    const key = `${date.getMonth()+1}-${date.getDate()}`;
+    const fixed = ANDEAN_FIXED_DATA.find(f => f.dates.includes(key));
+    let good = [], bad = [], ceremony = [], note = "";
+    if (fixed) { fixed.good.forEach(g => good.push({txt: g, src: fixed.src})); fixed.bad.forEach(b => bad.push({txt: b, src: fixed.src})); ceremony.push(`${fixed.name}: ${fixed.ceremony}`); }
+    if (moon.phaseIdx === 4) { ceremony.push("Junta Quilla (Full Moon Offering)"); good.push({txt: "Making Ayni (reciprocity) offerings", src: "Andean Cosmology"}); }
+    if (moon.phaseIdx === 0) { ceremony.push("Musuq Quilla (New Moon Intention)"); good.push({txt: "Saminchakuy (Refining/Cleansing)", src: "Andean Cosmology"}); }
+    return { good, bad, ceremony, fixed };
+}
+
+function getEntheogenLogic(date, moon) {
+    let aya = { good: [], bad: [], note: "" };
+    if (moon.phaseIdx === 0) { aya.note = "New Moon: Deep Purging / Dieta Start."; aya.good.push({txt: "Starting Master Plant Dietas", src: "Amazonian/Shipibo Tradition"}); aya.good.push({txt: "Purification/La Purga", src: "Amazonian/Shipibo Tradition"}); } 
+    else if (moon.phaseIdx === 4) { aya.note = "Full Moon: High Visionary Energy."; aya.good.push({txt: "Visionary Ceremonies", src: "Amazonian/Asháninka Tradition"}); aya.bad.push({txt: "Chaotic settings (Energy amplification)", src: "Amazonian Tradition"}); }
+    
+    const m = date.getMonth();
+    let mush = { good: [], bad: [], note: "" };
+    if (m >= 5 && m <= 9) { mush.note = "Mazatec Rainy Season (Time of the Little Ones)."; mush.good.push({txt: "Traditional Velada (Night Vigil)", src: "Mazatec Tradition"}); }
+    const key = `${date.getMonth()+1}-${date.getDate()}`;
+    if (key === "6-29") { mush.note = "San Pedro & San Pablo Day."; mush.good.push({txt: "Ceremonial gathering (Syncretic)", src: "Highland Mexico Tradition"}); }
+    if (m >= 9 && m <= 11) { mush.good.push({txt: "Amanita Harvest Window (Northern Hemisphere)", src: "Indigenous Northwest/Siberian"}); }
+    // Specific logic for Northwest/California and Caribbean as requested
+    if (m >= 9 && m <= 11) { mush.good.push({txt: "Northwest / California: Autumn Coastal Harvest", src: "Indigenous Northwest Traditions"}); }
+    if (moon.phaseIdx === 4 || moon.phaseIdx === 0) { mush.good.push({txt: "Caribbean / Tropical: High Humidity Growth", src: "Amazon/Caribbean Folk Tradition"}); }
+    
+    return { aya, mush };
+}
+
+function getHebrideanGuidance(moon) {
+    const isWaxing = moon.phaseIdx >= 1 && moon.phaseIdx <= 4;
+    const isFull = moon.phaseIdx === 4;
+    const isWaning = moon.phaseIdx > 4 || moon.phaseIdx === 7;
+    const isDark = moon.phaseIdx === 0;
+    let fish = { status: "Neutral", desc: "" }; let croft = { status: "Neutral", desc: "" }; let good = [], bad = [];
+    if (isWaxing) { fish = { status: "Good", desc: "Waxing Moon draws the fish (Highland Lore)." }; good.push({ txt: "General fishing", src: "Hebridean Folklore" }); } 
+    else if (isFull) { fish = { status: "Caution", desc: "Bright nights, strong tides (Springs)." }; good.push({ txt: "Shore gathering (Low Spring Tides)", src: "Hebridean Folklore" }); bad.push({ txt: "Fishing in strong currents", src: "Hebridean Folklore" }); } 
+    else if (isWaning) { fish = { status: "Fair", desc: "Preserve catch, repair nets." }; good.push({ txt: "Net repair & Curing", src: "Hebridean Folklore" }); } 
+    else if (isDark) { fish = { status: "Avoid", desc: "Dark Moon - avoid the sea." }; bad.push({ txt: "Sea voyages", src: "Hebridean Folklore" }); }
+    if (isWaxing || isFull) { croft = { status: "Sowing", desc: "Plant above-ground crops." }; good.push({ txt: "Planting oats/barley", src: "Scottish Crofting Tradition" }); } 
+    else { croft = { status: "Harvest", desc: "Harvest roots, cut peat." }; good.push({ txt: "Peat cutting & Root harvest", src: "Scottish Crofting Tradition" }); }
+    return { fish, croft, good, bad };
+}
+
+function getScottishHerbs(date, moon) {
+    const m = date.getMonth(); const available = SCOTTISH_HERB_DATA.filter(h => h.months.includes(m));
+    const isWaxing = moon.phaseIdx >= 1 && moon.phaseIdx <= 4;
+    const isWaning = moon.phaseIdx > 4 || moon.phaseIdx === 0;
+    const isFull = moon.phaseIdx === 4;
+    const suitable = available.map(h => {
+        let match = false;
+        if (h.phase === "Any") match = true; else if (h.phase === "Waxing" && isWaxing) match = true; else if (h.phase === "Waning" && isWaning) match = true; else if (h.phase === "Full" && isFull) match = true;
+        return { ...h, suitable: match };
+    });
+    return suitable;
 }
 
 function getCelticHerbalData(date, moon) {
@@ -647,16 +972,76 @@ function getVeintena(doy) {
     if (idx < VEINTENAS.length) return VEINTENAS[idx]; return VEINTENAS[VEINTENAS.length-1];
 }
 
-// NEW: Suitability Engine
+// UPDATED: Suitability Engine with All Traditions
 function getDailySuitability(date, moon, bio) {
     const tibetanDay = Math.floor(moon.age) + 1;
+    const doy = getDayOfYear(date);
     const tHair = TIBETAN_HAIR[tibetanDay] || { s: "Neutral", d: "Neutral period" };
+    const festivals = getPaganSlavicEvents(date, doy);
+    const hebridean = getHebrideanGuidance(moon);
+    const scottishHerbs = getScottishHerbs(date, moon);
+    
+    // Calendrical Calculations
+    const hebrew = getHebrewData(date, moon);
+    const islamic = getIslamicData(date);
+    const roman = getRomanData(date);
+    const anglo = getAngloSaxonData(date);
+    const vedic = getVedicData(moon);
+    const meso = getMesoamericanData(moon);
+    const african = getAfricanData(date);
+    
+    // Shamanic Calculations
+    const andean = getAndeanLogic(date, moon, doy);
+    const entheo = getEntheogenLogic(date, moon);
+    const redpath = getRedPathData(moon, date, doy);
+    
     const good = [];
     const bad = [];
     const ceremony = [];
 
     // Hair Logic
     const hair = { status: tHair.s, desc: tHair.d };
+
+    // Pagan/Slavic Logic
+    festivals.forEach(f => {
+        // Tag-based filtering
+        let show = false;
+        if(f.tag === 'celtic' || f.trad.includes('Celtic') || f.trad.includes('Pagan')) { show = true; } // Logic handled in createCell for display
+        // We push all, createCell decides visibility based on filters
+        f.good.forEach(g => good.push({ txt: g, src: f.trad, tag: f.tag }));
+        f.bad.forEach(b => bad.push({ txt: b, src: f.trad, tag: f.tag }));
+        ceremony.push(`${f.name}: ${f.ceremony} (${f.trad})`);
+    });
+    
+    // Hebridean Logic
+    hebridean.good.forEach(g => good.push(g));
+    hebridean.bad.forEach(b => bad.push(b));
+    
+    // Scottish Herbs Logic
+    scottishHerbs.filter(h => h.suitable).forEach(h => {
+        good.push({ txt: `Harvest ${h.name} (${h.part})`, src: "Scottish Folk Herbalism" });
+    });
+    
+    // Andean Logic
+    andean.good.forEach(g => good.push(g));
+    andean.bad.forEach(b => bad.push(b));
+    andean.ceremony.forEach(c => ceremony.push(c));
+    
+    // Entheogen Logic
+    entheo.aya.good.forEach(g => good.push(g));
+    entheo.aya.bad.forEach(b => bad.push(b));
+    entheo.mush.good.forEach(g => good.push(g));
+    entheo.mush.bad.forEach(b => bad.push(b));
+    
+    // Hebrew Logic
+    hebrew.good.forEach(g => good.push(g));
+    hebrew.bad.forEach(b => bad.push(b));
+    if(hebrew.note.includes("Rosh Chodesh") || hebrew.note.includes("Shabbat")) ceremony.push(hebrew.note);
+    
+    // Vedic Logic
+    vedic.good.forEach(g => good.push(g));
+    vedic.bad.forEach(b => bad.push(b));
+    if(vedic.tithi.includes("Amavasya") || vedic.tithi.includes("Purnima")) ceremony.push(`Vedic: ${vedic.tithi}`);
 
     // Mercury Retrograde Check
     const isRx = MERCURY_RETROGRADE.some(r => {
@@ -669,7 +1054,7 @@ function getDailySuitability(date, moon, bio) {
         bad.push({ txt: "Initiating long travel", src: "Astrological (Mercury Retrograde)" });
     }
 
-    // Ceremony Focus
+    // Ceremony Focus (Existing)
     if (tibetanDay === 10 || tibetanDay === 25) ceremony.push("Vajrayana Feast Offering (Tsog) - Tibetan");
     if (moon.phaseIdx === 0) ceremony.push("Ancestor Offerings - Shamanic/Folk");
     if (moon.phaseIdx === 4) ceremony.push("Full Moon Celebration - Universal");
@@ -686,15 +1071,13 @@ function getDailySuitability(date, moon, bio) {
     if (bio.type === "Leaf" && moon.phaseIdx <= 3) good.push({ txt: "Leaf harvesting", src: "Biodynamic Agriculture (Waxing + Water)" });
 
     // Suitability - Tibetan (Travel & Earth)
-    // Travel unfavorable: Days 1, 2, 8, 9, 15, 19, 24, 29, 30 in some lineages (Simplified Mewa/Day list).
     if ([1, 2, 8, 15, 29, 30].includes(tibetanDay)) bad.push({ txt: "Long distance travel", src: "Tibetan Lunar Astrology" });
-    // Naga/Earth: Avoid digging on 8, 15, 25, 29 (General observance days often prohibit earth disturbance).
     if ([8, 15, 25, 29, 30].includes(tibetanDay) || moon.phaseIdx === 0) bad.push({ txt: "Earth disturbance / Foundation digging", src: "Tibetan & Shamanic (Naga/Spirit Days)" });
 
     // Multiplier Days
     if ([8, 15, 30].includes(tibetanDay)) good.push({ txt: "Accumulating Merit (Effects Multiplied)", src: "Tibetan Lunar System" });
 
-    return { hair, good, bad, ceremony };
+    return { hair, good, bad, ceremony, festivals, hebridean, scottishHerbs, hebrew, islamic, roman, anglo, vedic, meso, african, andean, entheo, redpath };
 }
 
 const SVGS = {
@@ -735,15 +1118,60 @@ const SVGS = {
     scissors: (size="icon-sm", color="currentColor") => `<svg viewBox="0 0 24 24" class="${size} icon-shadow anim-rock"><path d="M6 6L18 18M6 18L18 6" stroke="${color}" stroke-width="2"/><circle cx="6" cy="6" r="3" fill="none" stroke="${color}" stroke-width="2"/><circle cx="6" cy="18" r="3" fill="none" stroke="${color}" stroke-width="2"/></svg>`,
     foot: (size="icon-sm") => `<svg viewBox="0 0 24 24" class="${size} icon-shadow"><path d="M14 2c2 0 3 3 3 5 0 2.5-1.5 4-3 6-1 1.5-3 3-4 5-1 1-2 2-3 2s-1-1-1-2c0-1 0-3 1-5 1-2 3-5 3-7s1-4 4-4z" fill="none" stroke="var(--color-neutral)" stroke-width="2"/></svg>`,
     spark: (size="icon-sm") => `<svg viewBox="0 0 24 24" class="${size} icon-shadow anim-pulse"><path d="M12 2L14 10L22 12L14 14L12 22L10 14L2 12L10 10Z" fill="var(--color-good)" stroke="none"/></svg>`,
-    hand: (size="icon-sm") => `<svg viewBox="0 0 24 24" class="${size} icon-shadow"><path d="M12 2L12 22M2 12L22 12" stroke="var(--color-bad)" stroke-width="3"/></svg>`
+    hand: (size="icon-sm") => `<svg viewBox="0 0 24 24" class="${size} icon-shadow"><path d="M12 2L12 22M2 12L22 12" stroke="var(--color-bad)" stroke-width="3"/></svg>`,
+    
+    // PAGAN/SLAVIC ICONS
+    skull: (size="icon-sm") => `<svg viewBox="0 0 24 24" class="${size} icon-shadow anim-float"><path d="M12 2c-4 0-8 3-8 8 0 4 3 6 4 7 0 2-1 3-2 3 0 0 2 2 6 2s6-2 6-2c-1 0-2-1-2-3 1-1 4-3 4-7 0-5-4-8-8-8zM8 11c-1 0-2-1-2-2s1-2 2-2 2 1 2 2-1 2-2 2zm8 0c-1 0-2-1-2-2s1-2 2-2 2 1 2 2-1 2-2 2z" fill="none" stroke="var(--text-muted)" stroke-width="2"/></svg>`,
+    fire: (size="icon-sm") => `<svg viewBox="0 0 24 24" class="${size} icon-shadow anim-pulse"><path d="M12 2c0 0-6 7-6 12 0 5 4 8 6 8s6-3 6-8c0-5-6-12-6-12z" fill="var(--color-fire)" fill-opacity="0.2" stroke="var(--color-fire)" stroke-width="2"/><path d="M12 14c0 0-2 2-2 4s2 2 2 2 2-1 2-4-2-2-2-2z" fill="var(--color-fire)"/></svg>`,
+    sheaf: (size="icon-sm") => `<svg viewBox="0 0 24 24" class="${size} icon-shadow anim-rock"><path d="M6 22L12 12L18 22M12 2L12 12M6 2L12 12M18 2L12 12M5 16h14" stroke="var(--color-earth)" stroke-width="2" stroke-linecap="round"/></svg>`,
+    spiral: (size="icon-sm") => `<svg viewBox="0 0 24 24" class="${size} icon-shadow anim-spin-glow"><path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" stroke="var(--color-good)" fill="none" stroke-width="0.5"/><path d="M12 12c0 0 0-3 3-3s3 3 0 6s-6 0-6-6s6-9 12-9" stroke="var(--color-good)" fill="none" stroke-width="2" stroke-linecap="round"/></svg>`,
+    
+    // HEBRIDEAN/SCOTTISH ICONS
+    fish: (size="icon-sm") => `<svg viewBox="0 0 24 24" class="${size} icon-shadow anim-float"><path d="M17 10c-2-2-5-2-7 0l-5 5c-1 1-1 2 0 3s2 1 3 0l5-5c2-2 2-5 0-7z" fill="none" stroke="var(--color-scottish)" stroke-width="2"/><circle cx="15" cy="9" r="1" fill="var(--color-scottish)"/></svg>`,
+    spade: (size="icon-sm") => `<svg viewBox="0 0 24 24" class="${size} icon-shadow anim-rock"><path d="M9 14l-2 8M15 14l2 8M12 14v-6M9 4l6 0M12 4v4M12 14l-3-4c0-2 1-3 3-3s3 1 3 3l-3 4" fill="none" stroke="var(--color-earth)" stroke-width="2" stroke-linecap="round"/></svg>`,
+    basket: (size="icon-sm") => `<svg viewBox="0 0 24 24" class="${size} icon-shadow"><path d="M4 10l2 10h12l2-10H4zM8 10V6a4 4 0 0 1 8 0v4" fill="none" stroke="var(--color-scottish)" stroke-width="2" stroke-linejoin="round"/></svg>`,
+    
+    // NEW TRADITION ICONS
+    menorah: (size="icon-sm") => `<svg viewBox="0 0 24 24" class="${size} icon-shadow"><path d="M2 12h20M12 12v8M12 20h-4M12 20h4M4 12v-2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v2M8 12v-2a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M12 2v10" stroke="var(--color-hebrew)" fill="none" stroke-width="2" stroke-linecap="round"/></svg>`,
+    om: (size="icon-sm") => `<svg viewBox="0 0 24 24" class="${size} icon-shadow"><path d="M12 2c5 0 9 4 9 9s-4 9-9 9-9-4-9-9 4-9 9-9zM12 7c2 0 3 1 3 3s-1 3-3 3c-2 0-3 1-3 3" stroke="var(--color-vedic)" fill="none" stroke-width="2"/><circle cx="12" cy="18" r="1" fill="var(--color-vedic)"/></svg>`,
+    glyph: (size="icon-sm") => `<svg viewBox="0 0 24 24" class="${size} icon-shadow"><rect x="4" y="4" width="16" height="16" rx="2" stroke="var(--color-meso)" fill="none" stroke-width="2"/><path d="M8 8h8M8 12h8M8 16h4" stroke="var(--color-meso)" stroke-width="2"/></svg>`,
+    mask: (size="icon-sm") => `<svg viewBox="0 0 24 24" class="${size} icon-shadow"><path d="M5 4h14l-1 14a6 6 0 0 1-6 6 6 6 0 0 1-6-6zM9 10h1M14 10h1M12 16h0" stroke="var(--color-african)" fill="none" stroke-width="2" stroke-linecap="round"/></svg>`,
+    wheat: (size="icon-sm") => `<svg viewBox="0 0 24 24" class="${size} icon-shadow"><path d="M12 2v20M8 6c2 2 2 6 0 8M16 6c-2 2-2 6 0 8" stroke="var(--color-balkan)" fill="none" stroke-width="2" stroke-linecap="round"/></svg>`,
+    
+    // SHAMANIC ICONS
+    chakana: (size="icon-sm") => `<svg viewBox="0 0 24 24" class="${size} icon-shadow"><path d="M10 2h4v4h4v4h4v4h-4v4h-4v4h-4v-4h-4v-4h-4v-4h4v-4h4v-4z" fill="none" stroke="var(--color-andean)" stroke-width="2"/></svg>`,
+    vine: (size="icon-sm") => `<svg viewBox="0 0 24 24" class="${size} icon-shadow anim-spin-glow"><path d="M12 2C6 2 2 6 2 12s4 10 10 10 10-4 10-10S18 2 12 2zm0 18c-4.4 0-8-3.6-8-8s3.6-8 8-8 8 3.6 8 8-3.6 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z" fill="none" stroke="var(--color-amazon)" stroke-width="2" stroke-dasharray="2 2"/></svg>`,
+    mushroom: (size="icon-sm") => `<svg viewBox="0 0 24 24" class="${size} icon-shadow anim-float"><path d="M12 4c-5 0-9 3-9 7 0 2 3 3 3 5v4h12v-4c0-2 3-3 3-5 0-4-4-7-9-7z" fill="none" stroke="var(--color-mushroom)" stroke-width="2"/><path d="M9 16v4M15 16v4M8 11a4 4 0 0 1 8 0" stroke="var(--color-mushroom)" stroke-width="1.5"/></svg>`,
+    cactus: (size="icon-sm") => `<svg viewBox="0 0 24 24" class="${size} icon-shadow anim-rock"><path d="M12 2a2 2 0 0 1 2 2v16a2 2 0 0 1-4 0V4a2 2 0 0 1 2-2z M6 8a2 2 0 0 1 2 2v6a2 2 0 0 0 4 0 M18 8a2 2 0 0 0-2 2v6a2 2 0 0 1-4 0" fill="none" stroke="var(--color-andean)" stroke-width="2" stroke-linecap="round"/></svg>`,
+    cup: (size="icon-sm") => `<svg viewBox="0 0 24 24" class="${size} icon-shadow anim-pulse"><path d="M19 8C19 11.866 15.866 15 12 15C8.13401 15 5 11.866 5 8C5 4.13401 12 2 12 2C12 2 19 4.13401 19 8Z" fill="none" stroke="var(--color-amazon)" stroke-width="2"/><path d="M12 15V22M8 22H16" stroke="var(--color-amazon)" stroke-width="2"/></svg>`,
+    lodge: (size="icon-sm") => `<svg viewBox="0 0 24 24" class="${size} icon-shadow anim-pulse"><path d="M2 20h20M12 4c-5 0-9 6-9 16h18c0-10-4-16-9-16zM12 14l-2 4h4z" fill="none" stroke="var(--color-redpath)" stroke-width="2"/><path d="M12 13v-3M10 11l-2-2M14 11l2-2" stroke="var(--color-redpath)" stroke-width="1.5"/></svg>`
 };
+
+const TRADITION_KEYS = [
+    'showAndean', 'showAmazon', 'showMushroom', 'showRedPath', 
+    'showTibetan', 'showCeltic', 'showSlavic', 'showBalkan', 'showScottish',
+    'showHebrew', 'showIslamic', 'showVedic', 
+    'showMeso', 'showAfrican', 'showRoman', 'showAnglo', 'showEco'
+];
+const TYPE_KEYS = [
+    'showCeremonial', 'showHair', 'showFavorable', 'showUnfavorable'
+];
 
 const App = {
     date: new Date(),
     selectedDate: new Date(),
+    filters: {
+        showAndean: true, showAmazon: true, showMushroom: true,
+        showRedPath: true, showTibetan: true, 
+        showCeltic: true, showSlavic: true, showBalkan: true, showScottish: true,
+        showHebrew: true, showIslamic: true, showVedic: true, 
+        showMeso: true, showAfrican: true, showRoman: true, showAnglo: true,
+        showEco: true,
+        showCeremonial: true, showHair: true, showFavorable: true, showUnfavorable: true
+    },
     
     init() {
-        this.generateThemes(); this.loadState(); this.render(); this.setupListeners(); this.initTooltips();
+        this.generateThemes(); this.loadState(); this.renderSettings(); this.render(); this.setupListeners(); this.initTooltips();
     },
 
     initTooltips() {
@@ -751,13 +1179,30 @@ const App = {
         const updatePos = (e) => {
             const pad = 12; let x = e.clientX + pad; let y = e.clientY + pad;
             const rect = tooltip.getBoundingClientRect();
+            // Prevent overflowing right/bottom
             if (x + rect.width > window.innerWidth) x = window.innerWidth - rect.width - pad;
             if (y + rect.height > window.innerHeight) y = window.innerHeight - rect.height - pad;
+            // Prevent overflowing left/top
+            if (x < 0) x = pad;
+            if (y < 0) y = pad;
+            
             tooltip.style.left = x + 'px'; tooltip.style.top = y + 'px';
         };
-        document.body.addEventListener('mouseover', (e) => { const target = e.target.closest('[data-tooltip]'); if (target) { tooltip.textContent = target.getAttribute('data-tooltip'); tooltip.style.opacity = '1'; updatePos(e); } });
-        document.body.addEventListener('mouseout', (e) => { const target = e.target.closest('[data-tooltip]'); if (target) { tooltip.style.opacity = '0'; } });
-        document.body.addEventListener('mousemove', (e) => { if (tooltip.style.opacity === '1') { updatePos(e); } });
+        document.body.addEventListener('mouseover', (e) => { 
+            const target = e.target.closest('[data-tooltip]'); 
+            if (target) { 
+                tooltip.textContent = target.getAttribute('data-tooltip'); 
+                tooltip.style.opacity = '1'; 
+                updatePos(e); 
+            } 
+        });
+        document.body.addEventListener('mouseout', (e) => { 
+            const target = e.target.closest('[data-tooltip]'); 
+            if (target) { tooltip.style.opacity = '0'; } 
+        });
+        document.body.addEventListener('mousemove', (e) => { 
+            if (tooltip.style.opacity === '1') { updatePos(e); } 
+        });
     },
 
     generateThemes() {
@@ -771,6 +1216,8 @@ const App = {
         const img = document.getElementById('user-logo');
         if (logoData) img.src = logoData; else img.src = DEFAULT_LOGO;
         img.className = logoPos; img.style.display = 'block';
+        const savedFilters = Storage.get('arc_filters');
+        if (savedFilters) { try { this.filters = { ...this.filters, ...JSON.parse(savedFilters) }; } catch(e) {} }
     },
 
     applyTheme(idx) {
@@ -781,6 +1228,50 @@ const App = {
         root.setProperty('--border-color', `hsl(${hue}, 10%, ${isDark?25:80}%)`);
         root.setProperty('--accent-color', `hsl(${hue}, 40%, ${isDark?60:40}%)`);
         Storage.set('arc_theme', idx);
+    },
+
+    renderSettings() {
+        const tDiv = document.getElementById('settings-traditions');
+        const dDiv = document.getElementById('settings-types');
+        tDiv.innerHTML = ''; dDiv.innerHTML = '';
+        
+        const createToggle = (key, label, parent, groupKeys) => {
+            const div = document.createElement('div'); div.className = 'toggle-row';
+            let btnHtml = ''; if (groupKeys) btnHtml = `<button class="btn-solo" data-key="${key}" title="Solo View (Reversible)">Solo</button>`;
+            div.innerHTML = `<div class="toggle-wrapper"><span class="toggle-label">${label}</span>${btnHtml}</div><label><input type="checkbox" class="toggle-input" ${this.filters[key]?'checked':''}><div class="toggle-switch"></div></label>`;
+            div.querySelector('input').onchange = (e) => { this.filters[key] = e.target.checked; Storage.set('arc_filters', JSON.stringify(this.filters)); this.render(); };
+            if (groupKeys) {
+                div.querySelector('.btn-solo').onclick = () => {
+                    const isSolo = groupKeys.every(k => k === key ? this.filters[k] : !this.filters[k]);
+                    if (isSolo) groupKeys.forEach(k => this.filters[k] = true); else groupKeys.forEach(k => this.filters[k] = (k === key));
+                    Storage.set('arc_filters', JSON.stringify(this.filters)); this.renderSettings(); this.render();
+                };
+            }
+            parent.appendChild(div);
+        };
+        
+        createToggle('showAndean', 'Quechua / Andean Shamanism', tDiv, TRADITION_KEYS);
+        createToggle('showAmazon', 'Amazonian (Ayahuasca/Shipibo)', tDiv, TRADITION_KEYS);
+        createToggle('showMushroom', 'Mushroom Traditions (Global)', tDiv, TRADITION_KEYS);
+        createToggle('showRedPath', 'Red Path / Native American', tDiv, TRADITION_KEYS); 
+        createToggle('showTibetan', 'Tibetan Lunar', tDiv, TRADITION_KEYS);
+        createToggle('showCeltic', 'Celtic / Nature Cycle', tDiv, TRADITION_KEYS);
+        createToggle('showSlavic', 'Old Slavic', tDiv, TRADITION_KEYS);
+        createToggle('showScottish', 'Scottish / Highland', tDiv, TRADITION_KEYS);
+        createToggle('showBalkan', 'Balkan Folk', tDiv, TRADITION_KEYS);
+        createToggle('showEco', 'Ecological / Biodynamic', tDiv, TRADITION_KEYS);
+        createToggle('showHebrew', 'Hebrew Calendar', tDiv, TRADITION_KEYS);
+        createToggle('showIslamic', 'Islamic Lunar', tDiv, TRADITION_KEYS);
+        createToggle('showVedic', 'Vedic / Panchang', tDiv, TRADITION_KEYS);
+        createToggle('showMeso', 'Mesoamerican', tDiv, TRADITION_KEYS);
+        createToggle('showAfrican', 'African Traditional', tDiv, TRADITION_KEYS);
+        createToggle('showRoman', 'Roman Calendar', tDiv, TRADITION_KEYS);
+        createToggle('showAnglo', 'Anglo-Saxon Calendar', tDiv, TRADITION_KEYS);
+        
+        createToggle('showCeremonial', 'Ceremonial / Plant Medicine', dDiv, TYPE_KEYS);
+        createToggle('showHair', 'Hair Cutting (Tibetan)', dDiv, TYPE_KEYS);
+        createToggle('showFavorable', 'Favorable Days (Work/Harvest)', dDiv, TYPE_KEYS);
+        createToggle('showUnfavorable', 'Unfavorable Days', dDiv, TYPE_KEYS);
     },
 
     render() {
@@ -801,46 +1292,119 @@ const App = {
         const el = document.createElement('div'); el.className = 'day-cell'; if (!date) { el.style.opacity = '0.3'; return el; }
         if (isToday) el.classList.add('today');
         const doy = getDayOfYear(date); const moon = getMoonData(date); const bio = getBiodynamic(moon.signIdx);
-        const works = getDailySuitability(date, moon, bio); // Updated Engine
-        const wd = getWeekdayData(date); const celtic = getCelticData(date, doy); const tcm = getChineseGuidance(moon); const shaman = getShamanicData(moon); const quero = getQueroData(moon, date); const redpath = getRedPathData(moon, date, doy); const celticHerbal = getCelticHerbalData(date, moon); const ukHerbs = getUKForaging(date); const deities = getDeityEvents(date, moon);
+        const works = getDailySuitability(date, moon, bio);
+        const wd = getWeekdayData(date); const celtic = getCelticData(date, doy); const tcm = getChineseGuidance(moon); const shaman = getShamanicData(moon); const celticHerbal = getCelticHerbalData(date, moon); const ukHerbs = getUKForaging(date); const deities = getDeityEvents(date, moon);
         
-        // Header
+        // Plant Medicine Highlight Logic
+        let isPlantMedicineDay = false;
+        if ((works.entheo.mush.note && this.filters.showMushroom) || 
+            (works.entheo.aya.note && this.filters.showAmazon) || 
+            ((works.andean.fixed || moon.phaseIdx === 4) && this.filters.showAndean)) {
+            isPlantMedicineDay = true;
+        }
+        if (isPlantMedicineDay) el.classList.add('plant-medicine');
+
+        // --- HEADER ---
         const h = document.createElement('div'); h.className = 'day-header';
         const wdIcon = `<div class="weekday-indicator" data-tooltip="${wd.day} (${wd.planet}): ${wd.element.toUpperCase()}">${SVGS.element(wd.element, 'icon-sm')}</div>`;
         h.innerHTML = `<div style="display:flex; gap:6px; align-items:center;"><span class="day-number">${date.getDate()}</span>${wdIcon}</div><div class="note-dot ${hasNote?'has-note':''}"></div>`;
         
-        // Center
+        // --- CENTER ---
         const c = document.createElement('div'); c.className = 'day-center';
         const moonTooltip = `${moon.phaseName} in ${moon.sign}. Illumination: ${moon.illum}%.`;
         c.innerHTML = `<div data-tooltip="${moonTooltip}">${SVGS.moon(moon.phaseIdx, 'icon-lg')}</div>`;
 
-        // Footer
+        // --- CORNER ICONS (Plant Medicine & Ceremonial) ---
+        const corner = document.createElement('div'); corner.className = 'corner-icons';
+        if (this.filters.showCeremonial) {
+            // Mushroom (Psilocybin / Amanita)
+            if (this.filters.showMushroom && works.entheo.mush.note) {
+                corner.innerHTML += `<div class="corner-icon" data-tooltip="Mushroom Ceremony: ${works.entheo.mush.note}">${SVGS.mushroom('icon-sm')}</div>`;
+            }
+            // Ayahuasca (Vine/Cup)
+            if (this.filters.showAmazon && works.entheo.aya.note) {
+                corner.innerHTML += `<div class="corner-icon" data-tooltip="Ayahuasca: ${works.entheo.aya.note}">${SVGS.cup('icon-sm')}</div>`;
+            }
+            // San Pedro / Cactus
+            if (this.filters.showAndean) {
+                const isCactusDay = works.andean.fixed || (moon.phaseIdx === 4); 
+                if (isCactusDay) {
+                    const tip = works.andean.fixed ? works.andean.fixed.name : "Junta Quilla (Full Moon)";
+                    corner.innerHTML += `<div class="corner-icon" data-tooltip="San Pedro / Andean: ${tip}">${SVGS.cactus('icon-sm')}</div>`;
+                }
+            }
+            // Red Path (Sweat Lodge)
+            if (this.filters.showRedPath) {
+                const isLodge = works.redpath.type.includes("Sweatlodge") || works.redpath.type.includes("Lodge");
+                if (isLodge) {
+                    corner.innerHTML += `<div class="corner-icon" data-tooltip="Red Path / Lodge: ${works.redpath.name}">${SVGS.lodge('icon-sm')}</div>`;
+                }
+            }
+        }
+        
+        // --- FOOTER ---
         const f = document.createElement('div'); f.className = 'day-footer';
         const eIcon = document.createElement('div'); eIcon.innerHTML = SVGS.element(bio.element, 'icon-md'); eIcon.setAttribute('data-tooltip', `Moon in ${moon.sign}: ${bio.element.toUpperCase()} (${bio.type})`);
         const dots = document.createElement('div'); dots.className = 'icon-row';
         
-        // HAIR ICON (Tibetan)
-        let hairColor = "var(--color-neutral)";
-        if (works.hair.status === "Favorable") hairColor = "var(--color-good)";
-        if (works.hair.status === "Unfavorable") hairColor = "var(--color-bad)";
-        dots.innerHTML += `<div data-tooltip="Tibetan Hair Cutting: ${works.hair.status}. ${works.hair.desc}">${SVGS.scissors('icon-sm', hairColor)}</div>`;
+        // Hair Icon (Tibetan)
+        if (this.filters.showHair && this.filters.showTibetan) {
+            let hairColor = "var(--color-neutral)";
+            if (works.hair.status === "Favorable") hairColor = "var(--color-good)";
+            if (works.hair.status === "Unfavorable") hairColor = "var(--color-bad)";
+            dots.innerHTML += `<div data-tooltip="Tibetan Hair Cutting: ${works.hair.status}. ${works.hair.desc}">${SVGS.scissors('icon-sm', hairColor)}</div>`;
+        }
 
+        // Deities & Euro Folk
         if (deities.length > 0) deities.forEach(d => dots.innerHTML += `<div data-tooltip="${d.name} (${d.deity})">${SVGS[d.icon]('icon-sm')}</div>`);
-        if (ukHerbs.types.includes("Leaf")) dots.innerHTML += `<div data-tooltip="Leaf Harvest">${SVGS.leaf('icon-sm')}</div>`;
-        if (ukHerbs.types.includes("Flower")) dots.innerHTML += `<div data-tooltip="Flower Harvest">${SVGS.flower('icon-sm')}</div>`;
-        if (ukHerbs.types.includes("Fruit")) dots.innerHTML += `<div data-tooltip="Fruit Harvest">${SVGS.fruit('icon-sm')}</div>`;
-        if (ukHerbs.types.includes("Root")) dots.innerHTML += `<div data-tooltip="Root Harvest">${SVGS.root('icon-sm')}</div>`;
         
-        // "Good For" Highlight (Simplified for grid)
-        if (works.good.some(w => w.txt.includes("Harvesting"))) dots.innerHTML += `<div data-tooltip="Harvest Suitable">${SVGS.harvest('icon-sm')}</div>`;
-        if (works.bad.some(w => w.txt.includes("travel"))) dots.innerHTML += `<div data-tooltip="Travel Caution">${SVGS.hand('icon-sm')}</div>`;
-        if (works.good.some(w => w.txt.includes("initiation"))) dots.innerHTML += `<div data-tooltip="Project Initiation">${SVGS.spark('icon-sm')}</div>`;
+        // Granular Euro Traditions
+        if (works.festivals && works.festivals.length > 0) {
+            works.festivals.forEach(fest => {
+                let show = false;
+                if(fest.tag === 'celtic' && this.filters.showCeltic) show = true;
+                if(fest.tag === 'slavic' && this.filters.showSlavic) show = true;
+                if(fest.tag === 'balkan' && this.filters.showBalkan) show = true;
+                if(show) dots.innerHTML += `<div data-tooltip="${fest.name} (${fest.trad})">${SVGS[fest.icon]('icon-sm')}</div>`;
+            });
+        }
+        
+        if (celticHerbal.plant && this.filters.showCeltic) dots.innerHTML += `<div data-tooltip="Celtic Herbal: ${celticHerbal.plant}">${SVGS.sickle('icon-sm')}</div>`;
+        if (celtic.isFestival && this.filters.showCeltic) dots.innerHTML += `<div data-tooltip="${celtic.festival}">${SVGS.knot('icon-sm')}</div>`;
+        
+        // Harvest / Herbs (Visible if Favorable)
+        if (this.filters.showFavorable && this.filters.showEco) {
+            if (ukHerbs.types.includes("Leaf")) dots.innerHTML += `<div data-tooltip="Leaf Harvest">${SVGS.leaf('icon-sm')}</div>`;
+            if (ukHerbs.types.includes("Flower")) dots.innerHTML += `<div data-tooltip="Flower Harvest">${SVGS.flower('icon-sm')}</div>`;
+            if (ukHerbs.types.includes("Fruit")) dots.innerHTML += `<div data-tooltip="Fruit Harvest">${SVGS.fruit('icon-sm')}</div>`;
+            if (ukHerbs.types.includes("Root")) dots.innerHTML += `<div data-tooltip="Root Harvest">${SVGS.root('icon-sm')}</div>`;
+            if (works.scottishHerbs.some(h => h.suitable) && this.filters.showScottish) dots.innerHTML += `<div data-tooltip="Scottish Herbs Available">${SVGS.basket('icon-sm')}</div>`;
+        }
+        
+        if (this.filters.showScottish) {
+             if (works.hebridean.fish.status === "Good") dots.innerHTML += `<div data-tooltip="Fishing: ${works.hebridean.fish.status}">${SVGS.fish('icon-sm')}</div>`;
+             if (works.hebridean.croft.status === "Sowing") dots.innerHTML += `<div data-tooltip="Crofting: Sowing">${SVGS.spade('icon-sm')}</div>`;
+        }
+        
+        if (this.filters.showFavorable) {
+            if (works.good.some(w => w.txt.includes("Harvesting"))) dots.innerHTML += `<div data-tooltip="Harvest Suitable">${SVGS.harvest('icon-sm')}</div>`;
+            if (works.good.some(w => w.txt.includes("initiation"))) dots.innerHTML += `<div data-tooltip="Project Initiation">${SVGS.spark('icon-sm')}</div>`;
+        }
+        
+        // Global Calendars
+        if (this.filters.showHebrew && works.hebrew.note) dots.innerHTML += `<div data-tooltip="${works.hebrew.note}">${SVGS.menorah('icon-sm')}</div>`;
+        if (this.filters.showVedic && (works.vedic.tithi.includes("Amavasya") || works.vedic.tithi.includes("Purnima"))) dots.innerHTML += `<div data-tooltip="${works.vedic.tithi}">${SVGS.om('icon-sm')}</div>`;
+        if (this.filters.showMeso && works.meso.note) dots.innerHTML += `<div data-tooltip="${works.meso.long}: ${works.meso.note}">${SVGS.glyph('icon-sm')}</div>`;
+        if (this.filters.showAfrican && works.african.cycle.includes("Day 1")) dots.innerHTML += `<div data-tooltip="${works.african.cycle}">${SVGS.mask('icon-sm')}</div>`;
+        
+        // Shamanic Footer Icons (General)
+        if (this.filters.showAndean && works.andean.fixed) dots.innerHTML += `<div data-tooltip="${works.andean.fixed.name}">${SVGS.chakana('icon-sm')}</div>`;
+        if (this.filters.showCeremonial && shaman.ceremony !== "General Practice Day") dots.innerHTML += `<div data-tooltip="Ceremony: ${shaman.ceremony}">${SVGS.drum('icon-sm')}</div>`;
+        
+        // Unfavorable
+        if (this.filters.showUnfavorable && works.bad.some(w => w.txt.includes("travel"))) dots.innerHTML += `<div data-tooltip="Travel Caution">${SVGS.hand('icon-sm')}</div>`;
 
-        if (celticHerbal.plant) dots.innerHTML += `<div data-tooltip="Celtic Herbal: ${celticHerbal.plant}">${SVGS.sickle('icon-sm')}</div>`;
-        if (celtic.isFestival) dots.innerHTML += `<div data-tooltip="${celtic.festival}">${SVGS.knot('icon-sm')}</div>`;
-        if (shaman.ceremony !== "General Practice Day") dots.innerHTML += `<div data-tooltip="Ceremony: ${shaman.ceremony}">${SVGS.drum('icon-sm')}</div>`;
-        
-        f.appendChild(eIcon); f.appendChild(dots); el.append(h, c, f);
+        f.appendChild(eIcon); f.appendChild(dots); el.append(h, c, corner, f);
         el.onclick = () => this.openDetail(date);
         return el;
     },
@@ -865,17 +1429,63 @@ const App = {
         
         // Hair Cutting Section
         const hCon = document.getElementById('detail-hair-container');
-        let hClass = "status-neutral"; if(works.hair.status==="Favorable") hClass="status-good"; if(works.hair.status==="Unfavorable") hClass="status-bad";
-        hCon.innerHTML = `
-            <div class="hair-box">
-                ${SVGS.scissors('icon-md', `var(--color-${works.hair.status==="Favorable"?'good':works.hair.status==="Unfavorable"?'bad':'neutral'})`)}
+        if (this.filters.showHair) {
+            let hClass = "status-neutral"; if(works.hair.status==="Favorable") hClass="status-good"; if(works.hair.status==="Unfavorable") hClass="status-bad";
+            hCon.innerHTML = `
+                <div class="hair-box">
+                    ${SVGS.scissors('icon-md', `var(--color-${works.hair.status==="Favorable"?'good':works.hair.status==="Unfavorable"?'bad':'neutral'})`)}
+                    <div>
+                        <div style="font-size:0.75rem; text-transform:uppercase; color:var(--text-muted)">Tibetan Hair Cutting</div>
+                        <div class="hair-status ${hClass}">${works.hair.status}</div>
+                        <div style="font-size:0.85rem; font-style:italic;">"${works.hair.desc}"</div>
+                    </div>
+                </div>
+            `;
+        } else { hCon.innerHTML = ''; }
+        
+        // Hebridean Lore Display
+        const hebCon = document.getElementById('detail-hebridean');
+        let fClass = works.hebridean.fish.status === "Good" ? "status-good" : (works.hebridean.fish.status === "Avoid" ? "status-bad" : "status-neutral");
+        hebCon.innerHTML = `
+            <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
                 <div>
-                    <div style="font-size:0.75rem; text-transform:uppercase; color:var(--text-muted)">Tibetan Hair Cutting</div>
-                    <div class="hair-status ${hClass}">${works.hair.status}</div>
-                    <div style="font-size:0.85rem; font-style:italic;">"${works.hair.desc}"</div>
+                    <span class="data-label">Fishing Lore</span><br>
+                    <span class="${fClass}" style="font-weight:bold;">${works.hebridean.fish.status}</span>
+                </div>
+                <div style="text-align:right;">
+                    <span class="data-label">Crofting</span><br>
+                    <span style="font-weight:bold; color:var(--color-scottish);">${works.hebridean.croft.status}</span>
                 </div>
             </div>
+            <div style="font-size:0.9rem; margin-top:4px;">
+                "${works.hebridean.fish.desc}"
+            </div>
+             <div style="font-size:0.9rem; margin-top:4px;">
+                "${works.hebridean.croft.desc}"
+            </div>
         `;
+        
+        // World Calendars Display
+        const wcDiv = document.getElementById('detail-world-cals'); wcDiv.innerHTML = '';
+        const addCalItem = (label, val, note, tagClass) => {
+            const d = document.createElement('div'); d.className = 'work-item';
+            d.innerHTML = `<span class="work-tag ${tagClass}">${label}</span><div style="font-size:0.9rem"><strong>${val}</strong><br><span style="color:var(--text-muted);font-size:0.8rem">${note}</span></div>`;
+            wcDiv.appendChild(d);
+        };
+        if(this.filters.showHebrew) addCalItem("Hebrew", works.hebrew.date, works.hebrew.note || "General Calendrical Period", "tag-hebrew");
+        if(this.filters.showIslamic && works.islamic.note) addCalItem("Islamic", works.islamic.date, works.islamic.note, "tag-islamic");
+        if(this.filters.showRoman) addCalItem("Roman", works.roman.type, "Julian Reconstruction", "tag-roman");
+        if(this.filters.showAnglo) addCalItem("Anglo-Saxon", works.anglo.month, "Bede's Reckoning", "tag-anglo");
+        if(this.filters.showVedic) addCalItem("Vedic", works.vedic.tithi, `${works.vedic.paksha}, ${works.vedic.nakshatra}`, "tag-vedic");
+        if(this.filters.showMeso) addCalItem("Mesoamerican", works.meso.long, works.meso.note, "tag-meso");
+        if(this.filters.showAfrican) addCalItem("African", works.african.cycle, works.african.desc, "tag-african");
+        
+        // Shamanic/Entheogen Display
+        const entDiv = document.getElementById('detail-entheo'); entDiv.innerHTML = '';
+        if (this.filters.showAndean && works.andean.fixed) addCalItem("Andean", works.andean.fixed.name, works.andean.fixed.ceremony, "tag-andean");
+        if (this.filters.showAmazon && works.entheo.aya.note) addCalItem("Amazonian", "Ayahuasca Cycle", works.entheo.aya.note, "tag-amazon");
+        if (this.filters.showMushroom && works.entheo.mush.note) addCalItem("Mushroom", "Ceremonial Window", works.entheo.mush.note, "tag-mushroom");
+        if (this.filters.showRedPath && (works.redpath.type.includes("Sweatlodge") || works.redpath.type.includes("Lodge"))) addCalItem("Red Path", works.redpath.name, works.redpath.type, "tag-redpath");
 
         // Suitability Lists
         const lg = document.getElementById('list-good'); lg.innerHTML = '';
@@ -883,7 +1493,7 @@ const App = {
         const lb = document.getElementById('list-bad'); lb.innerHTML = '';
         works.bad.forEach(i => lb.innerHTML += `<div class="suit-item suit-bad"><strong>${i.txt}</strong><br><span style="font-size:0.75rem;opacity:0.8">${i.src}</span></div>`);
         
-        // Ceremony Focus
+        // Ceremony Focus (Merged)
         const cf = document.getElementById('detail-ceremony-focus');
         if (works.ceremony.length > 0) cf.innerHTML = works.ceremony.join("<br>");
         else cf.textContent = "General personal practice.";
@@ -894,8 +1504,34 @@ const App = {
         
         // Deities
         const dDiv = document.getElementById('detail-deity-section'); const dList = document.getElementById('detail-deity-list'); dList.innerHTML = '';
-        if (deities.length > 0) { dDiv.style.display = 'block'; deities.forEach(d => { const item = document.createElement('div'); item.className = 'work-item'; let tagClass = 'tag-mixed'; if (d.type === 'Egyptian') tagClass = 'tag-egypt'; if (d.type === 'Christian') tagClass = 'tag-marian'; if (d.type === 'Buddhist') tagClass = 'tag-buddhist'; item.innerHTML = `<span class="work-tag ${tagClass}">${d.type}</span><div style="font-size:0.9rem"><strong>${d.name}</strong><br><span style="color:var(--text-muted);font-size:0.8rem">Associated with ${d.deity}. Source: ${d.source}. ${d.note || ''}</span></div>`; dList.appendChild(item); }); } else { dDiv.style.display = 'none'; }
+        // Add Festivals to this list as well
+        if (works.festivals.length > 0) {
+             works.festivals.forEach(f => {
+                const item = document.createElement('div'); item.className = 'work-item';
+                let tagClass = 'tag-mixed';
+                if(f.tag === 'celtic') tagClass = "tag-pagan";
+                if(f.tag === 'slavic') tagClass = "tag-slavic";
+                if(f.tag === 'balkan') tagClass = "tag-balkan";
+                item.innerHTML = `<span class="work-tag ${tagClass}">${f.trad.split(' / ')[0]}</span><div style="font-size:0.9rem"><strong>${f.name}</strong><br><span style="color:var(--text-muted);font-size:0.8rem">Source: ${f.src}</span></div>`;
+                dList.appendChild(item);
+             });
+        }
+
+        if (deities.length > 0 || works.festivals.length > 0) { dDiv.style.display = 'block'; deities.forEach(d => { const item = document.createElement('div'); item.className = 'work-item'; let tagClass = 'tag-mixed'; if (d.type === 'Egyptian') tagClass = 'tag-egypt'; if (d.type === 'Christian') tagClass = 'tag-marian'; if (d.type === 'Buddhist') tagClass = 'tag-buddhist'; item.innerHTML = `<span class="work-tag ${tagClass}">${d.type}</span><div style="font-size:0.9rem"><strong>${d.name}</strong><br><span style="color:var(--text-muted);font-size:0.8rem">Associated with ${d.deity}. Source: ${d.source}. ${d.note || ''}</span></div>`; dList.appendChild(item); }); } else { dDiv.style.display = 'none'; }
         
+        // Scottish Herbs Display
+        const shList = document.getElementById('detail-scottish-herbs'); shList.innerHTML = '';
+        const suitableHerbs = works.scottishHerbs.filter(h => h.suitable);
+        if (suitableHerbs.length > 0) {
+             suitableHerbs.forEach(h => {
+                const item = document.createElement('div'); item.className = 'work-item';
+                item.innerHTML = `<span class="work-tag tag-scottish">Harvest</span><div style="font-size:0.9rem"><strong>${h.name}</strong> (${h.part})<br><span style="color:var(--text-muted);font-size:0.8rem">${h.note}</span></div>`;
+                shList.appendChild(item);
+             });
+        } else {
+             shList.innerHTML = `<div style="font-style:italic; color:var(--text-muted);">No specific herbs listed for harvest today based on phase.</div>`;
+        }
+
         // Work List (Aggregated from old logic + new suitability)
         const wl = document.getElementById('work-list'); wl.innerHTML = '';
         // Tinctures
@@ -926,6 +1562,8 @@ const App = {
         const bibList = document.getElementById('bib-list'); BIBLIOGRAPHY.forEach(b => { const div = document.createElement('div'); div.className = 'bib-item'; div.innerHTML = `<div class="bib-title">${b.title}</div><div class="bib-meta">${b.meta}</div>`; bibList.appendChild(div); });
         document.getElementById('btn-bib').onclick = () => document.getElementById('bib-panel').classList.add('open');
         document.getElementById('btn-close-bib').onclick = () => document.getElementById('bib-panel').classList.remove('open');
+        document.getElementById('btn-filters').onclick = () => document.getElementById('settings-panel').classList.add('open');
+        document.getElementById('btn-close-settings').onclick = () => document.getElementById('settings-panel').classList.remove('open');
     }
 };
 
