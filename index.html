@@ -138,16 +138,31 @@
             filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
         }
         
+        /* Logo Positioning & Animation */
         .logo-top-center {
             top: 8px; 
             left: 50%; 
             transform: translateX(-50%);
+        }
+
+        /* Hover effect for centered logo - maintains centering while scaling */
+        .logo-top-center:hover {
+            transform: translateX(-50%) scale(1.05);
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5)) !important;
+            opacity: 1 !important;
         }
         
         .logo-bottom-right {
             bottom: 20px; 
             right: 20px;
             transform: none;
+        }
+
+        /* Hover effect for corner logo */
+        .logo-bottom-right:hover {
+            transform: scale(1.05);
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5)) !important;
+            opacity: 1 !important;
         }
 
         /* Header */
@@ -470,7 +485,7 @@
 
 <!-- Global Tooltip Element -->
 <div id="global-tooltip"></div>
-<img id="user-logo" style="display:none;" alt="User Logo" />
+<img id="user-logo" src="logo.png" style="display:none;" alt="Archaic Reference" />
 
 <div id="app">
     <header>
@@ -660,9 +675,8 @@ const Storage = {
 
 // --- CONSTANTS & DATA ---
 
-// Default Logo - High quality SVG data URI for "Archaic Reference"
-// Stylized Crescent Moon and Herb Leaf
-const DEFAULT_LOGO = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 100'%3E%3Cpath d='M90,10 A40,40 0 1,0 90,90 A32,32 0 1,1 90,10 Z' fill='%23cbd5e1' opacity='0.9'/%3E%3Cpath d='M120,30 Q140,20 150,50 Q140,80 120,70 Q130,50 120,30 Z M120,70 L120,90' fill='none' stroke='%23cbd5e1' stroke-width='3' stroke-linecap='round'/%3E%3Ctext x='100' y='95' font-family='serif' font-size='10' fill='%2394a3b8' text-anchor='middle' letter-spacing='2'%3EARCHAIC REFERENCE%3C/text%3E%3C/svg%3E";
+// Default Logo - Now references local PNG file
+const DEFAULT_LOGO = "logo.png";
 
 const MOON_PHASES = [
     "New Moon", "Waxing Crescent", "First Quarter", "Waxing Gibbous", 
