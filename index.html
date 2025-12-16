@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Archaic Cross-Traditional Reference</title>
     <style>
         :root {
@@ -45,7 +45,7 @@
             --color-herb-root: #d97706;
         }
 
-        * { box-sizing: border-box; }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         
         body {
             margin: 0;
@@ -53,7 +53,8 @@
             color: var(--text-main);
             font-family: var(--font-sans);
             transition: background-color 0.3s, color 0.3s;
-            height: 100vh;
+            height: 100vh; /* Fallback */
+            height: 100dvh; /* Mobile browser friendly */
             display: flex;
             flex-direction: column;
             overflow: hidden;
@@ -174,6 +175,7 @@
         button.text-btn {
             background: none; border: none; color: var(--text-muted); text-decoration: underline; font-size: 0.85rem;
             transition: color 0.2s;
+            white-space: nowrap;
         }
         button.text-btn:hover { color: var(--accent-color); }
 
@@ -393,14 +395,46 @@
             left: 0; top: 0;
         }
 
+        /* --- MOBILE RESPONSIVE STYLES --- */
+        @media (max-width: 768px) {
+            .day-cell { min-height: 85px; }
+            .header-main-text { font-size: 1.25rem; }
+            .calendar-container { padding: 4px; }
+        }
+
         @media (max-width: 600px) {
-            .detail-panel { width: 100%; padding: 20px; }
-            .header-info { gap: 12px; }
-            .icon-lg { width: 40px; height: 40px; }
-            .header-main-text { font-size: 1.2rem; }
+            header { padding: 10px; gap: 8px; justify-content: center; }
+            .header-info { width: 100%; justify-content: center; margin-bottom: 8px; gap: 12px; }
+            .icon-xl { width: 48px; height: 48px; }
+            .header-main-text { font-size: 1.1rem; text-align: center; }
+            .header-sub-text, .header-trad { text-align: center; }
+            
+            .controls { width: 100%; justify-content: space-between; flex-wrap: nowrap; gap: 4px; overflow-x: auto; padding-bottom: 4px; }
+            .nav-btn { padding: 6px 12px; font-size: 0.9rem; }
+            #date-picker { width: 110px; font-size: 0.85rem; padding: 4px; }
+            .theme-selector { width: 90px; font-size: 0.85rem; padding: 4px; }
+            .text-btn { font-size: 0.75rem; padding: 4px 8px; }
+
+            .day-cell { min-height: 70px; padding: 2px; }
             .day-number { font-size: 0.8rem; }
-            /* Hide logo on mobile if it blocks view, or scale down */
-            #user-logo { max-width: 100px; }
+            .day-header { margin-bottom: 2px; }
+            .icon-lg { width: 32px; height: 32px; } /* Cell moon */
+            .icon-md { width: 22px; height: 22px; } /* Element */
+            .icon-sm { width: 14px; height: 14px; } /* Small markers */
+            .icon-row { gap: 1px; }
+
+            .detail-panel { width: 100%; max-width: 100%; border-left: none; padding: 20px 16px; }
+            .bib-panel { padding: 20px; }
+            .close-btn { padding: 10px; font-size: 2.5rem; }
+            
+            #user-logo { max-width: 80px; top: 6px !important; right: 6px !important; left: auto !important; transform: none !important; }
+            .logo-top-center { top: 6px; right: 6px; left: auto; transform: none; }
+            .logo-bottom-right { bottom: 70px; right: 10px; }
+        }
+
+        @media (max-height: 700px) {
+            .day-cell { min-height: 60px; }
+            .header-info { margin-bottom: 4px; }
         }
     </style>
 <script type="importmap">
