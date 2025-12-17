@@ -138,17 +138,6 @@
         .header-main-text { font-family: var(--font-serif); font-size: 1.5rem; font-weight: bold; line-height: 1.2; }
         .header-sub-text { font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase; margin-top: 4px; }
         .header-trad { font-size: 0.8rem; color: var(--accent-color); opacity: 0.9; font-style: italic; }
-        
-        .live-clock {
-            font-size: 0.9rem;
-            font-weight: 600;
-            color: var(--accent-color);
-            margin-bottom: 2px;
-            font-family: var(--font-sans);
-            opacity: 0.9;
-            letter-spacing: 0.02em;
-        }
-
         .controls { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; justify-content: flex-end; }
         
         button.nav-btn { background: var(--bg-color); border: 1px solid var(--border-color); color: var(--text-main); padding: 8px 16px; border-radius: 6px; font-weight: bold; transition: all 0.2s; }
@@ -321,7 +310,6 @@
         <div class="header-info">
             <div id="header-moon-icon" class="icon-xl icon-shadow"></div>
             <div class="header-text">
-                <div id="live-clock" class="live-clock"></div>
                 <span id="header-date" class="header-main-text"></span>
                 <span id="header-doy" class="header-sub-text"></span>
                 <span id="header-trad-name" class="header-trad"></span>
@@ -1295,19 +1283,7 @@ const App = {
     },
     
     init() {
-        this.generateThemes(); this.loadState(); this.renderSettings(); this.render(); this.setupListeners(); this.initTooltips(); this.initClock();
-    },
-
-    initClock() {
-        const clockEl = document.getElementById('live-clock');
-        const update = () => {
-            const now = new Date();
-            const dateStr = now.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
-            const timeStr = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false });
-            clockEl.textContent = `${dateStr} • ${timeStr}`;
-        };
-        update();
-        setInterval(update, 1000);
+        this.generateThemes(); this.loadState(); this.renderSettings(); this.render(); this.setupListeners(); this.initTooltips();
     },
 
     initTooltips() {
@@ -1478,6 +1454,46 @@ const App = {
             if (isRx) events.push({ date, type: "Astrology", name: "Mercury Retrograde Station", note: "Change of direction.", tag: "astro" });
         }
         return events;
+    },
+
+    renderSummary() {
+        const container = document.getElementById('summary-content');
+        container.innerHTML = '';
+        const events = this.generateSummaryData();
+        
+        if (events.length === 0) {
+            container.innerHTML = '<div style="padding:20px; color:var(--text-muted); text-align:center;">No significant events found for this month with current filters.</div>';
+            return;
+        }
+
+        events.sort((a,b) => a.date - b.date);
+
+        events.forEach(e => {
+            const div = document.createElement('div');
+            div.className = 'summary-item';
+            
+            let color = 'var(--text-muted)';
+            if (e.tag === 'shamanic') color = 'var(--color-mushroom)';
+            if (e.tag === 'astro') color = 'var(--accent-color)';
+            if (e.tag === 'festival') color = 'var(--color-good)';
+            if (e.tag === 'tibetan') color = 'var(--color-tibetan)';
+
+            div.innerHTML = `
+                <div class="summary-date">${e.date.getDate()} <span style="font-size:0.8rem; display:block; color:var(--text-muted)">${e.date.toLocaleString('default', {weekday:'short'})}</span></div>
+                <div class="summary-content">
+                    <div class="summary-title"><span class="summary-tag" style="color:${color}; border-color:${color}">${e.type}</span>${e.name}</div>
+                    <div class="summary-meta">${e.note}</div>
+                </div>
+            `;
+            div.onclick = () => {
+                this.selectedDate = e.date;
+                this.render(); // Highlight on calendar
+                this.openDetail(e.date); // Open detail
+                document.getElementById('summary-panel').classList.remove('open');
+            };
+            div.style.cursor = 'pointer';
+            container.appendChild(div);
+        });
     },
 
     render() {
