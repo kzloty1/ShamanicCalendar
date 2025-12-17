@@ -146,8 +146,8 @@
         button.text-btn:hover { color: var(--accent-color); }
         
         /* Prominent Filter Button */
-        #btn-filters { background: var(--accent-color); color: var(--bg-color); border: none; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
-        #btn-filters:hover { filter: brightness(1.1); transform: translateY(-1px); }
+        #btn-filters, #btn-summary { background: var(--accent-color); color: var(--bg-color); border: none; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
+        #btn-filters:hover, #btn-summary:hover { filter: brightness(1.1); transform: translateY(-1px); }
 
         input[type="date"], select { background: var(--bg-color); border: 1px solid var(--border-color); color: var(--text-main); padding: 7px; border-radius: 6px; }
 
@@ -164,7 +164,7 @@
         /* PLANT MEDICINE EMPHASIS (Advisory Tone) */
         .day-cell.plant-medicine { 
             border: 1px solid var(--color-mushroom); 
-            background: linear-gradient(135deg, transparent 90%, color-mix(in srgb, var(--color-mushroom), transparent 85%) 100%);
+            background: linear-gradient(135deg, transparent 92%, color-mix(in srgb, var(--color-mushroom), transparent 88%) 100%);
         }
         
         .day-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 4px; padding-bottom: 4px; border-bottom: 1px solid transparent; }
@@ -184,8 +184,8 @@
         .corner-icon:hover { transform: scale(1.2); }
 
         /* Panels */
-        .detail-panel, .settings-panel { position: fixed; top: 0; right: 0; bottom: 0; width: 480px; max-width: 90vw; background: var(--surface-color); border-left: 1px solid var(--border-color); padding: 32px; overflow-y: auto; transform: translateX(100%); transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); box-shadow: -10px 0 30px rgba(0,0,0,0.6); z-index: 100; }
-        .detail-panel.open, .settings-panel.open { transform: translateX(0); }
+        .detail-panel, .settings-panel, .summary-panel { position: fixed; top: 0; right: 0; bottom: 0; width: 480px; max-width: 90vw; background: var(--surface-color); border-left: 1px solid var(--border-color); padding: 32px; overflow-y: auto; transform: translateX(100%); transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); box-shadow: -10px 0 30px rgba(0,0,0,0.6); z-index: 100; }
+        .detail-panel.open, .settings-panel.open, .summary-panel.open { transform: translateX(0); }
         .detail-header { display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 1px solid var(--border-color); padding-bottom: 20px; margin-bottom: 24px; }
         .close-btn { background: none; border: none; font-size: 2rem; color: var(--text-muted); line-height: 0.8; padding: 4px; }
         
@@ -196,6 +196,14 @@
         .data-label { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; }
         .data-value { font-family: var(--font-serif); font-size: 1.1rem; }
         .context-box { background: color-mix(in srgb, var(--bg-color), transparent 30%); padding: 16px; border: 1px solid var(--border-color); border-radius: 4px; font-size: 0.95rem; line-height: 1.6; margin-bottom: 12px; }
+        
+        /* Summary Panel Specifics */
+        .summary-item { padding: 12px; border-bottom: 1px solid var(--border-color); display: flex; gap: 12px; }
+        .summary-date { font-family: var(--font-serif); font-weight: bold; min-width: 60px; color: var(--accent-color); font-size: 1.1rem; }
+        .summary-content { flex: 1; }
+        .summary-title { font-weight: bold; margin-bottom: 4px; font-size: 0.95rem; }
+        .summary-meta { font-size: 0.85rem; color: var(--text-muted); }
+        .summary-tag { display: inline-block; font-size: 0.7rem; text-transform: uppercase; padding: 2px 6px; border-radius: 4px; margin-right: 6px; border: 1px solid currentColor; opacity: 0.8; }
         
         /* Toggle Switch */
         .toggle-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--border-color); }
@@ -274,7 +282,7 @@
             .header-sub-text, .header-trad { text-align: center; }
             .controls { width: 100%; justify-content: space-between; gap: 4px; overflow-x: auto; padding-bottom: 4px; }
             .day-cell { min-height: 70px; padding: 2px; }
-            .detail-panel, .settings-panel { width: 100%; max-width: 100%; border-left: none; padding: 20px 16px; }
+            .detail-panel, .settings-panel, .summary-panel { width: 100%; max-width: 100%; border-left: none; padding: 20px 16px; }
             .suitability-grid { grid-template-columns: 1fr; }
             #user-logo { max-width: 80px; max-height: 50px; }
             .logo-top-center { top: 2px; }
@@ -311,6 +319,7 @@
             <button id="btn-prev" class="nav-btn">&larr;</button>
             <input type="date" id="date-picker">
             <button id="btn-next" class="nav-btn">&rarr;</button>
+            <button id="btn-summary" class="nav-btn">Summary</button>
             <button id="btn-filters" class="nav-btn">Filters</button>
             <select id="theme-selector" class="theme-selector"></select>
             <button id="btn-logo" class="text-btn">Logo</button>
@@ -337,6 +346,15 @@
             <div class="section-title">Day Types</div>
             <div id="settings-types"></div>
         </div>
+    </aside>
+
+    <!-- SUMMARY PANEL -->
+    <aside id="summary-panel" class="summary-panel">
+        <div class="detail-header">
+            <h2 class="serif" style="margin:0; font-size: 1.8rem; color: var(--text-main);">Month Summary</h2>
+            <button id="btn-close-summary" class="close-btn">&times;</button>
+        </div>
+        <div id="summary-content" style="display: flex; flex-direction: column; gap: 4px;"></div>
     </aside>
 
     <aside id="detail-panel" class="detail-panel">
@@ -482,10 +500,21 @@
 </div>
 
 <script>
+const APP_VERSION = "1.2.0"; // Force reload on update
+
 const Storage = {
     get: (key) => { try { return localStorage.getItem(key); } catch(e) { console.warn("Storage restricted"); return null; } },
-    set: (key, val) => { try { localStorage.setItem(key, val); } catch(e) { console.warn("Storage restricted"); } }
+    set: (key, val) => { try { localStorage.setItem(key, val); } catch(e) { console.warn("Storage restricted"); } },
+    remove: (key) => { try { localStorage.removeItem(key); } catch(e) {} }
 };
+
+// Version Check
+const currentVer = Storage.get('arc_version');
+if (currentVer !== APP_VERSION) {
+    Storage.remove('arc_filters'); // Reset filters to ensure new logic applies
+    Storage.set('arc_version', APP_VERSION);
+    console.log("App updated to version " + APP_VERSION);
+}
 
 const DEFAULT_LOGO = "logo.png";
 const MOON_PHASES = ["New Moon", "Waxing Crescent", "First Quarter", "Waxing Gibbous", "Full Moon", "Waning Gibbous", "Last Quarter", "Waning Crescent"];
@@ -859,14 +888,55 @@ function getEntheogenLogic(date, moon) {
     if (moon.phaseIdx === 0) { aya.note = "New Moon: Deep Purging / Dieta Start."; aya.good.push({txt: "Starting Master Plant Dietas", src: "Amazonian/Shipibo Tradition"}); aya.good.push({txt: "Purification/La Purga", src: "Amazonian/Shipibo Tradition"}); } 
     else if (moon.phaseIdx === 4) { aya.note = "Full Moon: High Visionary Energy."; aya.good.push({txt: "Visionary Ceremonies", src: "Amazonian/Asháninka Tradition"}); aya.bad.push({txt: "Chaotic settings (Energy amplification)", src: "Amazonian Tradition"}); }
     
-    const m = date.getMonth();
+    const m = date.getMonth(); // 0-11
+    const day = date.getDay(); // 0 (Sun) - 6 (Sat)
+    
     let mush = { good: [], bad: [], note: "" };
-    if (m >= 5 && m <= 9) { mush.note = "Mazatec Rainy Season (Time of the Little Ones)."; mush.good.push({txt: "Traditional Velada (Night Vigil)", src: "Mazatec Tradition"}); }
+    
+    // MAZATEC / MESOAMERICAN LOGIC
+    // Rainy Season (Approx May-Oct in Oaxaca/Highlands)
+    const isRainySeason = (m >= 4 && m <= 9); // May (4) to Oct (9)
+    const isWeekend = (day === 5 || day === 6); // Fri or Sat
+    const isMajorPhase = (moon.phaseIdx === 0 || moon.phaseIdx === 4 || moon.phaseIdx === 2 || moon.phaseIdx === 6);
+    
+    // Moon Phase Logic for Mushrooms
+    let phaseGuidance = "";
+    if (moon.phaseIdx === 4) phaseGuidance = "Full Moon: High-energy communal ceremonies, divination, healing.";
+    else if (moon.phaseIdx === 0) phaseGuidance = "New Moon: Introspection, personal purification, intention setting.";
+    else if (moon.phaseIdx >= 1 && moon.phaseIdx <= 3) phaseGuidance = "Waxing Moon: Growth, starting new projects, spiritual learning.";
+    else if (moon.phaseIdx >= 5 && moon.phaseIdx <= 7) phaseGuidance = "Waning Moon: Release, letting go, cleansing, integration.";
+
+    // Apply Mazatec logic only during season and on preferred days/phases
+    // STRICT ASSIGNMENT: Day must be Season AND (Weekend OR Major Phase) for specific mushroom icon
+    if (isRainySeason && (isWeekend || isMajorPhase)) {
+        let note = "Mazatec Rainy Season (Time of the Little Ones). " + phaseGuidance;
+        if (isWeekend) note += " Traditional preference for Friday/Saturday night Veladas.";
+        
+        mush.note = note;
+        mush.good.push({txt: "Traditional Velada (Night Vigil)", src: "Mazatec Tradition"});
+        mush.good.push({txt: "Consulting dreams/omens before scheduling", src: "Mazatec/Indigenous Advisory"});
+    } else if (isRainySeason) {
+        // In season but off-peak day
+        mush.note = ""; // No strict icon assignment for random Tuesday unless explicit
+    } else {
+        // Off season
+        mush.note = "";
+    }
+
     const key = `${date.getMonth()+1}-${date.getDate()}`;
-    if (key === "6-29") { mush.note = "San Pedro & San Pablo Day."; mush.good.push({txt: "Ceremonial gathering (Syncretic)", src: "Highland Mexico Tradition"}); }
-    if (m >= 9 && m <= 11) { mush.good.push({txt: "Amanita Harvest Window (Northern Hemisphere)", src: "Indigenous Northwest/Siberian"}); }
-    // Specific logic for Northwest/California and Caribbean as requested
+    if (key === "6-29") { mush.note = "San Pedro & San Pablo Day. " + phaseGuidance; mush.good.push({txt: "Ceremonial gathering (Syncretic)", src: "Highland Mexico Tradition"}); }
+    
+    // Harvest windows imply ceremonial availability
+    if (m >= 9 && m <= 11) { 
+        mush.good.push({txt: "Amanita Harvest Window (Northern Hemisphere)", src: "Indigenous Northwest/Siberian"}); 
+        // Strict logic: If in harvest window, we consider it a 'valid' day for icon consideration if phase aligns
+        if (isMajorPhase) mush.note = "Harvest Season (Northern). " + phaseGuidance;
+    }
+    
+    // Northwest / California Logic
     if (m >= 9 && m <= 11) { mush.good.push({txt: "Northwest / California: Autumn Coastal Harvest", src: "Indigenous Northwest Traditions"}); }
+    
+    // Caribbean / Tropical Logic
     if (moon.phaseIdx === 4 || moon.phaseIdx === 0) { mush.good.push({txt: "Caribbean / Tropical: High Humidity Growth", src: "Amazon/Caribbean Folk Tradition"}); }
     
     return { aya, mush };
@@ -998,20 +1068,62 @@ function getDailySuitability(date, moon, bio) {
     const good = [];
     const bad = [];
     const ceremony = [];
+    const fire = []; // Fire Ceremony days
 
     // Hair Logic
     const hair = { status: tHair.s, desc: tHair.d };
 
-    // Pagan/Slavic Logic
+    // Pagan/Slavic Logic (Fire Detection)
     festivals.forEach(f => {
-        // Tag-based filtering
-        let show = false;
-        if(f.tag === 'celtic' || f.trad.includes('Celtic') || f.trad.includes('Pagan')) { show = true; } // Logic handled in createCell for display
-        // We push all, createCell decides visibility based on filters
+        // Tag-based filtering logic handled in createCell, pushing all for now
         f.good.forEach(g => good.push({ txt: g, src: f.trad, tag: f.tag }));
         f.bad.forEach(b => bad.push({ txt: b, src: f.trad, tag: f.tag }));
         ceremony.push(`${f.name}: ${f.ceremony} (${f.trad})`);
+        
+        // Fire Logic (Fixed Festivals)
+        const isFire = f.type.toLowerCase().includes('fire') || f.ceremony.toLowerCase().includes('fire') || f.ceremony.toLowerCase().includes('bonfire') || f.name.includes("Yule") || f.name.includes("Litha");
+        if (isFire) {
+            fire.push({ name: f.name, trad: f.trad, note: f.ceremony });
+            good.push({ txt: "Fire Ceremony / Bonfire", src: f.trad });
+        }
     });
+    
+    // Andean Fire Logic (Fixed)
+    if (andean.fixed && (andean.fixed.name.includes("Inti Raymi") || andean.fixed.name.includes("Pachamama"))) {
+        fire.push({ name: andean.fixed.name, trad: "Andean / Quero", note: "Solar/Earth Fire Offerings" });
+    }
+    
+    // NEW: General Lunar/Weekday Fire Logic (Waxing/Full + Weekend)
+    // Waxing (1-4) or Full (4). Weekend = Fri(5), Sat(6), Sun(0).
+    const isWaxingOrFull = moon.phaseIdx >= 1 && moon.phaseIdx <= 4;
+    const isWeekend = date.getDay() === 0 || date.getDay() === 5 || date.getDay() === 6;
+
+    if (isWaxingOrFull && isWeekend) {
+        // Check duplication with fixed festivals to avoid double entry
+        const alreadyHasFire = fire.some(f => f.trad.includes("Folk") || f.trad.includes("General"));
+        if (!alreadyHasFire) {
+            fire.push({
+                name: "Weekend Fire Ritual",
+                trad: "General Elemental / Folk",
+                note: `Moon (${moon.phaseName}) supports growth & illumination. Weekend timing traditional for community.`
+            });
+            good.push({ txt: "Community Fire Circles", src: "General Ritual Timing" });
+        }
+    }
+
+    // NEW: End of Year / Yule Log (Dec 20-31)
+    if (date.getMonth() === 11 && date.getDate() >= 20) {
+         // Avoid duplicating Yule fixed date
+         const isYuleFixed = fire.some(f => f.name.includes("Yule") && f.trad.includes("Slavic"));
+         if (!isYuleFixed) {
+             fire.push({
+                name: "Year-End Release / Yule",
+                trad: "Celtic / Nordic / Generic",
+                note: "Burning the Yule log, releasing the old year."
+            });
+            good.push({ txt: "Burning the Old Year", src: "End-of-Year Tradition" });
+         }
+    }
     
     // Hebridean Logic
     hebridean.good.forEach(g => good.push(g));
@@ -1077,7 +1189,7 @@ function getDailySuitability(date, moon, bio) {
     // Multiplier Days
     if ([8, 15, 30].includes(tibetanDay)) good.push({ txt: "Accumulating Merit (Effects Multiplied)", src: "Tibetan Lunar System" });
 
-    return { hair, good, bad, ceremony, festivals, hebridean, scottishHerbs, hebrew, islamic, roman, anglo, vedic, meso, african, andean, entheo, redpath };
+    return { hair, good, bad, ceremony, festivals, hebridean, scottishHerbs, hebrew, islamic, roman, anglo, vedic, meso, african, andean, entheo, redpath, fire };
 }
 
 const SVGS = {
@@ -1154,7 +1266,7 @@ const TRADITION_KEYS = [
     'showMeso', 'showAfrican', 'showRoman', 'showAnglo', 'showEco'
 ];
 const TYPE_KEYS = [
-    'showCeremonial', 'showHair', 'showFavorable', 'showUnfavorable'
+    'showCeremonial', 'showHair', 'showFavorable', 'showUnfavorable', 'showFire'
 ];
 
 const App = {
@@ -1167,7 +1279,7 @@ const App = {
         showHebrew: true, showIslamic: true, showVedic: true, 
         showMeso: true, showAfrican: true, showRoman: true, showAnglo: true,
         showEco: true,
-        showCeremonial: true, showHair: true, showFavorable: true, showUnfavorable: true
+        showCeremonial: true, showHair: true, showFavorable: true, showUnfavorable: true, showFire: true
     },
     
     init() {
@@ -1272,6 +1384,116 @@ const App = {
         createToggle('showHair', 'Hair Cutting (Tibetan)', dDiv, TYPE_KEYS);
         createToggle('showFavorable', 'Favorable Days (Work/Harvest)', dDiv, TYPE_KEYS);
         createToggle('showUnfavorable', 'Unfavorable Days', dDiv, TYPE_KEYS);
+        createToggle('showFire', 'Fire Ceremonies (Celtic/Slavic/Andean)', dDiv, TYPE_KEYS);
+    },
+
+    generateSummaryData() {
+        const y = this.date.getFullYear(), m = this.date.getMonth();
+        const days = new Date(y, m+1, 0).getDate();
+        let events = [];
+
+        for(let d=1; d<=days; d++) {
+            const date = new Date(y, m, d);
+            const moon = getMoonData(date);
+            const bio = getBiodynamic(moon.signIdx);
+            const works = getDailySuitability(date, moon, bio);
+            const doy = getDayOfYear(date);
+            const tibetanDay = Math.floor(moon.age) + 1;
+
+            // Phase Events
+            if (moon.phaseIdx === 0) events.push({ date, type: "Moon Phase", name: "New Moon", note: `Introspection, New Beginnings.`, tag: "astro" });
+            if (moon.phaseIdx === 4) events.push({ date, type: "Moon Phase", name: "Full Moon", note: `Peak Energy, Illumination.`, tag: "astro" });
+
+            // Plant Medicine Events (Respecting Filters)
+            if (this.filters.showMushroom && works.entheo.mush.note) {
+                events.push({ date, type: "Ceremonial", name: "Mushroom Ceremony", note: works.entheo.mush.note, tag: "shamanic" });
+            }
+            if (this.filters.showAmazon && works.entheo.aya.note) {
+                events.push({ date, type: "Ceremonial", name: "Ayahuasca Ceremony", note: works.entheo.aya.note, tag: "shamanic" });
+            }
+            if (this.filters.showAndean && works.andean.fixed) {
+                events.push({ date, type: "Ceremonial", name: works.andean.fixed.name, note: works.andean.fixed.ceremony, tag: "shamanic" });
+            } else if (this.filters.showAndean && moon.phaseIdx === 4) {
+                events.push({ date, type: "Ceremonial", name: "Junta Quilla (San Pedro)", note: "Full Moon Offering.", tag: "shamanic" });
+            }
+            if (this.filters.showRedPath && (works.redpath.type.includes("Sweatlodge") || works.redpath.type.includes("Lodge"))) {
+                events.push({ date, type: "Ceremonial", name: works.redpath.name, note: works.redpath.type, tag: "shamanic" });
+            }
+            
+            // Fire Ceremonies (Respecting Filters)
+            if (this.filters.showFire && works.fire.length > 0) {
+                works.fire.forEach(f => {
+                    events.push({ date, type: "Fire Ceremony", name: f.name, note: `${f.trad}. ${f.note}`, tag: "shamanic" });
+                });
+            }
+
+            // Festivals & Fixed (Respecting Filters)
+            if (works.festivals.length > 0) {
+                works.festivals.forEach(f => {
+                    let show = false;
+                    if(f.tag === 'celtic' && this.filters.showCeltic) show = true;
+                    if(f.tag === 'slavic' && this.filters.showSlavic) show = true;
+                    if(f.tag === 'balkan' && this.filters.showBalkan) show = true;
+                    if (show) events.push({ date, type: "Festival", name: f.name, note: f.trad, tag: "festival" });
+                });
+            }
+
+            // Tibetan Days
+            if (this.filters.showTibetan && [8, 10, 15, 25, 30].includes(tibetanDay)) {
+                let note = "Practice Day";
+                if(tibetanDay===10) note = "Guru Rinpoche Day";
+                if(tibetanDay===25) note = "Dakini Day";
+                events.push({ date, type: "Tibetan", name: `Lunar Day ${tibetanDay}`, note: note, tag: "tibetan" });
+            }
+            
+            // Astrological
+            const isRx = MERCURY_RETROGRADE.some(r => {
+                const start = new Date(r.start); const end = new Date(r.end);
+                return date.getTime() === start.getTime() || date.getTime() === end.getTime();
+            });
+            if (isRx) events.push({ date, type: "Astrology", name: "Mercury Retrograde Station", note: "Change of direction.", tag: "astro" });
+        }
+        return events;
+    },
+
+    renderSummary() {
+        const container = document.getElementById('summary-content');
+        container.innerHTML = '';
+        const events = this.generateSummaryData();
+        
+        if (events.length === 0) {
+            container.innerHTML = '<div style="padding:20px; color:var(--text-muted); text-align:center;">No significant events found for this month with current filters.</div>';
+            return;
+        }
+
+        events.sort((a,b) => a.date - b.date);
+
+        events.forEach(e => {
+            const div = document.createElement('div');
+            div.className = 'summary-item';
+            
+            let color = 'var(--text-muted)';
+            if (e.tag === 'shamanic') color = 'var(--color-mushroom)';
+            if (e.tag === 'astro') color = 'var(--accent-color)';
+            if (e.tag === 'festival') color = 'var(--color-good)';
+            if (e.tag === 'tibetan') color = 'var(--color-tibetan)';
+
+            div.innerHTML = `
+                <div class="summary-date">${e.date.getDate()} <span style="font-size:0.8rem; display:block; color:var(--text-muted)">${e.date.toLocaleString('default', {weekday:'short'})}</span></div>
+                <div class="summary-content">
+                    <div class="summary-title"><span class="summary-tag" style="color:${color}; border-color:${color}">${e.type}</span>${e.name}</div>
+                    <div class="summary-meta">${e.note}</div>
+                </div>
+            `;
+            div.onclick = () => {
+                this.selectedDate = e.date;
+                this.render(); // Highlight on calendar
+                this.openDetail(e.date); // Open detail
+                document.getElementById('summary-panel').classList.remove('open');
+            };
+            div.style.cursor = 'pointer';
+            container.appendChild(div);
+        });
     },
 
     render() {
@@ -1295,13 +1517,17 @@ const App = {
         const works = getDailySuitability(date, moon, bio);
         const wd = getWeekdayData(date); const celtic = getCelticData(date, doy); const tcm = getChineseGuidance(moon); const shaman = getShamanicData(moon); const celticHerbal = getCelticHerbalData(date, moon); const ukHerbs = getUKForaging(date); const deities = getDeityEvents(date, moon);
         
-        // Plant Medicine Highlight Logic
+        // Plant Medicine Logic (Strict)
         let isPlantMedicineDay = false;
-        if ((works.entheo.mush.note && this.filters.showMushroom) || 
-            (works.entheo.aya.note && this.filters.showAmazon) || 
-            ((works.andean.fixed || moon.phaseIdx === 4) && this.filters.showAndean)) {
+        // Determine if it is a San Pedro, Ayahuasca or Mushroom day specifically
+        const isMushroomDay = works.entheo.mush.note && this.filters.showMushroom;
+        const isAyahuascaDay = works.entheo.aya.note && this.filters.showAmazon;
+        const isSanPedroDay = (works.andean.fixed || moon.phaseIdx === 4) && this.filters.showAndean;
+        
+        if (isMushroomDay || isAyahuascaDay || isSanPedroDay) {
             isPlantMedicineDay = true;
         }
+        
         if (isPlantMedicineDay) el.classList.add('plant-medicine');
 
         // --- HEADER ---
@@ -1317,29 +1543,41 @@ const App = {
         // --- CORNER ICONS (Plant Medicine & Ceremonial) ---
         const corner = document.createElement('div'); corner.className = 'corner-icons';
         if (this.filters.showCeremonial) {
-            // Mushroom (Psilocybin / Amanita)
-            if (this.filters.showMushroom && works.entheo.mush.note) {
-                corner.innerHTML += `<div class="corner-icon" data-tooltip="Mushroom Ceremony: ${works.entheo.mush.note}">${SVGS.mushroom('icon-sm')}</div>`;
-            }
-            // Ayahuasca (Vine/Cup)
-            if (this.filters.showAmazon && works.entheo.aya.note) {
-                corner.innerHTML += `<div class="corner-icon" data-tooltip="Ayahuasca: ${works.entheo.aya.note}">${SVGS.cup('icon-sm')}</div>`;
-            }
-            // San Pedro / Cactus
-            if (this.filters.showAndean) {
-                const isCactusDay = works.andean.fixed || (moon.phaseIdx === 4); 
-                if (isCactusDay) {
-                    const tip = works.andean.fixed ? works.andean.fixed.name : "Junta Quilla (Full Moon)";
-                    corner.innerHTML += `<div class="corner-icon" data-tooltip="San Pedro / Andean: ${tip}">${SVGS.cactus('icon-sm')}</div>`;
+            
+            // STRICT MUSHROOM ICON ASSIGNMENT
+            // If day is San Pedro OR Ayahuasca OR Mushroom -> Add Mushroom Icon top-right
+            if (isPlantMedicineDay) {
+                // Add the unifying Mushroom Icon if it's strictly a Mushroom day
+                if (isMushroomDay) {
+                     corner.innerHTML += `<div class="corner-icon" data-tooltip="Mushroom Ceremony: ${works.entheo.mush.note}">${SVGS.mushroom('icon-sm')}</div>`;
                 }
             }
-            // Red Path (Sweat Lodge)
+
+            // ADD EXISTING SPECIFIC ICONS (To be distinct and additive)
+            // Ayahuasca (Vine/Cup)
+            if (isAyahuascaDay) {
+                corner.innerHTML += `<div class="corner-icon" data-tooltip="Ayahuasca: ${works.entheo.aya.note}">${SVGS.cup('icon-sm')}</div>`;
+            }
+            // San Pedro (Cactus)
+            if (isSanPedroDay) {
+                const tip = works.andean.fixed ? works.andean.fixed.name : "Junta Quilla (Full Moon)";
+                corner.innerHTML += `<div class="corner-icon" data-tooltip="San Pedro / Andean: ${tip}">${SVGS.cactus('icon-sm')}</div>`;
+            }
+            
+            // Red Path (Sweat Lodge) - distinct from above
             if (this.filters.showRedPath) {
                 const isLodge = works.redpath.type.includes("Sweatlodge") || works.redpath.type.includes("Lodge");
                 if (isLodge) {
                     corner.innerHTML += `<div class="corner-icon" data-tooltip="Red Path / Lodge: ${works.redpath.name}">${SVGS.lodge('icon-sm')}</div>`;
                 }
             }
+        }
+        
+        // FIRE ICONS (Distinct and filterable)
+        if (this.filters.showFire && works.fire.length > 0) {
+            works.fire.forEach(f => {
+                corner.innerHTML += `<div class="corner-icon" data-tooltip="Fire Ceremony (${f.trad}). Type: ${f.name}. Advisory: ${f.note}. Source: Traditional/General.">${SVGS.fire('icon-sm')}</div>`;
+            });
         }
         
         // --- FOOTER ---
@@ -1486,6 +1724,7 @@ const App = {
         if (this.filters.showAmazon && works.entheo.aya.note) addCalItem("Amazonian", "Ayahuasca Cycle", works.entheo.aya.note, "tag-amazon");
         if (this.filters.showMushroom && works.entheo.mush.note) addCalItem("Mushroom", "Ceremonial Window", works.entheo.mush.note, "tag-mushroom");
         if (this.filters.showRedPath && (works.redpath.type.includes("Sweatlodge") || works.redpath.type.includes("Lodge"))) addCalItem("Red Path", works.redpath.name, works.redpath.type, "tag-redpath");
+        if (this.filters.showFire && works.fire.length > 0) works.fire.forEach(f => addCalItem("Fire Ceremony", f.name, `${f.trad}. ${f.note}`, "tag-redpath"));
 
         // Suitability Lists
         const lg = document.getElementById('list-good'); lg.innerHTML = '';
@@ -1564,6 +1803,8 @@ const App = {
         document.getElementById('btn-close-bib').onclick = () => document.getElementById('bib-panel').classList.remove('open');
         document.getElementById('btn-filters').onclick = () => document.getElementById('settings-panel').classList.add('open');
         document.getElementById('btn-close-settings').onclick = () => document.getElementById('settings-panel').classList.remove('open');
+        document.getElementById('btn-summary').onclick = () => { this.renderSummary(); document.getElementById('summary-panel').classList.add('open'); };
+        document.getElementById('btn-close-summary').onclick = () => document.getElementById('summary-panel').classList.remove('open');
     }
 };
 
