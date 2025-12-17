@@ -1,0 +1,535 @@
+[
+  {
+    "date": "2025-01-01",
+    "weekday": "Wednesday",
+    "astronomy": {
+      "moon_phase": "Waxing Crescent",
+      "moon_age": 1.8,
+      "illumination": "4%",
+      "zodiac_sign": "Aquarius",
+      "void_of_course": false,
+      "planet": "Mercury",
+      "element": "Air"
+    },
+    "traditions": {
+      "roman": "Kalends of January (Janus)",
+      "western": "New Year's Day",
+      "tibetan": "Lunar Day 2",
+      "mesoamerican": "Tititl (Stretching)",
+      "celtic": "Deep Winter (Resting)",
+      "sofia_code": "Feast of Mary, Mother of God (Catholic/Syncretic)"
+    },
+    "suitability": {
+      "hair_cutting": {
+        "status": "Unfavorable",
+        "reason": "Attracts gossip and slander"
+      },
+      "good_for": [
+        "Planning",
+        "Setting intentions",
+        "Air element work (Communication)"
+      ],
+      "not_suitable": [
+        "Hair cutting",
+        "High-stakes emotional confrontation"
+      ],
+      "ceremonial_focus": "New Beginnings / Threshold Crossing"
+    },
+    "entheogen_guidance": {
+      "mushrooms": "Neutral (Low energy)",
+      "ayahuasca": "Favorable (Post-New Moon integration)",
+      "san_pedro": "Neutral"
+    },
+    "icons": ["spark", "scroll"],
+    "source": "Tibetan Medical & Astrological Institute; Roman Calendar Reconstruction"
+  },
+  {
+    "date": "2025-01-02",
+    "weekday": "Thursday",
+    "astronomy": {
+      "moon_phase": "Waxing Crescent",
+      "moon_age": 2.8,
+      "illumination": "9%",
+      "zodiac_sign": "Aquarius",
+      "void_of_course": true,
+      "planet": "Jupiter",
+      "element": "Air"
+    },
+    "traditions": {
+      "tibetan": "Lunar Day 3",
+      "mesoamerican": "Tititl",
+      "biodynamic": "Flower Day"
+    },
+    "suitability": {
+      "hair_cutting": {
+        "status": "Favorable",
+        "reason": "Increase in wealth"
+      },
+      "good_for": [
+        "Wealth rituals",
+        "Expanding social circles",
+        "Flower harvesting (indoor/greenhouse)"
+      ],
+      "not_suitable": [
+        "Starting permanent foundations (Void of Course)"
+      ],
+      "ceremonial_focus": "Expansion / Jupiter Work"
+    },
+    "entheogen_guidance": {
+      "mushrooms": "Favorable (Waxing energy building)",
+      "ayahuasca": "Neutral",
+      "san_pedro": "Neutral"
+    },
+    "icons": ["scissors", "flower"],
+    "source": "Maria Thun Biodynamic; Tibetan Lunar Astrology"
+  },
+  {
+    "date": "2025-01-03",
+    "weekday": "Friday",
+    "astronomy": {
+      "moon_phase": "Waxing Crescent",
+      "moon_age": 3.8,
+      "illumination": "16%",
+      "zodiac_sign": "Pisces",
+      "void_of_course": false,
+      "planet": "Venus",
+      "element": "Water"
+    },
+    "traditions": {
+      "tibetan": "Lunar Day 4",
+      "mesoamerican": "Tititl",
+      "sofia_code": "Day of Venus (Hathor/Mary Magdalene association)",
+      "islamic": "Jumu'ah (Friday Prayer)"
+    },
+    "suitability": {
+      "hair_cutting": {
+        "status": "Favorable",
+        "reason": "Increase in virtue and positive energy"
+      },
+      "good_for": [
+        "Love spells",
+        "Self-care rituals",
+        "Watering plants",
+        "Artistic creation"
+      ],
+      "not_suitable": [],
+      "ceremonial_focus": "Devotion / Bhakti"
+    },
+    "entheogen_guidance": {
+      "mushrooms": "Favorable (Weekend + Waxing + Venus)",
+      "ayahuasca": "Favorable (Water element flow)",
+      "san_pedro": "Neutral"
+    },
+    "icons": ["heart", "water", "scissors"],
+    "source": "General Occult Correspondence; Tibetan Lunar"
+  },
+  {
+    "date": "2025-01-04",
+    "weekday": "Saturday",
+    "astronomy": {
+      "moon_phase": "Waxing Crescent",
+      "moon_age": 4.8,
+      "illumination": "25%",
+      "zodiac_sign": "Pisces",
+      "void_of_course": false,
+      "planet": "Saturn",
+      "element": "Water"
+    },
+    "traditions": {
+      "tibetan": "Lunar Day 5",
+      "mesoamerican": "Tititl",
+      "shamanic": "Water Ceremony"
+    },
+    "suitability": {
+      "hair_cutting": {
+        "status": "Favorable",
+        "reason": "Increase in wealth"
+      },
+      "good_for": [
+        "Discipline",
+        "Structure",
+        "Ancestral boundary work"
+      ],
+      "not_suitable": [
+        "Spontaneous travel"
+      ],
+      "ceremonial_focus": "Structure / Foundations"
+    },
+    "entheogen_guidance": {
+      "mushrooms": "Favorable (Deep introspection)",
+      "ayahuasca": "Favorable (Deep emotional work)",
+      "san_pedro": "Neutral"
+    },
+    "icons": ["scissors", "shield"],
+    "source": "Tibetan Lunar; Saturn Correspondence"
+  },
+  {
+    "date": "2025-01-05",
+    "weekday": "Sunday",
+    "astronomy": {
+      "moon_phase": "Waxing Crescent",
+      "moon_age": 5.8,
+      "illumination": "35%",
+      "zodiac_sign": "Aries",
+      "void_of_course": true,
+      "planet": "Sun",
+      "element": "Fire"
+    },
+    "traditions": {
+      "tibetan": "Lunar Day 6",
+      "mesoamerican": "Tititl",
+      "christian": "Twelfth Night (Eve of Epiphany)"
+    },
+    "suitability": {
+      "hair_cutting": {
+        "status": "Favorable",
+        "reason": "Enhances sensory clarity and complexion"
+      },
+      "good_for": [
+        "Solar rituals",
+        "Physical activity",
+        "Short-term goals"
+      ],
+      "not_suitable": [
+        "Long-term contractual agreements (Void of Course)"
+      ],
+      "ceremonial_focus": "Vitality / Sun"
+    },
+    "entheogen_guidance": {
+      "mushrooms": "Caution (Impulsive energy)",
+      "ayahuasca": "Neutral",
+      "san_pedro": "Favorable (Solar connection)"
+    },
+    "icons": ["sun", "scissors", "fire"],
+    "source": "Christian Calendar; Tibetan Lunar"
+  },
+  {
+    "date": "2025-01-06",
+    "weekday": "Monday",
+    "astronomy": {
+      "moon_phase": "First Quarter",
+      "moon_age": 6.8,
+      "illumination": "48%",
+      "zodiac_sign": "Aries",
+      "void_of_course": false,
+      "planet": "Moon",
+      "element": "Fire"
+    },
+    "traditions": {
+      "christian": "Epiphany / Three Kings Day",
+      "tibetan": "Lunar Day 7",
+      "celtic": "Nollaig Bheag (Little Christmas)",
+      "pagan": "End of Yule Season"
+    },
+    "suitability": {
+      "hair_cutting": {
+        "status": "Unfavorable",
+        "reason": "Legal trouble and lawsuits"
+      },
+      "good_for": [
+        "Action oriented rituals",
+        "Initiating conflict/debate",
+        "Fire ceremonies"
+      ],
+      "not_suitable": [
+        "Hair cutting",
+        "Diplomacy"
+      ],
+      "ceremonial_focus": "Manifestation / Action"
+    },
+    "entheogen_guidance": {
+      "mushrooms": "High Energy (Aries Moon)",
+      "ayahuasca": "Caution (High fire energy may cause turbulence)",
+      "san_pedro": "Favorable (Action/Movement)"
+    },
+    "icons": ["fire", "hand"],
+    "source": "Christian Calendar; Tibetan Lunar"
+  },
+  {
+    "date": "2025-01-07",
+    "weekday": "Tuesday",
+    "astronomy": {
+      "moon_phase": "Waxing Gibbous",
+      "moon_age": 7.8,
+      "illumination": "58%",
+      "zodiac_sign": "Taurus",
+      "void_of_course": false,
+      "planet": "Mars",
+      "element": "Earth"
+    },
+    "traditions": {
+      "tibetan": "Lunar Day 8 (Medicine Buddha & Green Tara)",
+      "sofia_code": "Green Tara Devotion",
+      "biodynamic": "Root Day"
+    },
+    "suitability": {
+      "hair_cutting": {
+        "status": "Favorable",
+        "reason": "Promotes longevity"
+      },
+      "good_for": [
+        "Healing rituals (Medicine Buddha)",
+        "Root work",
+        "Grounding",
+        "Financial planning"
+      ],
+      "not_suitable": [
+        "Disturbing earth (Naga context depending on precise calculation)"
+      ],
+      "ceremonial_focus": "Healing / Medicine Buddha"
+    },
+    "entheogen_guidance": {
+      "mushrooms": "Favorable (Healing focus)",
+      "ayahuasca": "Favorable (Healing focus)",
+      "san_pedro": "Favorable (Earth connection)"
+    },
+    "icons": ["lotus", "scissors", "root"],
+    "source": "Tibetan Lunar; Buddha Weekly"
+  },
+  {
+    "date": "2025-01-08",
+    "weekday": "Wednesday",
+    "astronomy": {
+      "moon_phase": "Waxing Gibbous",
+      "moon_age": 8.8,
+      "illumination": "68%",
+      "zodiac_sign": "Taurus",
+      "void_of_course": false,
+      "planet": "Mercury",
+      "element": "Earth"
+    },
+    "traditions": {
+      "tibetan": "Lunar Day 9",
+      "mesoamerican": "Tititl",
+      "biodynamic": "Root Day"
+    },
+    "suitability": {
+      "hair_cutting": {
+        "status": "Favorable",
+        "reason": "Attractive energy"
+      },
+      "good_for": [
+        "Sensual rituals",
+        "Gardening",
+        "Cooking/Feasting"
+      ],
+      "not_suitable": [],
+      "ceremonial_focus": "Abundance / Earth"
+    },
+    "entheogen_guidance": {
+      "mushrooms": "Favorable (Sensory enhancement)",
+      "ayahuasca": "Neutral",
+      "san_pedro": "Favorable (Connection to nature)"
+    },
+    "icons": ["scissors", "fruit"],
+    "source": "Tibetan Lunar"
+  },
+  {
+    "date": "2025-01-09",
+    "weekday": "Thursday",
+    "astronomy": {
+      "moon_phase": "Waxing Gibbous",
+      "moon_age": 9.8,
+      "illumination": "77%",
+      "zodiac_sign": "Gemini",
+      "void_of_course": true,
+      "planet": "Jupiter",
+      "element": "Air"
+    },
+    "traditions": {
+      "tibetan": "Lunar Day 10 (Guru Rinpoche Day)",
+      "sofia_code": "Padmasambhava / Guru Rinpoche",
+      "biodynamic": "Flower Day"
+    },
+    "suitability": {
+      "hair_cutting": {
+        "status": "Favorable",
+        "reason": "Increases personal power/magnetism"
+      },
+      "good_for": [
+        "Vajrayana Feast Offerings (Tsog)",
+        "Teaching/Learning",
+        "Socializing"
+      ],
+      "not_suitable": [
+        "Silence (Gemini energy wants to speak)"
+      ],
+      "ceremonial_focus": "Guru Yoga / Wisdom Transmission"
+    },
+    "entheogen_guidance": {
+      "mushrooms": "Favorable (Wisdom/Teaching aspect)",
+      "ayahuasca": "Favorable (Lineage connection)",
+      "san_pedro": "Neutral"
+    },
+    "icons": ["scissors", "lotus", "book"],
+    "source": "Tibetan Lunar; Vajrayana Tradition"
+  },
+  {
+    "date": "2025-01-10",
+    "weekday": "Friday",
+    "astronomy": {
+      "moon_phase": "Waxing Gibbous",
+      "moon_age": 10.8,
+      "illumination": "85%",
+      "zodiac_sign": "Gemini",
+      "void_of_course": false,
+      "planet": "Venus",
+      "element": "Air"
+    },
+    "traditions": {
+      "tibetan": "Lunar Day 11",
+      "mesoamerican": "Tititl"
+    },
+    "suitability": {
+      "hair_cutting": {
+        "status": "Favorable",
+        "reason": "Increases intelligence"
+      },
+      "good_for": [
+        "Communication",
+        "Writing",
+        "Short travel"
+      ],
+      "not_suitable": [],
+      "ceremonial_focus": "Intellect / Air"
+    },
+    "entheogen_guidance": {
+      "mushrooms": "Favorable (Mental clarity/insight)",
+      "ayahuasca": "Neutral",
+      "san_pedro": "Neutral"
+    },
+    "icons": ["scissors", "feather"],
+    "source": "Tibetan Lunar"
+  },
+  {
+    "date": "2025-01-13",
+    "weekday": "Monday",
+    "astronomy": {
+      "moon_phase": "Full Moon",
+      "moon_age": 13.8,
+      "illumination": "100%",
+      "zodiac_sign": "Cancer",
+      "void_of_course": false,
+      "planet": "Moon",
+      "element": "Water"
+    },
+    "traditions": {
+      "western": "Wolf Moon",
+      "tibetan": "Lunar Day 15 (Amitabha Buddha)",
+      "andean": "Junta Quilla (Full Moon)",
+      "hebridean": "Bright Nights (Spring Tides)",
+      "sofia_code": "Full Moon of the Mother"
+    },
+    "suitability": {
+      "hair_cutting": {
+        "status": "Favorable",
+        "reason": "Generally auspicious"
+      },
+      "good_for": [
+        "Full Moon Rituals",
+        "Water Scrying",
+        "Emotional Release",
+        "Harvesting Aerial Parts (Herbalism)"
+      ],
+      "not_suitable": [
+        "Surgery (Bleeding risk high)",
+        "Pruning"
+      ],
+      "ceremonial_focus": "Illumination / Completion"
+    },
+    "entheogen_guidance": {
+      "mushrooms": "Very Favorable (Peak Energy)",
+      "ayahuasca": "Very Favorable (Visionary Peak)",
+      "san_pedro": "Very Favorable (Night Vigil)"
+    },
+    "icons": ["moon", "water", "cup", "scissors"],
+    "source": "Western Folklore; Tibetan Lunar; Andean Cosmology"
+  },
+  {
+    "date": "2025-01-23",
+    "weekday": "Thursday",
+    "astronomy": {
+      "moon_phase": "Waning Crescent",
+      "moon_age": 23.8,
+      "illumination": "25%",
+      "zodiac_sign": "Scorpio",
+      "void_of_course": false,
+      "planet": "Jupiter",
+      "element": "Water"
+    },
+    "traditions": {
+      "tibetan": "Lunar Day 25 (Dakini Day)",
+      "sofia_code": "Dakini Wisdom / Red Tara",
+      "shamanic": "Deep Purge / Release"
+    },
+    "suitability": {
+      "hair_cutting": {
+        "status": "Unfavorable",
+        "reason": "Eye trouble/bad vision"
+      },
+      "good_for": [
+        "Banishing rituals",
+        "Cord cutting",
+        "Deep psychological work",
+        "Tsog Offering (Dakini)"
+      ],
+      "not_suitable": [
+        "Hair cutting",
+        "Starting lighthearted projects"
+      ],
+      "ceremonial_focus": "Feminine Wisdom / Transformation"
+    },
+    "entheogen_guidance": {
+      "mushrooms": "Favorable (Shadow work)",
+      "ayahuasca": "Very Favorable (Deep purging/Scorpio energy)",
+      "san_pedro": "Neutral"
+    },
+    "icons": ["hand", "skull", "lotus"],
+    "source": "Tibetan Lunar; Western Astrology"
+  },
+  {
+    "date": "2025-01-29",
+    "weekday": "Wednesday",
+    "astronomy": {
+      "moon_phase": "New Moon",
+      "moon_age": 0.5,
+      "illumination": "0%",
+      "zodiac_sign": "Aquarius",
+      "void_of_course": false,
+      "planet": "Mercury",
+      "element": "Air"
+    },
+    "traditions": {
+      "western": "New Moon",
+      "chinese": "Lunar New Year (Snake)",
+      "tibetan": "Losar (New Year - Tsurphu system variation/Preparation)",
+      "andean": "Musuq Quilla",
+      "mesoamerican": "Izcalli"
+    },
+    "suitability": {
+      "hair_cutting": {
+        "status": "Unfavorable",
+        "reason": "Life threatening (Day 30/1 transition)"
+      },
+      "good_for": [
+        "Setting Annual Intentions",
+        "Divination",
+        "Ancestor Offerings",
+        "Stillness"
+      ],
+      "not_suitable": [
+        "Hair cutting",
+        "External action",
+        "Sea voyages"
+      ],
+      "ceremonial_focus": "Seed Planting / Ancestors"
+    },
+    "entheogen_guidance": {
+      "mushrooms": "Favorable (Inner journey)",
+      "ayahuasca": "Favorable (Diet initiation)",
+      "san_pedro": "Neutral"
+    },
+    "icons": ["moon", "sprout", "snake"],
+    "source": "Chinese Calendar; Tibetan Lunar; General Folk"
+  }
+]

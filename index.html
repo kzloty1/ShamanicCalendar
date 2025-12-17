@@ -32,6 +32,7 @@
             --color-good: #10b981;
             --color-neutral: #94a3b8;
             --color-caution: #f59e0b;
+            --color-harvest: #d97706; /* Added missing variable */
             
             /* Tradition Colors */
             --color-celtic: #10b981;
@@ -117,6 +118,27 @@
         .day-cell:hover .moon-anim { transform: scale(1.08) rotate(2deg); filter: drop-shadow(0 0 8px var(--accent-color)); }
         
         #app { display: flex; flex-direction: column; height: 100%; z-index: 1; position: relative; }
+
+        /* Top Bar */
+        .top-bar {
+            background: color-mix(in srgb, var(--bg-color), var(--surface-color));
+            border-bottom: 1px solid var(--border-color);
+            padding: 8px 20px;
+            font-size: 0.9rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: var(--text-muted);
+            font-family: var(--font-serif);
+            flex-shrink: 0;
+            z-index: 11;
+            letter-spacing: 0.05em;
+        }
+        .live-time { color: var(--accent-color); font-weight: bold; }
+        
+        @media (max-width: 600px) {
+            .top-bar { padding: 6px 12px; font-size: 0.8rem; }
+        }
 
         /* Logo */
         #user-logo {
@@ -306,6 +328,12 @@
 <img id="user-logo" src="logo.png" style="display:none;" alt="Archaic Reference" />
 
 <div id="app">
+    <!-- NEW TOP BAR -->
+    <div id="top-bar" class="top-bar">
+        <span id="live-full-date"></span>
+        <span id="live-clock" class="live-time"></span>
+    </div>
+
     <header>
         <div class="header-info">
             <div id="header-moon-icon" class="icon-xl icon-shadow"></div>
@@ -500,7 +528,42 @@
 </div>
 
 <script>
-const APP_VERSION = "1.2.0"; // Force reload on update
+const APP_VERSION = "1.2.1"; // Updated Version
+
+// EXTENSION NAMESPACE
+const EXT = {
+    ceremonialData: [],
+    async init() {
+        try {
+            const response = await fetch('ceremonial_days.json');
+            if (response.ok) {
+                this.ceremonialData = await response.json();
+                console.log("EXT: Ceremonial days data loaded successfully.");
+            } else {
+                console.warn(`EXT: ceremonial_days.json failed to load with status ${response.status}.`);
+            }
+        } catch (e) {
+            console.error("EXT: Error fetching ceremonial_days.json:", e);
+        }
+    }
+};
+
+const LiveClock = {
+    init() {
+        const elDate = document.getElementById('live-full-date');
+        const elTime = document.getElementById('live-clock');
+        if (!elDate || !elTime) return;
+        
+        const update = () => {
+            const now = new Date();
+            elDate.textContent = now.toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+            elTime.textContent = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        };
+        
+        update();
+        setInterval(update, 1000); // Sync every second for accuracy
+    }
+};
 
 const Storage = {
     get: (key) => { try { return localStorage.getItem(key); } catch(e) { console.warn("Storage restricted"); return null; } },
@@ -738,8 +801,9 @@ function getDayOfYear(date) { const start = new Date(date.getFullYear(), 0, 0); 
 function getBiodynamic(signIdx) {
     const types = ["Fruit", "Root", "Flower", "Leaf"];
     const elems = ["fire", "earth", "air", "water"];
-    const idx = signIdx % 4;
-    return { type: types[idx], element: elems[idx] };
+    // Safe modulo logic
+    const idx = (signIdx || 0) % 4;
+    return { type: types[idx] || "Fruit", element: elems[idx] || "fire" };
 }
 function getWeekdayData(date) { return WEEKDAY_CORRESPONDENCE[date.getDay()]; }
 
@@ -757,8 +821,11 @@ function getDeityEvents(date, moon) {
     const tibetanDay = Math.floor(moon.age) + 1;
     
     DEITY_FESTIVALS.forEach(f => {
+        if (!f.start || !f.end) return;
         const pStart = f.start.split('-').map(Number);
         const pEnd = f.end.split('-').map(Number);
+        if (pStart.some(isNaN) || pEnd.some(isNaN)) return;
+
         let isMatch = false;
         if (pStart.length === 3) { if (pStart[2] === y && pStart[0] === m && pStart[1] === d) isMatch = true; } 
         else { const curVal = m * 100 + d; const startVal = pStart[0] * 100 + pStart[1]; const endVal = pEnd[0] * 100 + pEnd[1]; if (startVal <= endVal) { if (curVal >= startVal && curVal <= endVal) isMatch = true; } else { if (curVal >= startVal || curVal <= endVal) isMatch = true; } }
@@ -811,7 +878,7 @@ function getIslamicData(date) {
 function getRomanData(date) {
     const d = date.getDate();
     const m = date.getMonth(); // 0-11
-    // Mar(2), May(4), Jul(6), Oct(9): Nones 7, Ides 15
+    // Mar(2), May(4), Jul(6), Oct(9): Nones 7, ides 15
     const isLate = [2, 4, 6, 9].includes(m);
     const nones = isLate ? 7 : 5;
     const ides = isLate ? 15 : 13;
@@ -1217,7 +1284,7 @@ const SVGS = {
     harvest: (size="icon-sm") => `<svg viewBox="0 0 24 24" class="${size} icon-shadow anim-rock"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9" fill="none" stroke="var(--color-harvest)" stroke-width="2.5"/></svg>`,
     sickle: (size="icon-sm") => `<svg viewBox="0 0 24 24" class="${size} icon-shadow anim-rock"><path d="M19 19C19 12 14 6 9 6C7 6 6 7 6 8C6 9 7 9 9 9C12 9 15 13 15 19" stroke="var(--color-celtic)" stroke-width="2.5" stroke-linecap="round" fill="none"/><path d="M19 19L21 21" stroke="var(--color-celtic)" stroke-width="2.5" stroke-linecap="round"/></svg>`,
     bottle: (size="icon-sm") => `<svg viewBox="0 0 24 24" class="${size} icon-shadow anim-pulse"><path d="M9,2 L15,2 L15,6 L20,10 L20,22 L4,22 L4,10 L9,6 Z" fill="none" stroke="var(--color-alchemy)" stroke-width="2.5" stroke-linejoin="round"/><path d="M9,2 L9,6 M15,2 L15,6" stroke="var(--color-alchemy)" stroke-width="2.5"/></svg>`,
-    knot: (size="icon-sm") => `<svg viewBox="0 0 24 24" class="${size} icon-shadow anim-spin-glow"><path d="M12,2 L14,7 L20,7 L16,11 L18,17 L12,14 L6,17 L8,11 L4,7 L10,7 Z" fill="none" stroke="var(--color-celtic)" stroke-width="2.5" stroke-linejoin="round"/></svg>`,
+    knot: (size="icon-sm") => `<svg viewBox="0 0 24 24" class="${size} icon-shadow anim-spin-glow"><path d="M12,2 L14,7 L20,7 L16,11 L18,17 L12,14 L6,17 L8,11 L4,7 L10,7 Z" fill="none" stroke="var(--color-celtic)" stroke-width="2.5" stroke-linejoin="round"/><path d="M9,2 L9,6 M15,2 L15,6" stroke="var(--color-alchemy)" stroke-width="2.5"/></svg>`,
     bowl: (size="icon-sm") => `<svg viewBox="0 0 24 24" class="${size} icon-shadow anim-float"><path d="M2 12h20M2 12c0 5.5 4.5 10 10 10s10-4.5 10-10" fill="none" stroke="var(--color-tcm)" stroke-width="2.5"/><path d="M12 7V3m-4 4V4m8 3V4" stroke="var(--color-tcm)" stroke-width="2.5" stroke-linecap="round"/></svg>`,
     drum: (size="icon-sm") => `<svg viewBox="0 0 24 24" class="${size} icon-shadow anim-pulse"><circle cx="12" cy="12" r="10" fill="none" stroke="var(--color-shaman)" stroke-width="2.5"/><path d="M12 12l5-5M12 12l-5-5M12 12l5 5M12 12l-5 5" stroke="var(--color-shaman)" stroke-width="2"/></svg>`,
     kintu: (size="icon-sm") => `<svg viewBox="0 0 24 24" class="${size} icon-shadow anim-float"><path d="M12 21 C12 21 20 16 20 10 C20 6 16 3 12 3 C8 3 4 6 4 10 C4 16 12 21 12 21 Z" fill="none" stroke="var(--color-quero)" stroke-width="2.5"/><path d="M12 3 L12 21" stroke="var(--color-quero)" stroke-width="1.5"/></svg>`,
@@ -1319,15 +1386,26 @@ const App = {
 
     generateThemes() {
         const sel = document.getElementById('theme-selector');
+        if (!sel) return;
+        sel.innerHTML = '';
         for(let i=0; i<50; i++) { const opt = document.createElement('option'); opt.value = i; opt.textContent = `Theme ${i+1}`; sel.appendChild(opt); }
     },
 
     loadState() {
-        const t = Storage.get('arc_theme') || 0; document.getElementById('theme-selector').value = t; this.applyTheme(t);
+        const themeSelector = document.getElementById('theme-selector');
+        if (themeSelector) {
+            const t = Storage.get('arc_theme') || 0; 
+            themeSelector.value = t; 
+            this.applyTheme(t);
+        }
+        
         const logoData = Storage.get('arc_logo'); const logoPos = Storage.get('arc_logo_pos') || 'logo-top-center';
         const img = document.getElementById('user-logo');
-        if (logoData) img.src = logoData; else img.src = DEFAULT_LOGO;
-        img.className = logoPos; img.style.display = 'block';
+        if (img) {
+             if (logoData) img.src = logoData; else img.src = DEFAULT_LOGO;
+             img.className = logoPos; img.style.display = 'block';
+        }
+        
         const savedFilters = Storage.get('arc_filters');
         if (savedFilters) { try { this.filters = { ...this.filters, ...JSON.parse(savedFilters) }; } catch(e) {} }
     },
@@ -1345,6 +1423,8 @@ const App = {
     renderSettings() {
         const tDiv = document.getElementById('settings-traditions');
         const dDiv = document.getElementById('settings-types');
+        if (!tDiv || !dDiv) return;
+
         tDiv.innerHTML = ''; dDiv.innerHTML = '';
         
         const createToggle = (key, label, parent, groupKeys) => {
@@ -1458,6 +1538,8 @@ const App = {
 
     renderSummary() {
         const container = document.getElementById('summary-content');
+        if (!container) return;
+        
         container.innerHTML = '';
         const events = this.generateSummaryData();
         
@@ -1497,17 +1579,47 @@ const App = {
     },
 
     render() {
+        const grid = document.getElementById('calendar-grid');
+        if (!grid) return; // Defensive guard
+
         const doy = getDayOfYear(this.date); const moon = getMoonData(this.date); const tradName = WESTERN_NAMES[this.date.getMonth()]; const weekday = getWeekdayData(this.date);
-        document.getElementById('header-moon-icon').innerHTML = SVGS.moon(moon.phaseIdx, 'icon-xl');
-        document.getElementById('header-date').textContent = this.date.toLocaleString('default', { month: 'long', year: 'numeric' });
-        document.getElementById('header-doy').textContent = `Day ${doy} • ${moon.phaseName}`;
-        document.getElementById('header-trad-name').textContent = tradName;
-        document.getElementById('date-picker').value = this.date.toISOString().substr(0,10);
-        const grid = document.getElementById('calendar-grid'); grid.innerHTML = '';
+        
+        const elMoonIcon = document.getElementById('header-moon-icon');
+        if (elMoonIcon) elMoonIcon.innerHTML = SVGS.moon(moon.phaseIdx, 'icon-xl');
+        
+        const elDate = document.getElementById('header-date');
+        if (elDate) elDate.textContent = this.date.toLocaleString('default', { month: 'long', year: 'numeric' });
+        
+        const elDoy = document.getElementById('header-doy');
+        if (elDoy) elDoy.textContent = `Day ${doy} • ${moon.phaseName}`;
+        
+        const elTrad = document.getElementById('header-trad-name');
+        if (elTrad) elTrad.textContent = tradName;
+        
+        const elPicker = document.getElementById('date-picker');
+        if (elPicker) {
+            // Fix timezone offset for date picker value
+            const offset = this.date.getTimezoneOffset();
+            const localDate = new Date(this.date.getTime() - (offset * 60 * 1000));
+            elPicker.value = localDate.toISOString().substr(0,10);
+        }
+        
+        grid.innerHTML = '';
         const y = this.date.getFullYear(), m = this.date.getMonth(); const first = new Date(y, m, 1).getDay(); const days = new Date(y, m+1, 0).getDate();
-        const notes = JSON.parse(Storage.get('arc_notes') || '{}'); const todayKey = new Date().toISOString().split('T')[0];
+        const notes = JSON.parse(Storage.get('arc_notes') || '{}'); 
+        
+        // Fix for "Today" Highlight based on local time
+        const now = new Date();
+        const todayKey = [now.getFullYear(), String(now.getMonth() + 1).padStart(2, '0'), String(now.getDate()).padStart(2, '0')].join('-');
+        
         for(let i=0; i<first; i++) grid.appendChild(this.createCell(null));
-        for(let d=1; d<=days; d++) { const dt = new Date(y, m, d); const key = dt.toISOString().split('T')[0]; const cell = this.createCell(dt, key, notes[key], key === todayKey); grid.appendChild(cell); }
+        for(let d=1; d<=days; d++) { 
+            const dt = new Date(y, m, d); 
+            // Local key generation
+            const key = [dt.getFullYear(), String(dt.getMonth() + 1).padStart(2, '0'), String(dt.getDate()).padStart(2, '0')].join('-');
+            const cell = this.createCell(dt, key, notes[key], key === todayKey); 
+            grid.appendChild(cell); 
+        }
     },
 
     createCell(date, key, hasNote, isToday) {
@@ -1594,7 +1706,12 @@ const App = {
         }
 
         // Deities & Euro Folk
-        if (deities.length > 0) deities.forEach(d => dots.innerHTML += `<div data-tooltip="${d.name} (${d.deity})">${SVGS[d.icon]('icon-sm')}</div>`);
+        if (deities.length > 0) deities.forEach(d => {
+            const svgFunc = SVGS[d.icon];
+            if (typeof svgFunc === 'function') {
+                dots.innerHTML += `<div data-tooltip="${d.name} (${d.deity})">${svgFunc('icon-sm')}</div>`;
+            }
+        });
         
         // Granular Euro Traditions
         if (works.festivals && works.festivals.length > 0) {
@@ -1603,7 +1720,13 @@ const App = {
                 if(fest.tag === 'celtic' && this.filters.showCeltic) show = true;
                 if(fest.tag === 'slavic' && this.filters.showSlavic) show = true;
                 if(fest.tag === 'balkan' && this.filters.showBalkan) show = true;
-                if(show) dots.innerHTML += `<div data-tooltip="${fest.name} (${fest.trad})">${SVGS[fest.icon]('icon-sm')}</div>`;
+                
+                if(show) {
+                    const svgFunc = SVGS[fest.icon];
+                    if (typeof svgFunc === 'function') {
+                         dots.innerHTML += `<div data-tooltip="${fest.name} (${fest.trad})">${svgFunc('icon-sm')}</div>`;
+                    }
+                }
             });
         }
         
@@ -1648,11 +1771,16 @@ const App = {
     },
 
     openDetail(date) {
-        this.selectedDate = date; const key = date.toISOString().split('T')[0]; const doy = getDayOfYear(date); const moon = getMoonData(date); const bio = getBiodynamic(moon.signIdx); const multi = getMultiYear(date.getFullYear());
+        this.selectedDate = date; 
+        const key = [date.getFullYear(), String(date.getMonth() + 1).padStart(2, '0'), String(date.getDate()).padStart(2, '0')].join('-');
+        
+        const doy = getDayOfYear(date); const moon = getMoonData(date); const bio = getBiodynamic(moon.signIdx); const multi = getMultiYear(date.getFullYear());
         const works = getDailySuitability(date, moon, bio);
         const wd = getWeekdayData(date); const notes = JSON.parse(Storage.get('arc_notes') || '{}'); const celtic = getCelticData(date, doy); const celticHerbal = getCelticHerbalData(date, moon); const tcm = getChineseGuidance(moon); const shaman = getShamanicData(moon); const quero = getQueroData(moon, date); const redpath = getRedPathData(moon, date, doy); const ukHerbs = getUKForaging(date); const deities = getDeityEvents(date, moon);
         
-        document.getElementById('detail-date').textContent = date.toDateString();
+        const elDetailDate = document.getElementById('detail-date');
+        if (elDetailDate) elDetailDate.textContent = date.toDateString();
+        
         document.getElementById('detail-weekday-icon').innerHTML = SVGS.element(wd.element, 'icon-sm');
         document.getElementById('detail-weekday').textContent = `${wd.day} • ${wd.planet} Rule • ${wd.element.toUpperCase()} Element`;
         document.getElementById('detail-phase').textContent = `${moon.phaseName} in ${moon.sign}`;
@@ -1756,7 +1884,20 @@ const App = {
              });
         }
 
-        if (deities.length > 0 || works.festivals.length > 0) { dDiv.style.display = 'block'; deities.forEach(d => { const item = document.createElement('div'); item.className = 'work-item'; let tagClass = 'tag-mixed'; if (d.type === 'Egyptian') tagClass = 'tag-egypt'; if (d.type === 'Christian') tagClass = 'tag-marian'; if (d.type === 'Buddhist') tagClass = 'tag-buddhist'; item.innerHTML = `<span class="work-tag ${tagClass}">${d.type}</span><div style="font-size:0.9rem"><strong>${d.name}</strong><br><span style="color:var(--text-muted);font-size:0.8rem">Associated with ${d.deity}. Source: ${d.source}. ${d.note || ''}</span></div>`; dList.appendChild(item); }); } else { dDiv.style.display = 'none'; }
+        if (deities.length > 0 || works.festivals.length > 0) { 
+            dDiv.style.display = 'block'; 
+            deities.forEach(d => { 
+                const item = document.createElement('div'); item.className = 'work-item'; 
+                let tagClass = 'tag-mixed'; 
+                if (d.type === 'Egyptian') tagClass = 'tag-egypt'; 
+                if (d.type === 'Christian') tagClass = 'tag-marian'; 
+                if (d.type === 'Buddhist') tagClass = 'tag-buddhist'; 
+                const svgFunc = SVGS[d.icon];
+                const svgHtml = typeof svgFunc === 'function' ? svgFunc('icon-sm') : '';
+                item.innerHTML = `<span class="work-tag ${tagClass}">${d.type}</span><div style="font-size:0.9rem"><strong>${d.name}</strong><br><span style="color:var(--text-muted);font-size:0.8rem">Associated with ${d.deity}. Source: ${d.source}. ${d.note || ''}</span>${svgHtml}</div>`; 
+                dList.appendChild(item); 
+            }); 
+        } else { dDiv.style.display = 'none'; }
         
         // Scottish Herbs Display
         const shList = document.getElementById('detail-scottish-herbs'); shList.innerHTML = '';
@@ -1791,24 +1932,64 @@ const App = {
     },
 
     setupListeners() {
-        document.getElementById('btn-prev').onclick = () => { this.date.setMonth(this.date.getMonth()-1); this.render(); };
-        document.getElementById('btn-next').onclick = () => { this.date.setMonth(this.date.getMonth()+1); this.render(); };
-        document.getElementById('date-picker').onchange = (e) => { const p = e.target.value.split('-'); this.date = new Date(p[0], p[1]-1, p[2]); this.render(); };
-        document.getElementById('theme-selector').onchange = (e) => this.applyTheme(e.target.value);
-        document.getElementById('btn-close').onclick = () => document.getElementById('detail-panel').classList.remove('open');
-        document.getElementById('day-note').oninput = (e) => { const k = this.selectedDate.toISOString().split('T')[0]; const n = JSON.parse(Storage.get('arc_notes') || '{}'); n[k] = e.target.value; Storage.set('arc_notes', JSON.stringify(n)); this.render(); };
-        document.getElementById('btn-logo').onclick = () => { const currentPos = Storage.get('arc_logo_pos') || 'logo-top-center'; const newPos = currentPos === 'logo-top-center' ? 'logo-bottom-right' : 'logo-top-center'; Storage.set('arc_logo_pos', newPos); document.getElementById('user-logo').className = newPos; };
-        const bibList = document.getElementById('bib-list'); BIBLIOGRAPHY.forEach(b => { const div = document.createElement('div'); div.className = 'bib-item'; div.innerHTML = `<div class="bib-title">${b.title}</div><div class="bib-meta">${b.meta}</div>`; bibList.appendChild(div); });
-        document.getElementById('btn-bib').onclick = () => document.getElementById('bib-panel').classList.add('open');
-        document.getElementById('btn-close-bib').onclick = () => document.getElementById('bib-panel').classList.remove('open');
-        document.getElementById('btn-filters').onclick = () => document.getElementById('settings-panel').classList.add('open');
-        document.getElementById('btn-close-settings').onclick = () => document.getElementById('settings-panel').classList.remove('open');
-        document.getElementById('btn-summary').onclick = () => { this.renderSummary(); document.getElementById('summary-panel').classList.add('open'); };
-        document.getElementById('btn-close-summary').onclick = () => document.getElementById('summary-panel').classList.remove('open');
+        const btnPrev = document.getElementById('btn-prev');
+        if (btnPrev) btnPrev.onclick = () => { this.date.setMonth(this.date.getMonth()-1); this.render(); };
+        
+        const btnNext = document.getElementById('btn-next');
+        if (btnNext) btnNext.onclick = () => { this.date.setMonth(this.date.getMonth()+1); this.render(); };
+        
+        const datePicker = document.getElementById('date-picker');
+        if (datePicker) datePicker.onchange = (e) => { const p = e.target.value.split('-'); this.date = new Date(p[0], p[1]-1, p[2]); this.render(); };
+        
+        const themeSel = document.getElementById('theme-selector');
+        if (themeSel) themeSel.onchange = (e) => this.applyTheme(e.target.value);
+        
+        const btnClose = document.getElementById('btn-close');
+        if (btnClose) btnClose.onclick = () => document.getElementById('detail-panel').classList.remove('open');
+        
+        const dayNote = document.getElementById('day-note');
+        if (dayNote) dayNote.oninput = (e) => { 
+            const k = [this.selectedDate.getFullYear(), String(this.selectedDate.getMonth() + 1).padStart(2, '0'), String(this.selectedDate.getDate()).padStart(2, '0')].join('-');
+            const n = JSON.parse(Storage.get('arc_notes') || '{}'); n[k] = e.target.value; Storage.set('arc_notes', JSON.stringify(n)); this.render(); 
+        };
+        
+        const btnLogo = document.getElementById('btn-logo');
+        if (btnLogo) btnLogo.onclick = () => { const currentPos = Storage.get('arc_logo_pos') || 'logo-top-center'; const newPos = currentPos === 'logo-top-center' ? 'logo-bottom-right' : 'logo-top-center'; Storage.set('arc_logo_pos', newPos); document.getElementById('user-logo').className = newPos; };
+        
+        const bibList = document.getElementById('bib-list');
+        if (bibList && bibList.children.length === 0) {
+            BIBLIOGRAPHY.forEach(b => { const div = document.createElement('div'); div.className = 'bib-item'; div.innerHTML = `<div class="bib-title">${b.title}</div><div class="bib-meta">${b.meta}</div>`; bibList.appendChild(div); });
+        }
+        
+        const btnBib = document.getElementById('btn-bib');
+        if (btnBib) btnBib.onclick = () => document.getElementById('bib-panel').classList.add('open');
+        
+        const btnCloseBib = document.getElementById('btn-close-bib');
+        if (btnCloseBib) btnCloseBib.onclick = () => document.getElementById('bib-panel').classList.remove('open');
+        
+        const btnFilters = document.getElementById('btn-filters');
+        if (btnFilters) btnFilters.onclick = () => document.getElementById('settings-panel').classList.add('open');
+        
+        const btnCloseSettings = document.getElementById('btn-close-settings');
+        if (btnCloseSettings) btnCloseSettings.onclick = () => document.getElementById('settings-panel').classList.remove('open');
+        
+        const btnSummary = document.getElementById('btn-summary');
+        if (btnSummary) btnSummary.onclick = () => { this.renderSummary(); document.getElementById('summary-panel').classList.add('open'); };
+        
+        const btnCloseSummary = document.getElementById('btn-close-summary');
+        if (btnCloseSummary) btnCloseSummary.onclick = () => document.getElementById('summary-panel').classList.remove('open');
     }
 };
 
-App.init();
+document.addEventListener('DOMContentLoaded', () => {
+    try {
+        LiveClock.init();
+        EXT.init(); // Load extension data asynchronously
+        App.init();
+    } catch (e) {
+        console.error("App initialization failed", e);
+    }
+});
 
 </script>
 <script type="module" src="/index.tsx"></script>
